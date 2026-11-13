@@ -598,6 +598,48 @@ footer{padding-block:36px;border-top:1px solid var(--line)}
 .reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
 .review{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px;display:grid;gap:12px;align-content:start}
 .stars{color:var(--mark);letter-spacing:3px;font-size:1.05rem}
+
+/* Thème clair : fond blanc teinté de vert, texte foncé, vert Clyento en accent */
+:root{
+  --bg:#F5F8F3; --surface:#FFFFFF; --ink:#0F1C14; --muted:#52635A; --line:#DCE6DE;
+  --mark:#34D67A; --mark-ink:#0B1F14; --ok:#1E9A55; --soft:#E9F3EC; --mark-text:#17824A;
+  color-scheme:light;
+}
+.bg{background:radial-gradient(46% 62% at 47% 44%, rgba(52,214,122,.16), rgba(52,214,122,0) 70%), linear-gradient(180deg,#F8FBF6 0%,#EEF5EF 100%)}
+.bg i{background:#34D67A;box-shadow:0 0 8px 2px rgba(52,214,122,.3);opacity:.55}
+.hold{filter:drop-shadow(0 10px 12px rgba(15,28,20,.18))}
+.hold-hand{filter:drop-shadow(0 3px 4px rgba(15,28,20,.2))}
+.wiz{box-shadow:0 18px 50px -30px rgba(15,28,20,.35)}
+.wiz.teaser{background:radial-gradient(120% 80% at 80% 0%, rgba(52,214,122,.14), transparent 60%), radial-gradient(90% 70% at 0% 100%, rgba(52,214,122,.08), transparent 60%), #FFFFFF}
+.tpill{background:rgba(52,214,122,.07);border-color:rgba(30,154,85,.28)}
+.tpill.on{border-color:#1E9A55;background:rgba(52,214,122,.16);box-shadow:0 0 0 1px rgba(30,154,85,.22),0 8px 20px -10px rgba(30,154,85,.5)}
+.tpill i{background:rgba(30,154,85,.35)}
+.tn{box-shadow:0 0 0 3px rgba(52,214,122,.18)}
+.twire path{stroke:#2BB86A;filter:none}
+.twire .pulse{stroke:#0F7A3E}
+.twire circle{fill:#1E9A55;filter:none}
+.teaser .wiz-foot{border-color:rgba(30,154,85,.25);background:rgba(52,214,122,.07)}
+.teaser .wiz-sum,.win-count span,.mix-l,.jt span{color:var(--muted)}
+.teaser .wiz-act .btn{box-shadow:0 10px 22px -12px rgba(15,28,20,.55)}
+.qmodal{background:rgba(15,28,20,.28)}
+.qmodal .wiz{box-shadow:0 40px 90px -30px rgba(15,28,20,.45),0 0 60px -30px rgba(52,214,122,.35)}
+.win{background:rgba(255,255,255,.8);border-color:rgba(30,154,85,.22);box-shadow:0 40px 80px -44px rgba(15,28,20,.45),0 0 60px -30px rgba(52,214,122,.3),inset 0 1px 0 #fff}
+.win-bar{border-bottom-color:rgba(30,154,85,.15)}
+.win-bar span{background:rgba(30,154,85,.25)}
+.win-q,.mix,.win-rows li.row,.sr-list li{background:#F3F8F4;border-color:rgba(30,154,85,.22)}
+.mix:nth-of-type(2){box-shadow:0 6px 16px -8px rgba(30,154,85,.5)}
+.win-rows li.row::before,.jobs-stack button::before{background:#34D67A;box-shadow:0 0 0 3px rgba(52,214,122,.2)}
+.win-rows li.rail{box-shadow:none}
+.win-rows .sc{box-shadow:none}
+.win-rows .nm{background:linear-gradient(90deg,rgba(15,28,20,.22),rgba(15,28,20,.08))}
+.win-rows .tag{border-color:rgba(30,154,85,.3)}
+.win-dots button{background:rgba(30,154,85,.2)}
+.site-read{border-bottom-color:rgba(30,154,85,.25);background:rgba(52,214,122,.07)}
+.ld-card small,.proof-total b,.site-read h3,.mode.b2c .mode-tag,.mode.b2c .tick{color:var(--mark-text)}
+.jobs-stack button{border-color:rgba(30,154,85,.22);background:rgba(255,255,255,.75)}
+.jobs-stack button:hover{border-color:rgba(30,154,85,.45)}
+.jobs-stack button[aria-pressed="true"]{border-color:#1E9A55;background:rgba(52,214,122,.12);box-shadow:0 0 0 1px rgba(30,154,85,.2),0 12px 30px -16px rgba(30,154,85,.55)}
+.jobs-stack .wire path{stroke:#2BB86A;filter:none}
 .review p{font-size:.98rem}
 .review footer{padding:0;border:0;font-size:.86rem;color:var(--muted)}
 .review footer b{color:var(--ink);display:block}
@@ -1407,8 +1449,8 @@ function drawBg(){
   c.width = w * dpr; c.height = h * dpr;
   const x = c.getContext("2d"); x.scale(dpr, dpr); x.lineWidth = 1;
   const fade = x.createLinearGradient(0, 0, w, 0);
-  fade.addColorStop(0, "rgba(72,214,134,.20)"); fade.addColorStop(.3, "rgba(72,214,134,0)");
-  fade.addColorStop(.7, "rgba(72,214,134,0)"); fade.addColorStop(1, "rgba(72,214,134,.20)");
+  fade.addColorStop(0, "rgba(43,184,106,.30)"); fade.addColorStop(.3, "rgba(72,214,134,0)");
+  fade.addColorStop(.7, "rgba(72,214,134,0)"); fade.addColorStop(1, "rgba(43,184,106,.30)");
   x.strokeStyle = fade;
   const family = (n, y0, gap, amp, freq, phase, tilt) => {
     for (let i = 0; i < n; i++){
