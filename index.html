@@ -1,6 +1,6 @@
 <title>Clyento</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Clyento trouve des clients pour n'importe quel business, dans n'importe quel pays. Décrivez votre activité, recevez vos prospects et les messages prêts à envoyer.">
+<meta name="description" content="Clyento trouve des clients pour les artisans, commerçants, coachs et indépendants en France. Décrivez votre activité, recevez vos prospects et les messages prêts à envoyer.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -640,6 +640,72 @@ footer{padding-block:36px;border-top:1px solid var(--line)}
 .jobs-stack button:hover{border-color:rgba(30,154,85,.45)}
 .jobs-stack button[aria-pressed="true"]{border-color:#1E9A55;background:rgba(52,214,122,.12);box-shadow:0 0 0 1px rgba(30,154,85,.2),0 12px 30px -16px rgba(30,154,85,.55)}
 .jobs-stack .wire path{stroke:#2BB86A;filter:none}
+
+/* Épuration : fond uni sans lignes ni points, apparitions plus rapides, moins de vide */
+.bg canvas,.bg i{display:none}
+.bg{background:radial-gradient(60% 50% at 50% 0%, rgba(52,214,122,.14), rgba(52,214,122,0) 70%), #D9E4DB}
+section{padding-block:clamp(48px,6vw,80px)}
+.js-reveal .pre{opacity:0;transform:translateY(10px)}
+.js-reveal .rv{transition:opacity .4s ease,transform .4s ease}
+.sec-head{display:grid;gap:12px;margin-bottom:28px}
+.nav nav a{font-size:.92rem}
+
+/* Exemple de résultat (façon tableau de suivi) */
+.ex{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:0 24px 60px -36px rgba(15,28,20,.4);overflow:hidden}
+.ex-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--line);font-size:.95rem}
+.ex-tag{font-size:.78rem;font-weight:600;color:var(--muted);background:var(--soft);border-radius:999px;padding:4px 10px}
+.ex-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}
+.ex-table{display:grid;align-content:start;border-right:1px solid var(--line)}
+.ex-head,.ex-row{display:grid;grid-template-columns:minmax(0,1fr) 56px 118px;gap:12px;align-items:center;padding:12px 20px}
+.ex-head{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);border-bottom:1px solid var(--line)}
+.ex-head i{font-style:normal;text-transform:none;letter-spacing:0;font-weight:600;color:var(--mark-text);background:rgba(52,214,122,.14);border-radius:6px;padding:1px 6px;margin-left:4px}
+.ex-row{appearance:none;border:0;border-bottom:1px solid var(--line);background:transparent;font:inherit;color:var(--ink);text-align:left;cursor:pointer;min-height:64px}
+.ex-row:hover{background:rgba(52,214,122,.06)}
+.ex-row.on{background:rgba(52,214,122,.12);box-shadow:inset 3px 0 0 var(--mark)}
+.ex-n{display:grid;min-width:0}
+.ex-n b{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ex-n small{color:var(--muted);font-size:.85rem}
+.ex-sc{display:grid;place-items:center;height:30px;border-radius:8px;background:var(--mark);color:var(--mark-ink);font-weight:700;font-size:.9rem}
+.ex-st{justify-self:start;font-size:.8rem;font-weight:600;border-radius:999px;padding:5px 10px;white-space:nowrap}
+.ex-st.s1{background:#E7ECE8;color:#3D4A42}.ex-st.s2{background:#E3ECFB;color:#1D4E9E}.ex-st.s3{background:#FCEBD9;color:#8A4B0F}.ex-st.s4{background:#EDE6FA;color:#5B3A9E}
+.ex-card{padding:22px 24px;display:grid;gap:16px;align-content:start}
+.ex-card h3{font-size:1.25rem}
+.ex-sub{color:var(--muted);font-size:.9rem;margin-top:-10px}
+.ex-block{display:grid;gap:6px}
+.ex-block p{line-height:1.5}
+.ex-mh{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.ex-copy{appearance:none;border:0;border-radius:999px;background:var(--ink);color:var(--surface);font:600 .85rem/1 var(--body);padding:9px 14px;cursor:pointer;min-height:36px}
+.ex-msg{margin:0;white-space:pre-wrap;font:400 .92rem/1.55 var(--body);background:#F1F6F2;border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+@media (max-width:820px){
+  .ex-grid{grid-template-columns:1fr}
+  .ex-table{border-right:0;border-bottom:1px solid var(--line)}
+  .ex-head,.ex-row{grid-template-columns:minmax(0,1fr) 48px;padding-inline:16px}
+  .ex-head span:last-child,.ex-st{display:none}
+  .ex-card{padding:18px 16px}
+}
+.plans-soon{margin-top:10px;color:var(--muted);font-size:.92rem}
+.plans-soon span{font-size:.75rem;font-weight:700;color:var(--mark-text);background:rgba(52,214,122,.16);border-radius:6px;padding:2px 7px;margin-right:8px}
+
+/* FAQ */
+.faq-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:40px;align-items:start}
+.faq{display:grid;gap:10px}
+.faq details{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:0 18px}
+.faq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 0;font-weight:600}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font:500 1.4rem/1 var(--body);color:var(--mark-text);flex:none}
+.faq details[open] summary::after{content:"−"}
+.faq details p{padding:0 0 16px;color:var(--muted);line-height:1.6}
+.faq a{color:var(--mark-text)}
+@media (max-width:860px){ .faq-grid{grid-template-columns:1fr;gap:8px} }
+
+/* Appel à l'action final */
+.cta-box{display:grid;justify-items:center;text-align:center;gap:16px;background:var(--ink);color:#F2F5EF;border-radius:24px;padding:clamp(36px,6vw,64px) 24px;max-width:calc(var(--w) - 40px)}
+.cta-box .lede{color:#C5D6CB;max-width:52ch}
+.cta-box .btn{background:var(--mark);color:var(--mark-ink);padding:15px 26px;font-size:1.05rem}
+section.cta-end{border-top:0}
+.foot-links{display:flex;flex-wrap:wrap;gap:18px}
+.foot-links a{text-decoration:none}
+.foot-links a:hover{color:var(--ink)}
 .review p{font-size:.98rem}
 .review footer{padding:0;border:0;font-size:.86rem;color:var(--muted)}
 .review footer b{color:var(--ink);display:block}
@@ -713,7 +779,8 @@ footer{padding-block:36px;border-top:1px solid var(--line)}
 <header class="top">
   <div class="wrap nav">
     <a class="brand" href="#top" aria-label="Clyento, accueil"><svg><use href="#logo"/></svg>clyento</a>
-    <a class="btn nav-cta" href="#top" id="nav-open" style="margin-left:auto"><span class="lg">Lancer une recherche</span><span class="sm">Rechercher</span></a>
+    <nav aria-label="Navigation"><a href="#comment">Comment ça marche</a><a href="#exemple">Exemple</a><a href="#tarifs">Tarifs</a><a href="#faq">FAQ</a></nav>
+    <a class="btn nav-cta" href="#top" id="nav-open"><span class="lg">Lancer une recherche</span><span class="sm">Rechercher</span></a>
   </div>
 </header>
 
@@ -722,7 +789,7 @@ footer{padding-block:36px;border-top:1px solid var(--line)}
     <div class="wrap hero-grid">
       <div class="hero-copy">
         <div class="hero-text">
-        <span class="eyebrow">Prospection par IA · tous secteurs · tous pays</span>
+        <span class="eyebrow">Prospection par IA · tous les métiers · France</span>
         <h1>Décrivez votre activité. <br>Clyento trouve <span class="hl">vos clients.</span></h1>
         <p class="lede"><span class="lg">Vous êtes artisan, coach, commerçant ou freelance, et vous n'avez jamais prospecté ? </span>Clyento repère vos clients, trouve la bonne personne à contacter et rédige le message. Aucun réglage.</p>
         </div>
@@ -843,10 +910,42 @@ footer{padding-block:36px;border-top:1px solid var(--line)}
         <h2>De votre description à vos premiers rendez-vous, en trois étapes.</h2>
       </div>
       <ol class="steps">
-        <li><span class="step-n">01</span><h3>Vous décrivez votre activité</h3><p>Trois questions : qui vous êtes, ce que vous proposez et où sont vos clients.</p></li>
+        <li><span class="step-n">01</span><h3>Vous décrivez votre activité</h3><p>Cinq étapes rapides : qui vous êtes, ce que vous proposez, qui vous visez et où.</p></li>
         <li><span class="step-n">02</span><h3>Clyento trouve vos prospects</h3><p>Il cherche dans le registre national des entreprises, classe les résultats et identifie le dirigeant de chacune.</p></li>
         <li><span class="step-n">03</span><h3>Vous recevez vos messages</h3><p>Un email, un message LinkedIn et un script d'appel écrits pour chaque prospect, prêts à envoyer.</p></li>
       </ol>
+    </div>
+  </section>
+
+  <section id="exemple">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Exemple de résultat</span>
+        <h2>Vos prospects, classés et prêts à contacter.</h2>
+        <p class="lede">Pour chaque entreprise : pourquoi elle peut devenir cliente, qui contacter, et le message déjà écrit.</p>
+      </div>
+      <div class="ex">
+        <div class="ex-top">
+          <span class="ex-who"><b>Karim</b> · électricien à Nantes</span>
+          <span class="ex-tag">Exemple fictif</span>
+        </div>
+        <div class="ex-grid">
+          <div class="ex-table" role="list" aria-label="Prospects de l'exemple">
+            <div class="ex-head" aria-hidden="true"><span>Prospect</span><span>Score</span><span>Statut <i>bientôt</i></span></div>
+            <button type="button" class="ex-row on" data-i="0" role="listitem"><span class="ex-n"><b>Le Fournil du Port</b><small>Boulangerie · Nantes</small></span><span class="ex-sc">94</span><span class="ex-st s1">À contacter</span></button>
+            <button type="button" class="ex-row" data-i="1" role="listitem"><span class="ex-n"><b>Syndic des Quais</b><small>Syndic de copropriété · Nantes</small></span><span class="ex-sc">91</span><span class="ex-st s2">Contacté</span></button>
+            <button type="button" class="ex-row" data-i="2" role="listitem"><span class="ex-n"><b>Atelier Lumen Architectes</b><small>Architecte · Saint-Herblain</small></span><span class="ex-sc">87</span><span class="ex-st s3">A répondu</span></button>
+            <button type="button" class="ex-row" data-i="3" role="listitem"><span class="ex-n"><b>Erdre Gestion Immobilière</b><small>Agence immobilière · Nantes</small></span><span class="ex-sc">84</span><span class="ex-st s4">Rendez-vous</span></button>
+          </div>
+          <article class="ex-card" aria-live="polite">
+            <h3 id="ex-name">Le Fournil du Port</h3>
+            <p class="ex-sub" id="ex-sub">Boulangerie · Nantes · créée il y a 3 semaines</p>
+            <div class="ex-block"><span class="eyebrow">Pourquoi ce prospect</span><p id="ex-why"></p></div>
+            <div class="ex-block"><span class="eyebrow">Qui contacter</span><p id="ex-boss"></p></div>
+            <div class="ex-block"><div class="ex-mh"><span class="eyebrow">Message prêt à envoyer</span><button type="button" class="ex-copy" id="ex-copy">Copier</button></div><pre class="ex-msg" id="ex-msg"></pre></div>
+          </article>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -863,7 +962,7 @@ footer{padding-block:36px;border-top:1px solid var(--line)}
           <div class="plan-price"><b>12,99 €</b><span>par mois</span></div>
           <ul>
             <li><svg class="tick"><use href="#tick"/></svg>100 prospects débloqués par mois</li>
-            <li><svg class="tick"><use href="#tick"/></svg>Le décideur et ses coordonnées professionnelles</li>
+            <li><svg class="tick"><use href="#tick"/></svg>Le nom et la fonction du dirigeant</li>
             <li><svg class="tick"><use href="#tick"/></svg>Messages prêts à copier : email, LinkedIn, appel</li>
           </ul>
           <a class="btn ghost" href="#top" data-plan="essentiel">Choisir Essentiel</a>
@@ -873,9 +972,8 @@ footer{padding-block:36px;border-top:1px solid var(--line)}
           <div class="plan-price"><b>24,99 €</b><span>par mois</span></div>
           <ul>
             <li><svg class="tick"><use href="#tick"/></svg>300 prospects débloqués par mois</li>
-            <li><svg class="tick"><use href="#tick"/></svg>Envoi automatique depuis votre adresse</li>
-            <li><svg class="tick"><use href="#tick"/></svg>Relances et suivi des réponses</li>
             <li><svg class="tick"><use href="#tick"/></svg>Tout ce que contient Essentiel</li>
+            <li><svg class="tick"><use href="#tick"/></svg>Réponse prioritaire à vos questions</li>
           </ul>
           <a class="btn" href="#top" data-plan="pro">Choisir Pro</a>
         </article>
@@ -884,14 +982,37 @@ footer{padding-block:36px;border-top:1px solid var(--line)}
           <div class="plan-price"><b>49,99 €</b><span>par mois</span></div>
           <ul>
             <li><svg class="tick"><use href="#tick"/></svg>1 000 prospects débloqués par mois</li>
-            <li><svg class="tick"><use href="#tick"/></svg>Modes B2B et B2C, tous les pays disponibles</li>
-            <li><svg class="tick"><use href="#tick"/></svg>Branchez vos outils (Apollo, Hunter)</li>
             <li><svg class="tick"><use href="#tick"/></svg>Tout ce que contient Pro</li>
+            <li><svg class="tick"><use href="#tick"/></svg>Pour les gros volumes et plusieurs zones</li>
           </ul>
           <a class="btn ghost" href="#top" data-plan="complet">Choisir l'accès complet</a>
         </article>
       </div>
       <p class="plans-note">Prix TTC. Sans engagement, résiliable à tout moment. Paiement sécurisé par Stripe.</p>
+      <p class="plans-soon"><span>Bientôt</span>Envoi des messages depuis votre adresse, relances et tableau de suivi de vos prospects.</p>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap faq-grid">
+      <div class="sec-head"><span class="eyebrow">Questions fréquentes</span><h2>Tout ce qu'il faut savoir avant de commencer.</h2></div>
+      <div class="faq">
+        <details><summary>Est-ce légal de contacter ces entreprises ?</summary><p>Oui. En France, la prospection entre professionnels (B2B) est autorisée par le RGPD, à condition que le message concerne l'activité de l'entreprise et permette de refuser d'être recontacté. Clyento ne cible que des entreprises, exclut celles qui se sont opposées à la prospection, et chaque message indique la source des données.</p></details>
+        <details><summary>D'où viennent les entreprises proposées ?</summary><p>Du registre national des entreprises (données publiques de l'INSEE et de l'INPI). L'IA choisit les types d'entreprises qui ont le plus de chances d'avoir besoin de vous, puis classe chaque prospect et rédige le message.</p></details>
+        <details><summary>Est-ce que j'aurai l'e-mail ou le téléphone du prospect ?</summary><p>Vous obtenez le nom de l'entreprise, sa ville, son activité et le nom de son dirigeant. Les coordonnées directes ne sont pas toujours publiques : vous pouvez passer par le site de l'entreprise, LinkedIn, un appel ou une visite. Le message et le script d'appel sont prêts pour chaque canal.</p></details>
+        <details><summary>Je vends surtout à des particuliers, ça marche pour moi ?</summary><p>Oui, autrement. Clyento ne fournit jamais de listes de particuliers, ce qui est interdit sans leur accord. Il trouve les entreprises qui peuvent vous en envoyer : un kiné pour un coach, une agence immobilière pour un artisan, un hôtel pour un restaurant.</p></details>
+        <details><summary>Combien de temps prend une recherche ?</summary><p>Environ deux minutes pour répondre aux questions, puis moins d'une minute pour voir vos premiers prospects. La recherche est gratuite.</p></details>
+        <details><summary>Dans quels pays fonctionne Clyento ?</summary><p>En France pour l'instant. D'autres pays arriveront ensuite.</p></details>
+        <details><summary>Puis-je résilier quand je veux ?</summary><p>Oui. Les offres sont sans engagement : vous arrêtez quand vous voulez en nous écrivant à <a href="mailto:clyento.app@gmail.com">clyento.app@gmail.com</a>.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-end">
+    <div class="wrap cta-box">
+      <h2>Vos prochains clients sont déjà dans le registre.</h2>
+      <p class="lede">Décrivez votre activité en deux minutes. Clyento vous montre qui contacter, gratuitement.</p>
+      <button type="button" class="btn" id="cta-open">Lancer ma recherche gratuite</button>
     </div>
   </section>
 
@@ -1018,6 +1139,7 @@ footer{padding-block:36px;border-top:1px solid var(--line)}
 <footer>
   <div class="wrap foot">
     <a class="brand" href="#top" style="font-size:1.2rem"><svg style="width:24px;height:24px"><use href="#logo"/></svg>clyento</a>
+    <nav class="foot-links" aria-label="Liens"><a href="#exemple">Exemple</a><a href="#tarifs">Tarifs</a><a href="#faq">FAQ</a><a href="mailto:clyento.app@gmail.com">Contact</a></nav>
     <span>Un produit AJM Agency · 2026</span>
   </div>
 </footer>
@@ -1030,8 +1152,8 @@ const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const wait = ms => new Promise(r => setTimeout(r, ms));
 const PLANS = [
   { id: "essentiel", name: "Essentiel", price: "12,99 €", quota: 100, line: "100 prospects par mois, messages à copier" },
-  { id: "pro", name: "Pro", price: "24,99 €", quota: 300, line: "300 prospects par mois, envoi automatique", rec: true },
-  { id: "complet", name: "Accès complet", price: "49,99 €", quota: 1000, line: "1 000 prospects par mois, B2B et B2C, vos outils" },
+  { id: "pro", name: "Pro", price: "24,99 €", quota: 300, line: "300 prospects par mois, réponse prioritaire", rec: true },
+  { id: "complet", name: "Accès complet", price: "49,99 €", quota: 1000, line: "1 000 prospects par mois, gros volumes" },
 ];
 let R = null, sel = 0, tab = "Email", userDesc = "", runId = 0, countRaf = 0;
 
@@ -1050,14 +1172,14 @@ const pitch = () => { let d = userDesc.trim(); if (!/[.!?]$/.test(d)) d += "."; 
 const isEI = p => p.boss.role === "Entrepreneur individuel";
 const roleLine = p => isEI(p) ? "Comme vous dirigez votre propre activité, vous êtes la bonne personne pour en parler."
   : `En tant que ${p.boss.role.toLowerCase()} de ${p.name}, vous êtes la bonne personne pour en parler.`;
-const SIGN = () => `Bien cordialement,\n${[R.profile.firstName, R.profile.siteTitle].filter(Boolean).join("\n")}${R.profile.domain ? "\n" + R.profile.domain : ""}\n\nVos coordonnées proviennent du registre national des entreprises (RNE). Se désinscrire`;
+const SIGN = () => `Bien cordialement,\n${[R.profile.firstName, R.profile.siteTitle].filter(Boolean).join("\n")}${R.profile.domain ? "\n" + R.profile.domain : ""}\n\nVos coordonnées proviennent du registre national des entreprises (RNE). Si vous ne souhaitez plus être contacté, il suffit de me le dire.`;
 const MSG_AI = {
   Email: p => `Objet : ${p.ai.objet}\n\nBonjour ${p.boss.first} ${p.boss.last},\n\n${p.ai.corps}\n\n${SIGN()}`,
   LinkedIn: p => p.ai.linkedin,
   Appel: p => p.ai.appel,
 };
 const MSG = {
-  Email: p => `Objet : Une proposition pour ${isEI(p) ? "votre activité" : p.name}\n\nBonjour ${p.boss.first} ${p.boss.last},\n\nJe suis ${sender()} (${R.profile.domain}). ${pitch()}\n\n${roleLine(p)} ${R.profile.b2c ? "Je pense qu'un partenariat peut servir vos clients comme les miens." : "Je pense pouvoir vous être utile."}\n\nSeriez-vous disponible pour un échange de 10 minutes cette semaine ?\n\nBien cordialement,\n${sender()}\n${R.profile.domain}\n\nVos coordonnées proviennent du registre national des entreprises (RNE). Se désinscrire`,
+  Email: p => `Objet : Une proposition pour ${isEI(p) ? "votre activité" : p.name}\n\nBonjour ${p.boss.first} ${p.boss.last},\n\nJe suis ${sender()} (${R.profile.domain}). ${pitch()}\n\n${roleLine(p)} ${R.profile.b2c ? "Je pense qu'un partenariat peut servir vos clients comme les miens." : "Je pense pouvoir vous être utile."}\n\nSeriez-vous disponible pour un échange de 10 minutes cette semaine ?\n\nBien cordialement,\n${sender()}\n${R.profile.domain}\n\nVos coordonnées proviennent du registre national des entreprises (RNE). Si vous ne souhaitez plus être contacté, il suffit de me le dire.`,
   LinkedIn: p => `Bonjour ${p.boss.first}, je suis ${sender()}. ${pitch()} Je pense que cela peut intéresser ${isEI(p) ? "votre activité" : p.name}. Seriez-vous ouvert(e) à un échange rapide ?`,
   Appel: p => `« Bonjour, ${p.boss.first} ${p.boss.last} ? ${sender()}, ${R.profile.domain}. Je vous appelle parce que ${isEI(p) ? "votre activité" : p.name} fait partie des entreprises de ${p.city || "votre secteur"} avec qui je pourrais travailler. Vous avez deux minutes ? »\n\nSi « ce n'est pas le moment » → « Quand puis-je vous rappeler ? »`,
 };
@@ -1069,13 +1191,13 @@ function renderMsg(){
   $("msg-meta").innerHTML = `<span>Pour : ${esc(p.boss.first)} ${esc(p.boss.last)}, ${esc(p.boss.role)}</span><span>·</span><span>Langue : français</span>`;
   $("msg").textContent = (p.ai ? MSG_AI : MSG)[tab](p);
   $("msg").classList.remove("rise"); void $("msg").offsetWidth; $("msg").classList.add("rise");
-  $("legal").innerHTML = "<b>France · RGPD :</b> prospection B2B autorisée. Source des coordonnées et lien de désinscription ajoutés automatiquement.";
+  $("legal").innerHTML = "<b>France · RGPD :</b> prospection B2B autorisée. Le message indique la source des données et permet de refuser d'être recontacté.";
 }
 
 function renderUnlock(step, plan){
   const u = $("unlock"), noun = R.profile.b2c ? "partenaires" : "prospects";
   if (step === "plans"){
-    u.innerHTML = `<div class="unlock-copy"><h3>Choisissez votre offre</h3><p>Sans engagement. Vous changez d'offre ou résiliez en un clic.</p></div>
+    u.innerHTML = `<div class="unlock-copy"><h3>Choisissez votre offre</h3><p>Sans engagement, résiliable à tout moment.</p></div>
       <div class="unlock-act"><button class="linkbtn" type="button" data-a="back">Revenir</button></div>
       <div class="mini-plans">${PLANS.map((p, i) => `<button type="button" class="mini${p.rec ? " rec" : ""}" data-a="pick" data-p="${i}">
         <b>${p.name}</b><span class="pr">${p.price}<span> / mois</span></span><span>${p.line}</span></button>`).join("")}</div>`;
@@ -1085,8 +1207,8 @@ function renderUnlock(step, plan){
     const p = PLANS[plan];
     u.innerHTML = `<div class="unlock-copy"><h3>${p.name} · ${p.price} par mois</h3>
       <ul class="recap">
-        <li><span>Aujourd'hui</span><span>${fmt(Math.min(p.quota, R.total))} ${noun} débloqués sur ${fmt(R.total)}, avec le décideur et ses coordonnées</span></li>
-        <li><span>Chaque mois</span><span><b>${p.price}</b>, ${fmt(p.quota)} nouveaux ${noun}. Résiliable en un clic.</span></li>
+        <li><span>Aujourd'hui</span><span>${fmt(Math.min(p.quota, R.total))} ${noun} débloqués sur ${fmt(R.total)}, avec le nom du dirigeant</span></li>
+        <li><span>Chaque mois</span><span><b>${p.price}</b>, ${fmt(p.quota)} nouveaux ${noun}. Résiliable à tout moment.</span></li>
       </ul></div>
       <div class="unlock-act"><button class="btn" type="button" data-a="pay" data-p="${plan}">S'abonner · ${p.price} / mois</button>
         <button class="linkbtn" type="button" data-a="plans">Changer d'offre</button></div>`;
@@ -1099,7 +1221,7 @@ function renderUnlock(step, plan){
     return;
   }
   u.innerHTML = `<div class="unlock-copy"><h3>Débloquez les ${fmt(R.total)}${R.capped ? "+" : ""} ${noun}</h3>
-      <p>Le nom du décideur et ses coordonnées pour chacun, un message personnalisé, et l'envoi automatique selon votre offre.</p></div>
+      <p>Le nom du dirigeant et un message personnalisé pour chacun : e-mail, LinkedIn et script d'appel.</p></div>
     <div class="unlock-act"><button class="btn" type="button" data-a="plans">Débloquer les ${noun}</button>
       <span class="fine">À partir de 12,99 € par mois, sans engagement.</span></div>`;
 }
@@ -1123,7 +1245,7 @@ function render(){
       <span class="p-src">${esc(p.why)}</span></span>
   </button></li>`).join("") + R.locked.map(p => `<li class="locked" aria-hidden="true"><div class="prospect">
     <span class="score">${p.score}</span>
-    <span><span class="p-name">${esc(p.name)}</span><br><span class="p-sub">${esc([p.city, p.size].filter(Boolean).join(" · "))}</span><span class="p-why" style="display:block">Décideur et coordonnées après déblocage.</span></span>
+    <span><span class="p-name">${esc(p.name)}</span><br><span class="p-sub">${esc([p.city, p.size].filter(Boolean).join(" · "))}</span><span class="p-why" style="display:block">Dirigeant et message après déblocage.</span></span>
   </div></li>`).join("");
   renderUnlock();
   renderMsg();
@@ -1220,6 +1342,31 @@ if (!reduce){
   setInterval(() => { tk = (tk + 1) % tp.length; tp.forEach((el, i) => el.classList.toggle("on", i === tk)); }, 1300);
 }
 $("nav-open").addEventListener("click", e => { e.preventDefault(); openQ(); });
+$("cta-open").addEventListener("click", openQ);
+
+// Exemple de résultat (données fictives)
+const EX = [
+  { name: "Le Fournil du Port", sub: "Boulangerie · Nantes · créée il y a 3 semaines", why: "Boulangerie ouverte il y a trois semaines : les fours, la chambre froide et le tableau électrique doivent être fiables dès le départ.", boss: "Claire D., gérante",
+    msg: "Objet : l'installation électrique du Fournil\n\nBonjour Madame,\n\nFélicitations pour l'ouverture du Fournil du Port. Je suis électricien à Nantes et j'interviens souvent pour des commerces de bouche : raccordement des fours, chambres froides, mise aux normes du tableau.\n\nSeriez-vous d'accord pour que je passe faire un point gratuit cette semaine ?\n\nKarim" },
+  { name: "Syndic des Quais", sub: "Syndic de copropriété · Nantes · 12 salariés", why: "Gère des immeubles anciens du centre-ville : éclairage des parties communes et mises aux normes reviennent souvent.", boss: "Marc P., gérant",
+    msg: "Objet : un électricien réactif pour vos immeubles\n\nBonjour Monsieur,\n\nJe suis électricien à Nantes, spécialisé en rénovation. J'interviens sur les parties communes : éclairage, colonnes montantes, mises aux normes, avec un devis sous 48 h.\n\nAvez-vous en ce moment des copropriétés qui auraient besoin d'un artisan disponible ?\n\nKarim" },
+  { name: "Atelier Lumen Architectes", sub: "Architecte · Saint-Herblain · 4 salariés", why: "Rénove des maisons anciennes et recommande régulièrement des artisans de confiance à ses clients.", boss: "Anne L., architecte associée",
+    msg: "Objet : électricité pour vos chantiers de rénovation\n\nBonjour Madame,\n\nVous rénovez des maisons anciennes autour de Nantes : je suis électricien, spécialisé dans ce type de chantier, et je cherche des architectes avec qui travailler dans la durée.\n\nAccepteriez-vous un appel de 10 minutes pour que je vous présente mon travail ?\n\nKarim" },
+  { name: "Erdre Gestion Immobilière", sub: "Agence immobilière · Nantes · 8 salariés", why: "Gère de nombreux logements en location : dépannages et remises aux normes avant chaque relocation.", boss: "Sophie R., responsable gestion locative",
+    msg: "Objet : un électricien pour vos logements en gestion\n\nBonjour Madame,\n\nPour les logements que vous gérez, je peux intervenir rapidement en dépannage et remettre les installations aux normes avant une relocation.\n\nVoulez-vous que je vous envoie mes tarifs pour les interventions courantes ?\n\nKarim" },
+];
+function showEx(i){
+  const e = EX[i];
+  document.querySelectorAll(".ex-row").forEach(r => r.classList.toggle("on", +r.dataset.i === i));
+  $("ex-name").textContent = e.name; $("ex-sub").textContent = e.sub; $("ex-why").textContent = e.why;
+  $("ex-boss").textContent = e.boss; $("ex-msg").textContent = e.msg; $("ex-copy").textContent = "Copier";
+}
+document.querySelectorAll(".ex-row").forEach(r => r.addEventListener("click", () => showEx(+r.dataset.i)));
+$("ex-copy").addEventListener("click", () => {
+  try { navigator.clipboard.writeText($("ex-msg").textContent); } catch (err) {}
+  $("ex-copy").textContent = "Copié";
+});
+showEx(0);
 $("q-close").addEventListener("click", closeQ);
 $("qmodal").addEventListener("click", e => { if (e.target === $("qmodal")) closeQ(); });
 document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("qmodal").hidden) closeQ(); });
