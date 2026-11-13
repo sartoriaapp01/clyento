@@ -1198,7 +1198,7 @@ document.querySelectorAll("#search input").forEach(i => i.addEventListener("keyd
 updateSummary();
 
 // Appels API : si l'adresse principale échoue (DNS), on repasse par l'adresse Vercel du projet
-const API_ALT = "https://clyento.vercel.app";
+const API_ALT = "https://clyento-site.vercel.app";
 async function api(path, opts){
   const go = async base => { const r = await fetch(base + path, opts); return { ok: r.ok, j: await r.json() }; };
   try { return await go(""); }

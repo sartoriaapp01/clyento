@@ -1,4 +1,4 @@
-// Autorise le site principal à appeler l'API via l'adresse de secours clyento.vercel.app.
+// Autorise le site principal à appeler l'API via l'adresse de secours clyento-site.vercel.app.
 const ALLOWED = new Set(["https://clyento-ai.com", "https://www.clyento-ai.com"]);
 
 module.exports = function cors(req, res) {
