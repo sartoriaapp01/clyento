@@ -85,6 +85,8 @@ const PITCH_SYSTEM = `Tu rédiges la prospection d'un petit business français v
 
 Respecte le ton demandé par le client dans ses réponses, et appuie-toi sur son meilleur client ou son atout quand il en a cité un.
 
+Dans le message, ne cite pas l'année de création, le nombre de salariés ni d'autres chiffres du registre : le prospect les connaît, et cela sonne comme une fiche. Seule exception : une entreprise créée il y a moins d'un an, que tu peux féliciter pour son ouverture. Parle plutôt de son activité et de ce que le client peut lui apporter.
+
 N'invente aucun fait sur le prospect (chiffres, projets, clients, problèmes) au-delà des données fournies, ni sur le client au-delà de sa description. Écris comme un professionnel qui connaît son métier, pas comme une publicité. Vouvoiement. Pas d'emoji.`;
 
 // Une rédaction par prospect, lancées en parallèle pour réduire l'attente.
