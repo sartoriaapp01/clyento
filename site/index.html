@@ -717,6 +717,23 @@ section.cta-end{border-top:0}
 .find-l{font-size:.82rem;color:var(--muted);margin-right:2px}
 .find a{font-size:.82rem;font-weight:600;color:var(--ink);text-decoration:none;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 11px;min-height:32px;display:inline-flex;align-items:center}
 .find a:hover{border-color:var(--mark-text);color:var(--mark-text)}
+.wl{display:grid;gap:10px;width:100%;max-width:440px}
+.wl-t{font-size:.92rem;line-height:1.5;color:var(--muted)}
+.wl-t b{color:var(--ink)}
+.wl-l{font-size:.85rem;font-weight:600}
+.wl-e{font:400 1rem/1.3 var(--body);padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);min-height:46px;width:100%;box-sizing:border-box}
+.wl-e:focus{outline:2px solid var(--mark);outline-offset:1px}
+.wl-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.wl-c{display:flex;gap:8px;align-items:flex-start;font-size:.85rem;line-height:1.45;color:var(--muted)}
+.wl-c input{margin-top:3px;flex:none;width:16px;height:16px;accent-color:var(--ok)}
+.wl-c a{color:var(--mark-text)}
+.wl .btn{justify-content:center;width:100%}
+.wl-msg{font-size:.85rem;color:#A12C2C;min-height:1em}
+.wl-ok{font-size:.95rem;line-height:1.5;background:rgba(52,214,122,.14);border-radius:12px;padding:14px 16px}
+.wl-box{max-width:480px;width:calc(100% - 32px);margin-top:12vh;padding:22px;display:grid;gap:14px;background:var(--surface);border-radius:18px}
+.wl-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.wl-head h2{font-size:1.2rem}
+.unlock-act .wl,.wl-box .wl{max-width:none}
 .score-help{font-size:.85rem;line-height:1.5;color:var(--muted);margin:-2px 0 10px}
 .score-help b{color:var(--ink);font-weight:600}
 .score-help span{white-space:nowrap}
@@ -1007,7 +1024,7 @@ section.cta-end{border-top:0}
           <a class="btn ghost" href="#top" data-plan="complet">Choisir l'accès complet</a>
         </article>
       </div>
-      <p class="plans-note">Prix TTC. Sans engagement, résiliable à tout moment. Paiement sécurisé par Stripe.</p>
+      <p class="plans-note">Prix TTC. Sans engagement, résiliable à tout moment. Paiement sécurisé par Stripe, à l'ouverture des abonnements.</p>
       <p class="plans-soon"><span>Bientôt</span>Envoi des messages depuis votre adresse, relances et tableau de suivi de vos prospects.</p>
     </div>
   </section>
@@ -1037,6 +1054,12 @@ section.cta-end{border-top:0}
 
 </main>
 
+<div class="qmodal" id="wl" hidden role="dialog" aria-modal="true" aria-labelledby="wl-title">
+  <div class="wiz wl-box">
+    <div class="wl-head"><h2 id="wl-title">Liste d'attente</h2><button type="button" class="linkbtn" data-wl-close aria-label="Fermer">Fermer</button></div>
+    <div id="wl-body"></div>
+  </div>
+</div>
 <div class="qmodal" id="qmodal" hidden role="dialog" aria-modal="true" aria-labelledby="wiz-title">
   <form class="wiz" id="search" novalidate>
     <div class="wiz-head">
@@ -1158,7 +1181,7 @@ section.cta-end{border-top:0}
 <footer>
   <div class="wrap foot">
     <a class="brand" href="#top" style="font-size:1.2rem"><svg style="width:24px;height:24px"><use href="#logo"/></svg>clyento</a>
-    <nav class="foot-links" aria-label="Liens"><a href="#exemple">Exemple</a><a href="#tarifs">Tarifs</a><a href="#faq">FAQ</a><a href="mailto:clyento.app@gmail.com">Contact</a></nav>
+    <nav class="foot-links" aria-label="Liens"><a href="#exemple">Exemple</a><a href="#tarifs">Tarifs</a><a href="#faq">FAQ</a><a href="mailto:clyento.app@gmail.com">Contact</a><a href="/mentions-legales.html">Mentions légales</a><a href="/confidentialite.html">Confidentialité</a></nav>
     <span>Un produit AJM Agency · 2026</span>
   </div>
 </footer>
@@ -1169,6 +1192,8 @@ const fmt = n => n.toLocaleString("fr-FR");
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const wait = ms => new Promise(r => setTimeout(r, ms));
+// Passer à true quand Stripe est activé (SIREN reçu) : les boutons ouvrent alors le paiement.
+const PAY_OPEN = false;
 const PLANS = [
   { id: "essentiel", name: "Essentiel", price: "12,99 €", quota: 100, line: "100 prospects par mois, messages à copier" },
   { id: "pro", name: "Pro", price: "24,99 €", quota: 300, line: "300 prospects par mois, réponse prioritaire", rec: true },
@@ -1235,8 +1260,8 @@ function renderUnlock(step, plan){
         <li><span>Aujourd'hui</span><span>${fmt(Math.min(p.quota, R.total))} ${noun} débloqués sur ${fmt(R.total)}, avec le nom du dirigeant</span></li>
         <li><span>Chaque mois</span><span><b>${p.price}</b>, ${fmt(p.quota)} nouveaux ${noun}. Résiliable à tout moment.</span></li>
       </ul></div>
-      <div class="unlock-act"><button class="btn" type="button" data-a="pay" data-p="${plan}">S'abonner · ${p.price} / mois</button>
-        <button class="linkbtn" type="button" data-a="plans">Changer d'offre</button></div>`;
+      ${PAY_OPEN ? `<div class="unlock-act"><button class="btn" type="button" data-a="pay" data-p="${plan}">S'abonner · ${p.price} / mois</button>
+        <button class="linkbtn" type="button" data-a="plans">Changer d'offre</button></div>` : `<div class="unlock-act">${wlForm(p.id)}<button class="linkbtn" type="button" data-a="plans">Changer d'offre</button></div>`}`;
     return;
   }
   if (step === "paid"){
@@ -1550,7 +1575,44 @@ $("unlock").addEventListener("click", e => { const b = e.target.closest("[data-a
   const a = b.dataset.a;
   if (a === "pay"){ checkout(PLANS[+b.dataset.p].id, b); return; }
   renderUnlock(a === "back" ? null : a, +b.dataset.p); });
-document.querySelectorAll("[data-plan]").forEach(b => b.addEventListener("click", e => { e.preventDefault(); checkout(b.dataset.plan, b); }));
+document.querySelectorAll("[data-plan]").forEach(b => b.addEventListener("click", e => { e.preventDefault(); PAY_OPEN ? checkout(b.dataset.plan, b) : openWl(b.dataset.plan); }));
+
+// Liste d'attente au prix fondateur (tant que PAY_OPEN est faux)
+function wlForm(plan){
+  return `<form class="wl" data-plan="${esc(plan || "")}" novalidate>
+    <p class="wl-t"><b>Les abonnements ouvrent dans quelques jours.</b> Laissez votre e-mail : vous serez prévenu en premier et vous garderez ce prix fondateur tant que vous restez abonné.</p>
+    <label class="wl-l" for="wl-e-${esc(plan || "x")}">Votre e-mail professionnel</label>
+    <input class="wl-e" id="wl-e-${esc(plan || "x")}" type="email" name="email" autocomplete="email" required placeholder="vous@entreprise.fr">
+    <input type="text" name="website" tabindex="-1" autocomplete="off" class="wl-hp" aria-hidden="true">
+    <label class="wl-c"><input type="checkbox" name="consent" required><span>J'accepte d'être recontacté par Clyento au sujet de l'ouverture (<a href="/confidentialite.html" target="_blank" rel="noopener">confidentialité</a>).</span></label>
+    <button class="btn" type="submit">Réserver mon prix fondateur</button>
+    <p class="wl-msg" role="status"></p>
+  </form>`;
+}
+async function sendWl(form){
+  const msg = form.querySelector(".wl-msg"), btn = form.querySelector("button[type=submit]");
+  const email = form.email.value.trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){ msg.textContent = "Entrez une adresse e-mail valide."; form.email.focus(); return; }
+  if (!form.consent.checked){ msg.textContent = "Cochez la case pour qu'on puisse vous prévenir."; return; }
+  btn.disabled = true; btn.textContent = "Envoi…"; msg.textContent = "";
+  let F = {}; try { F = formData(); } catch {}
+  const { ok, j } = await api("/api/waitlist", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
+    email, consent: true, website: form.website.value, plan: form.dataset.plan,
+    prenom: F.prenom, entreprise: F.entreprise, activite: userDesc || F.activite, zone: (R && R.profile.zone) || F.ville, cible: R && R.profile.target }) });
+  if (ok && j.ok){ form.innerHTML = `<p class="wl-ok"><b>C'est noté !</b> Vous serez prévenu à ${esc(email)} dès l'ouverture, avec votre prix fondateur.</p>`; return; }
+  btn.disabled = false; btn.textContent = "Réserver mon prix fondateur"; msg.textContent = j.error || "Réessayez dans un instant.";
+}
+document.addEventListener("submit", e => { if (e.target.classList.contains("wl")){ e.preventDefault(); sendWl(e.target); } });
+function openWl(plan){
+  const p = PLANS.find(x => x.id === plan);
+  $("wl-title").textContent = p ? `${p.name} · ${p.price} par mois` : "Liste d'attente";
+  $("wl-body").innerHTML = wlForm(plan);
+  $("wl").hidden = false; document.documentElement.classList.add("lock");
+  $("wl").querySelector(".wl-e").focus();
+}
+function closeWl(){ $("wl").hidden = true; document.documentElement.classList.remove("lock"); }
+$("wl").addEventListener("click", e => { if (e.target === $("wl") || e.target.closest("[data-wl-close]")) closeWl(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("wl").hidden) closeWl(); });
 
 // Preuves : rejoue en boucle des recherches réellement lancées sur Clyento
 const DEMOS = [
