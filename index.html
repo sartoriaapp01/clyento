@@ -1070,7 +1070,7 @@ section.cta-end{border-top:0}
           <label class="fld" for="f-prenom">Votre prénom<input id="f-prenom" autocomplete="given-name" placeholder="Thomas"></label>
           <label class="fld" for="f-entreprise">Votre entreprise<input id="f-entreprise" autocomplete="organization" placeholder="Plomberie Martin"></label>
         </div>
-        <label class="fld" for="f-email">Votre e-mail <em>pour recevoir vos résultats et être prévenu de l'ouverture</em>
+        <label class="fld" for="f-email">Votre e-mail <em>facultatif : recevez vos prospects par e-mail pour les retrouver plus tard</em>
           <input id="f-email" type="email" autocomplete="email" inputmode="email" placeholder="thomas@plomberie-martin.fr"></label>
         <p class="fld-note">Utilisé uniquement par Clyento pour vous recontacter, jamais revendu. Désinscription sur simple demande (<a href="/confidentialite.html" target="_blank" rel="noopener">confidentialité</a>).</p>
         <label class="fld" for="website">Votre site web <em>facultatif, mais l'analyse est plus précise</em>
@@ -1351,7 +1351,7 @@ function checkStep(n){
   const bad = (msg, el) => { err.hidden = false; err.textContent = msg; if (el) el.focus(); return false; };
   if (n === 0){
     if (!f.prenom) return bad("Indiquez votre prénom : il signe vos messages.", $("f-prenom"));
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email)) return bad("Indiquez votre e-mail, par exemple thomas@plomberie-martin.fr.", $("f-email"));
+    if (f.email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email)) return bad("L'adresse e-mail ne semble pas valide. Exemple : thomas@plomberie-martin.fr", $("f-email"));
     if (f.site && !domainOf(f.site).includes(".")) return bad("L'adresse du site ne semble pas valide. Exemple : www.monentreprise.fr", $("website"));
   }
   if (n === 1 && f.activite.length < 10) return bad("Décrivez ce que vous proposez en une ou deux phrases.", $("activity"));
@@ -1484,7 +1484,7 @@ $("search").addEventListener("submit", async e => {
   closeQ();
   ldClear(); $("demo").hidden = true; $("run").disabled = true;
   ldOpen(F);
-  if (F.email !== lastLead){ lastLead = F.email;
+  if (F.email && F.email !== lastLead){ lastLead = F.email;
     api("/api/waitlist", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
       source: "recherche", email: F.email, prenom: F.prenom, entreprise: F.entreprise, site: F.site,
       activite: desc, zone: F.ville, cible: F.cible, objectif: F.objectif }) }).catch(() => {}); }
