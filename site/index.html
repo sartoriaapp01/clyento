@@ -579,13 +579,13 @@ footer{padding-block:36px;border-top:1px solid var(--line)}
 /* Métiers */
 .jobs-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:40px;align-items:center}
 .jobs-stack{list-style:none;margin:0;padding:6px 0 6px 56px;display:grid;gap:12px;position:relative;--k:1}
-.jobs-stack li:not(.wire){width:78%;transition:width .35s ease}
+.jobs-stack li:not(.wire){width:78%;transition:width .5s cubic-bezier(.22,1,.36,1)}
 .jobs-stack li:nth-child(1){margin-left:calc(40px*var(--k))}
 .jobs-stack li:nth-child(3){margin-left:calc(46px*var(--k))}
 .jobs-stack li:nth-child(4){margin-left:calc(92px*var(--k))}
 .jobs-stack li:nth-child(5){margin-left:calc(134px*var(--k))}
 .jobs-stack li:has(button[aria-pressed="true"]){width:calc(100% - 40px*var(--k))}
-.jobs-stack button{appearance:none;display:block;width:100%;box-sizing:border-box;margin:0;font:inherit;color:var(--ink);text-align:left;cursor:pointer;position:relative;padding:17px 26px;border-radius:14px;border:1px solid rgba(120,240,175,.24);background:rgba(46,180,104,.10);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transform:skewX(-8deg);transition:border-color .3s,box-shadow .3s,background .3s,padding .3s}
+.jobs-stack button{appearance:none;display:block;width:100%;box-sizing:border-box;margin:0;font:inherit;color:var(--ink);text-align:left;cursor:pointer;position:relative;padding:17px 26px;border-radius:14px;border:1px solid rgba(120,240,175,.24);background:rgba(46,180,104,.10);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transform:skewX(-8deg);transition:border-color .4s,box-shadow .5s cubic-bezier(.22,1,.36,1),background .4s,padding .5s cubic-bezier(.22,1,.36,1)}
 .jobs-stack button::before{content:"";position:absolute;left:-5px;top:50%;width:9px;height:9px;margin-top:-4.5px;border-radius:50%;background:#C9FFE2;box-shadow:0 0 10px 3px rgba(52,214,122,.85)}
 .jobs-stack button:hover{border-color:rgba(120,240,175,.5)}
 .jobs-stack button:focus-visible{outline:2px solid var(--mark);outline-offset:3px}
@@ -594,8 +594,8 @@ footer{padding-block:36px;border-top:1px solid var(--line)}
 .jb svg{width:32px;height:32px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .jb i{width:1.5px;height:34px;background:var(--mark);flex:none;opacity:.8}
 .jt{display:grid;min-width:0}
-.jt b{font:700 1.2rem/1.25 var(--display);letter-spacing:-.01em}
-.jt span{font-size:.9rem;color:#C5D6CB;max-height:0;opacity:0;overflow:hidden;transition:max-height .35s ease,opacity .3s}
+.jt b{font:700 1.2rem/1.25 var(--display);letter-spacing:-.01em;transition:font-size .5s cubic-bezier(.22,1,.36,1)}
+.jt span{font-size:.9rem;color:#C5D6CB;max-height:0;opacity:0;overflow:hidden;transition:max-height .5s cubic-bezier(.22,1,.36,1),opacity .35s ease .08s,margin .5s cubic-bezier(.22,1,.36,1)}
 .jobs-stack button[aria-pressed="true"] .jt b{font-size:1.4rem}
 .jobs-stack button[aria-pressed="true"] .jt span{max-height:4.5em;opacity:1;margin-top:3px}
 .jobs-stack .wire{position:absolute;inset:0;pointer-events:none;margin:0}
@@ -656,7 +656,7 @@ footer{padding-block:36px;border-top:1px solid var(--line)}
 .win-dots button{background:rgba(30,154,85,.2)}
 .site-read{border-bottom-color:rgba(30,154,85,.25);background:rgba(52,214,122,.07)}
 .ld-card small,.proof-total b,.site-read h3,.mode.b2c .mode-tag,.mode.b2c .tick{color:var(--mark-text)}
-.jobs-stack button{border-color:rgba(30,154,85,.22);background:rgba(255,255,255,.75)}
+.jobs-stack button{border-color:rgba(30,154,85,.22);background:rgba(255,255,255,.75);-webkit-backdrop-filter:none;backdrop-filter:none}
 .jobs-stack button:hover{border-color:rgba(30,154,85,.45)}
 .jobs-stack button[aria-pressed="true"]{border-color:#1E9A55;background:rgba(52,214,122,.12);box-shadow:0 0 0 1px rgba(30,154,85,.2),0 12px 30px -16px rgba(30,154,85,.55)}
 .jobs-stack .wire path{stroke:#2BB86A;filter:none}
@@ -1691,9 +1691,12 @@ function drawWire(){
 }
 function showJob(btn){
   document.querySelectorAll("#jobs-list button").forEach(b => b.setAttribute("aria-pressed", b === btn));
-  const t0 = performance.now(); const follow = t => { drawWire(); if (t - t0 < 450) requestAnimationFrame(follow); }; requestAnimationFrame(follow);
+  if (btn.getAttribute("aria-pressed") === "true" && jobRaf) return;
+  const t0 = performance.now(); cancelAnimationFrame(jobRaf);
+  const follow = t => { drawWire(); jobRaf = t - t0 < 650 ? requestAnimationFrame(follow) : 0; }; jobRaf = requestAnimationFrame(follow);
 }
-document.querySelectorAll("#jobs-list button").forEach(b => { b.addEventListener("click", () => showJob(b)); b.addEventListener("mouseenter", () => showJob(b)); b.addEventListener("focus", () => showJob(b)); });
+let jobRaf = 0, jobTimer = 0;
+document.querySelectorAll("#jobs-list button").forEach(b => { b.addEventListener("click", () => showJob(b)); b.addEventListener("pointermove", e => { if (e.pointerType !== "mouse" || b.getAttribute("aria-pressed") === "true") return; clearTimeout(jobTimer); jobTimer = setTimeout(() => showJob(b), 70); }); b.addEventListener("pointerleave", () => clearTimeout(jobTimer)); b.addEventListener("focus", () => showJob(b)); });
 drawWire(); addEventListener("resize", drawWire); addEventListener("load", drawWire);
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawWire);
 
