@@ -5,9 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <style>[hidden]{display:none!important}img{max-width:100%}body{margin:0}</style>
-<title>Clyento</title>
+<title>Clyento · Décrivez votre activité, Clyento trouve vos clients</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Clyento trouve des clients pour les artisans, commerçants, coachs et indépendants en France. Décrivez votre activité, recevez vos prospects et les messages prêts à envoyer.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Clyento">
+<meta property="og:url" content="https://clyento-ai.com/">
+<meta property="og:title" content="Clyento · Décrivez votre activité, Clyento trouve vos clients">
+<meta property="og:description" content="De vrais prospects près de chez vous, la bonne personne à contacter et le message prêt à envoyer. Recherche gratuite.">
+<meta property="og:image" content="https://clyento-ai.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://clyento-ai.com/">
+<script>window.va = window.va || function(){ (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -1491,6 +1504,7 @@ $("search").addEventListener("submit", async e => {
   closeQ();
   ldClear(); $("demo").hidden = true; $("run").disabled = true;
   ldOpen(F);
+  try { window.va("event", { name: "Recherche" }); } catch {}
   if (F.email && F.email !== lastLead){ lastLead = F.email;
     api("/api/waitlist", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
       source: "recherche", email: F.email, prenom: F.prenom, entreprise: F.entreprise, site: F.site,
@@ -1614,7 +1628,7 @@ async function sendWl(form){
   const { ok, j } = await api("/api/waitlist", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
     email, consent: true, website: form.website.value, plan: form.dataset.plan,
     prenom: F.prenom, entreprise: F.entreprise, activite: userDesc || F.activite, zone: (R && R.profile.zone) || F.ville, cible: R && R.profile.target }) });
-  if (ok && j.ok){ form.innerHTML = `<p class="wl-ok"><b>C'est noté !</b> Vous serez prévenu à ${esc(email)} dès l'ouverture, avec votre prix fondateur.</p>`; return; }
+  if (ok && j.ok){ try { window.va("event", { name: "Liste d'attente" }); } catch {} form.innerHTML = `<p class="wl-ok"><b>C'est noté !</b> Vous serez prévenu à ${esc(email)} dès l'ouverture, avec votre prix fondateur.</p>`; return; }
   btn.disabled = false; btn.textContent = "Réserver mon prix fondateur"; msg.textContent = j.error || "Réessayez dans un instant.";
 }
 document.addEventListener("submit", e => { if (e.target.classList.contains("wl")){ e.preventDefault(); sendWl(e.target); } });
