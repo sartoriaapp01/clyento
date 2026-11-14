@@ -706,6 +706,10 @@ section.cta-end{border-top:0}
 .foot-links{display:flex;flex-wrap:wrap;gap:18px}
 .foot-links a{text-decoration:none}
 .foot-links a:hover{color:var(--ink)}
+.find{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0 2px}
+.find-l{font-size:.82rem;color:var(--muted);margin-right:2px}
+.find a{font-size:.82rem;font-weight:600;color:var(--ink);text-decoration:none;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 11px;min-height:32px;display:inline-flex;align-items:center}
+.find a:hover{border-color:var(--mark-text);color:var(--mark-text)}
 .score-help{font-size:.85rem;line-height:1.5;color:var(--muted);margin:-2px 0 10px}
 .score-help b{color:var(--ink);font-weight:600}
 .score-help span{white-space:nowrap}
@@ -846,6 +850,7 @@ section.cta-end{border-top:0}
               <div class="tabs" role="tablist" aria-label="Canal" id="tabs"></div>
             </div>
             <div class="msg-meta" id="msg-meta"></div>
+            <div class="find" id="find" aria-label="Trouver les coordonnées"></div>
             <div class="msg" id="msg" aria-live="polite"></div>
             <p class="legal" id="legal"></p>
           </div>
@@ -1196,6 +1201,12 @@ function renderMsg(){
   $("tabs").innerHTML = Object.keys(MSG).map(t => `<button role="tab" type="button" aria-selected="${t === tab}" data-t="${t}">${t}</button>`).join("");
   $("msg-label").textContent = "Message prêt";
   $("msg-meta").innerHTML = `<span>Pour : ${esc(p.boss.first)} ${esc(p.boss.last)}, ${esc(p.boss.role)}</span><span>·</span><span>Langue : français</span>`;
+  const q = encodeURIComponent, who = `${p.boss.first} ${p.boss.last}`.trim();
+  $("find").innerHTML = `<span class="find-l">Trouver ses coordonnées :</span>
+    <a href="https://www.google.com/maps/search/?api=1&query=${q(p.name + " " + (p.city || ""))}" target="_blank" rel="noopener">Téléphone et adresse (Google Maps)</a>
+    <a href="https://www.google.com/search?q=${q(p.name + " " + (p.city || "") + " contact e-mail")}" target="_blank" rel="noopener">Site et e-mail (Google)</a>
+    <a href="https://www.linkedin.com/search/results/people/?keywords=${q(who + " " + p.name)}" target="_blank" rel="noopener">${esc(p.boss.first)} sur LinkedIn</a>
+    ${p.siren ? `<a href="https://annuaire-entreprises.data.gouv.fr/entreprise/${q(p.siren)}" target="_blank" rel="noopener">Fiche officielle</a>` : ""}`;
   $("msg").textContent = (p.ai ? MSG_AI : MSG)[tab](p);
   $("msg").classList.remove("rise"); void $("msg").offsetWidth; $("msg").classList.add("rise");
   $("legal").innerHTML = "<b>France · RGPD :</b> prospection B2B autorisée. Le message indique la source des données et permet de refuser d'être recontacté.";

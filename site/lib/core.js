@@ -195,6 +195,7 @@ async function searchRegistry({ naf, tranches, place, rayon = "zone" }) {
     if (r.date_creation && r.date_creation < "2022") score += 3;
     usable.push({
       name: title(r.nom_raison_sociale || r.nom_complet).replace(/\b(Sas|Sarl|Sa|Eurl|Sci|Sasu|Snc)\b/g, s => s.toUpperCase()),
+      siren: r.siren || "",
       naf: r.activite_principale,
       activity: r.libelle_activite_principale || "",
       city: title(etab.libelle_commune || ""),
