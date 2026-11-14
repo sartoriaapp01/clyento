@@ -683,6 +683,7 @@ section{padding-block:clamp(48px,6vw,80px)}
   .ex-head span:last-child,.ex-st{display:none}
   .ex-card{padding:18px 16px}
 }
+.fld-note{margin:-4px 0 12px;color:var(--muted);font-size:.8rem;line-height:1.4}.fld-note a{color:var(--mark-text)}
 .plans-soon{margin-top:10px;color:var(--muted);font-size:.92rem}
 .plans-soon span{font-size:.75rem;font-weight:700;color:var(--mark-text);background:rgba(52,214,122,.16);border-radius:6px;padding:2px 7px;margin-right:8px}
 
@@ -1018,6 +1019,7 @@ section.cta-end{border-top:0}
         </article>
       </div>
       <p class="plans-note">Prix TTC. Sans engagement, résiliable à tout moment. Paiement sécurisé par Stripe, à l'ouverture des abonnements.</p>
+      <p class="plans-soon"><span>Fondateur</span>Ces prix sont nos prix de lancement : en vous inscrivant maintenant, vous les gardez à vie, même si les tarifs augmentent ensuite.</p>
       <p class="plans-soon"><span>Bientôt</span>Envoi des messages depuis votre adresse, relances et tableau de suivi de vos prospects.</p>
     </div>
   </section>
@@ -1068,6 +1070,9 @@ section.cta-end{border-top:0}
           <label class="fld" for="f-prenom">Votre prénom<input id="f-prenom" autocomplete="given-name" placeholder="Thomas"></label>
           <label class="fld" for="f-entreprise">Votre entreprise<input id="f-entreprise" autocomplete="organization" placeholder="Plomberie Martin"></label>
         </div>
+        <label class="fld" for="f-email">Votre e-mail <em>pour recevoir vos résultats et être prévenu de l'ouverture</em>
+          <input id="f-email" type="email" autocomplete="email" inputmode="email" placeholder="thomas@plomberie-martin.fr"></label>
+        <p class="fld-note">Utilisé uniquement par Clyento pour vous recontacter, jamais revendu. Désinscription sur simple demande (<a href="/confidentialite.html" target="_blank" rel="noopener">confidentialité</a>).</p>
         <label class="fld" for="website">Votre site web <em>facultatif, mais l'analyse est plus précise</em>
           <input id="website" autocomplete="url" inputmode="url" placeholder="www.monentreprise.fr"></label>
         <div class="row2">
@@ -1192,7 +1197,7 @@ const PLANS = [
   { id: "pro", name: "Pro", price: "24,99 €", quota: 300, line: "300 prospects par mois, réponse prioritaire", rec: true },
   { id: "complet", name: "Accès complet", price: "49,99 €", quota: 1000, line: "1 000 prospects par mois, gros volumes" },
 ];
-let R = null, sel = 0, tab = "Email", userDesc = "", runId = 0, countRaf = 0;
+let lastLead = "", R = null, sel = 0, tab = "Email", userDesc = "", runId = 0, countRaf = 0;
 
 function countUp(to, suffix = ""){
   cancelAnimationFrame(countRaf);
@@ -1314,7 +1319,7 @@ function formData(){
   if (val("f-meilleur")) extra.push("son meilleur client jusqu'ici : " + val("f-meilleur"));
   if (val("f-eviter")) extra.push("clients à éviter : " + val("f-eviter"));
   if (val("f-canal")) extra.push("canal préféré : " + $("f-canal").selectedOptions[0].textContent);
-  return { prenom: val("f-prenom"), entreprise: val("f-entreprise"), site: val("website"),
+  return { email: val("f-email"), prenom: val("f-prenom"), entreprise: val("f-entreprise"), site: val("website"),
     metier: val("f-metier"), activite: val("activity"), atouts: val("f-atout"),
     ville: val("f-ville"), rayon: val("f-rayon") || "zone", cible: val("f-cible"), objectif: val("f-objectif"),
     canal: val("f-canal"), infos: extra.join(" ; ") };
@@ -1346,6 +1351,7 @@ function checkStep(n){
   const bad = (msg, el) => { err.hidden = false; err.textContent = msg; if (el) el.focus(); return false; };
   if (n === 0){
     if (!f.prenom) return bad("Indiquez votre prénom : il signe vos messages.", $("f-prenom"));
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email)) return bad("Indiquez votre e-mail, par exemple thomas@plomberie-martin.fr.", $("f-email"));
     if (f.site && !domainOf(f.site).includes(".")) return bad("L'adresse du site ne semble pas valide. Exemple : www.monentreprise.fr", $("website"));
   }
   if (n === 1 && f.activite.length < 10) return bad("Décrivez ce que vous proposez en une ou deux phrases.", $("activity"));
@@ -1478,6 +1484,10 @@ $("search").addEventListener("submit", async e => {
   closeQ();
   ldClear(); $("demo").hidden = true; $("run").disabled = true;
   ldOpen(F);
+  if (F.email !== lastLead){ lastLead = F.email;
+    api("/api/waitlist", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
+      source: "recherche", email: F.email, prenom: F.prenom, entreprise: F.entreprise, site: F.site,
+      activite: desc, zone: F.ville, cible: F.cible, objectif: F.objectif }) }).catch(() => {}); }
 
   const an = api(`/api/analyze?${new URLSearchParams({ desc, url: site, prenom: F.prenom, entreprise: F.entreprise, ville: F.ville, rayon: F.rayon, cible: F.cible, objectif: F.objectif, atouts: F.atouts, infos: F.infos })}`);
   const activity = F.metier && F.metier !== "Autre" ? `Analyse de votre activité : ${F.metier.toLowerCase()}…` : "Analyse de votre activité…";
@@ -1571,11 +1581,16 @@ $("unlock").addEventListener("click", e => { const b = e.target.closest("[data-a
 document.querySelectorAll("[data-plan]").forEach(b => b.addEventListener("click", e => { e.preventDefault(); PAY_OPEN ? checkout(b.dataset.plan, b) : openWl(b.dataset.plan); }));
 
 // Liste d'attente au prix fondateur (tant que PAY_OPEN est faux)
+function wlPrice(plan){
+  const p = PLANS.find(x => x.id === plan);
+  return p ? `Prix fondateur : <b>${p.price} par mois</b> (${p.name}), garanti à vie pour les inscrits de la liste d'attente, même si nos tarifs augmentent ensuite.`
+    : "Inscrits de la liste d'attente : le prix du lancement est garanti à vie, même si nos tarifs augmentent ensuite.";
+}
 function wlForm(plan){
   return `<form class="wl" data-plan="${esc(plan || "")}" novalidate>
-    <p class="wl-t"><b>Les abonnements ouvrent dans quelques jours.</b> Laissez votre e-mail : vous serez prévenu en premier et vous garderez ce prix fondateur tant que vous restez abonné.</p>
+    <p class="wl-t"><b>Les abonnements ouvrent dans quelques jours.</b> ${wlPrice(plan)} Laissez votre e-mail : vous serez prévenu en premier.</p>
     <label class="wl-l" for="wl-e-${esc(plan || "x")}">Votre e-mail professionnel</label>
-    <input class="wl-e" id="wl-e-${esc(plan || "x")}" type="email" name="email" autocomplete="email" required placeholder="vous@entreprise.fr">
+    <input class="wl-e" id="wl-e-${esc(plan || "x")}" type="email" name="email" autocomplete="email" required placeholder="vous@entreprise.fr" value="${esc(val("f-email"))}">
     <input type="text" name="website" tabindex="-1" autocomplete="off" class="wl-hp" aria-hidden="true">
     <label class="wl-c"><input type="checkbox" name="consent" required><span>J'accepte d'être recontacté par Clyento au sujet de l'ouverture (<a href="/confidentialite.html" target="_blank" rel="noopener">confidentialité</a>).</span></label>
     <button class="btn" type="submit">Réserver mon prix fondateur</button>

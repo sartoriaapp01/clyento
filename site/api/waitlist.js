@@ -20,17 +20,18 @@ module.exports = async (req, res) => {
   if (body.website) return res.status(200).json({ ok: true }); // champ piège anti-robots
   const email = clip(body.email, 200).toLowerCase();
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return res.status(400).json({ error: "Adresse e-mail invalide." });
-  if (!body.consent) return res.status(400).json({ error: "Merci de cocher la case pour être recontacté." });
+  const search = body.source === "recherche"; // e-mail laissé dans le questionnaire, avant la recherche
+  if (!search && !body.consent) return res.status(400).json({ error: "Merci de cocher la case pour être recontacté." });
 
   const key = process.env.RESEND_API_KEY;
   if (!key) return res.status(503).json({ error: "L'inscription n'est pas encore activée. Écrivez-nous à contact@clyento-ai.com." });
 
-  const plan = PLANS[body.plan] || "Pas encore choisie";
+  const plan = PLANS[body.plan] ? PLANS[body.plan] + " / mois, prix fondateur garanti à vie" : "Pas encore choisie";
   const rows = [
-    ["E-mail", email], ["Offre", plan], ["Prénom", body.prenom], ["Entreprise", body.entreprise],
-    ["Activité", body.activite], ["Zone", body.zone], ["Cible", body.cible],
+    ["E-mail", email], ["Offre", plan], ["Prénom", body.prenom], ["Entreprise", body.entreprise], ["Site", body.site],
+    ["Activité", body.activite], ["Zone", body.zone], ["Cible", body.cible], ["Objectif", body.objectif],
   ].filter(([, v]) => clip(v));
-  const html = `<h2>Nouvelle inscription · liste d'attente Clyento</h2><table cellpadding="6">${rows.map(([k, v]) => `<tr><td><b>${k}</b></td><td>${esc(v)}</td></tr>`).join("")}</table>`;
+  const html = `<h2>${search ? "Nouvelle recherche sur Clyento" : "Nouvelle inscription · liste d'attente Clyento"}</h2><table cellpadding="6">${(search ? rows.filter(([k]) => k !== "Offre") : rows).map(([k, v]) => `<tr><td><b>${k}</b></td><td>${esc(v)}</td></tr>`).join("")}</table>`;
 
   try {
     const r = await fetch("https://api.resend.com/emails", {
@@ -40,7 +41,8 @@ module.exports = async (req, res) => {
         from: process.env.WAITLIST_FROM || "Clyento <onboarding@resend.dev>",
         to: [process.env.WAITLIST_TO || "contact@clyento-ai.com"],
         reply_to: email,
-        subject: `Liste d'attente · ${clip(body.prenom, 40) || email} · ${plan}`,
+        subject: search ? `Recherche · ${clip(body.prenom, 40) || email} · ${clip(body.activite, 60)}`
+          : `Liste d'attente · ${clip(body.prenom, 40) || email} · ${PLANS[body.plan] || "offre non choisie"} · prix fondateur`,
         html,
       }),
     });
