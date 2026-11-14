@@ -1,6 +1,6 @@
 // Liste d'attente au prix fondateur, en attendant l'ouverture des paiements.
 // Chaque inscription est envoyée par e-mail à l'équipe via Resend (clé RESEND_API_KEY,
-// destinataire WAITLIST_TO, par défaut jeanmichel.bejani@clyento-ai.com). Rien n'est stocké ailleurs.
+// destinataire WAITLIST_TO, par défaut contact@clyento-ai.com). Rien n'est stocké ailleurs.
 
 const cors = require("../lib/cors");
 
@@ -38,7 +38,7 @@ module.exports = async (req, res) => {
       headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         from: process.env.WAITLIST_FROM || "Clyento <onboarding@resend.dev>",
-        to: [process.env.WAITLIST_TO || "jeanmichel.bejani@clyento-ai.com"],
+        to: [process.env.WAITLIST_TO || "contact@clyento-ai.com"],
         reply_to: email,
         subject: `Liste d'attente · ${clip(body.prenom, 40) || email} · ${plan}`,
         html,
