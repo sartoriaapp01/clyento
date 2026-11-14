@@ -1,6 +1,6 @@
 // Liste d'attente au prix fondateur, en attendant l'ouverture des paiements.
 // Chaque inscription est envoyée par e-mail à l'équipe via Resend (clé RESEND_API_KEY,
-// destinataire WAITLIST_TO, par défaut jeanmichel.bejani@clyentoai.com). Rien n'est stocké ailleurs.
+// destinataire WAITLIST_TO, par défaut jeanmichel.bejani@clyento-ai.com). Rien n'est stocké ailleurs.
 
 const cors = require("../lib/cors");
 
@@ -23,7 +23,7 @@ module.exports = async (req, res) => {
   if (!body.consent) return res.status(400).json({ error: "Merci de cocher la case pour être recontacté." });
 
   const key = process.env.RESEND_API_KEY;
-  if (!key) return res.status(503).json({ error: "L'inscription n'est pas encore activée. Écrivez-nous à jeanmichel.bejani@clyentoai.com." });
+  if (!key) return res.status(503).json({ error: "L'inscription n'est pas encore activée. Écrivez-nous à contact@clyento-ai.com." });
 
   const plan = PLANS[body.plan] || "Pas encore choisie";
   const rows = [
@@ -38,7 +38,7 @@ module.exports = async (req, res) => {
       headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         from: process.env.WAITLIST_FROM || "Clyento <onboarding@resend.dev>",
-        to: [process.env.WAITLIST_TO || "jeanmichel.bejani@clyentoai.com"],
+        to: [process.env.WAITLIST_TO || "jeanmichel.bejani@clyento-ai.com"],
         reply_to: email,
         subject: `Liste d'attente · ${clip(body.prenom, 40) || email} · ${plan}`,
         html,
@@ -47,6 +47,6 @@ module.exports = async (req, res) => {
     if (!r.ok) throw new Error(`Resend ${r.status}`);
     res.status(200).json({ ok: true });
   } catch {
-    res.status(502).json({ error: "L'inscription n'a pas pu être enregistrée. Réessayez, ou écrivez-nous à jeanmichel.bejani@clyentoai.com." });
+    res.status(502).json({ error: "L'inscription n'a pas pu être enregistrée. Réessayez, ou écrivez-nous à contact@clyento-ai.com." });
   }
 };
