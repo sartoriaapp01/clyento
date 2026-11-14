@@ -813,15 +813,17 @@ section.cta-end{border-top:0}
 
 @keyframes rise{from{transform:translateY(6px);opacity:.4}to{transform:none;opacity:1}}
 .rise{animation:rise .35s ease-out both}
-/* Cartes métiers sur ordinateur : rien ne change de taille au survol, seuls le zoom et les couleurs s'animent (fluide) */
+/* Cartes métiers sur ordinateur : la description s'ouvre au survol ; une carte se ferme pendant que l'autre s'ouvre, à la même vitesse */
 @media (min-width:861px) and (hover:hover){
   .jobs-stack li:not(.wire),.jobs-stack li:has(button[aria-pressed="true"]){width:calc(100% - 150px);transition:none}
-  .jobs-stack button,.jobs-stack button[aria-pressed="true"]{padding:16px 26px;min-height:88px;display:flex;align-items:center;transform-origin:0 50%;transform:skewX(-8deg) scale(1);
-    transition:transform .45s cubic-bezier(.22,1,.36,1),background-color .3s ease,border-color .3s ease,box-shadow .45s cubic-bezier(.22,1,.36,1);will-change:transform}
-  .jobs-stack button[aria-pressed="true"]{transform:skewX(-8deg) scale(1.045)}
-  .jt b,.jobs-stack button[aria-pressed="true"] .jt b{font-size:1.2rem;transition:none}
-  .jt span,.jobs-stack button[aria-pressed="true"] .jt span{max-height:none;margin-top:3px;opacity:.55;transition:opacity .3s ease,color .3s ease}
-  .jobs-stack button[aria-pressed="true"] .jt span{opacity:1;color:var(--ink)}
+  .jobs-stack button,.jobs-stack button[aria-pressed="true"]{padding:18px 26px;transform-origin:0 50%;transform:skewX(-8deg) scale(1);
+    transition:transform .5s cubic-bezier(.22,1,.36,1),background-color .3s ease,border-color .3s ease,box-shadow .5s cubic-bezier(.22,1,.36,1)}
+  .jobs-stack button[aria-pressed="true"]{transform:skewX(-8deg) scale(1.035)}
+  .jt{grid-template-rows:auto 0fr;transition:grid-template-rows .5s cubic-bezier(.22,1,.36,1)}
+  .jobs-stack button[aria-pressed="true"] .jt{grid-template-rows:auto 1fr}
+  .jt b,.jobs-stack button[aria-pressed="true"] .jt b{font-size:1.2rem;transition:none;padding-bottom:2px}
+  .jt span,.jobs-stack button[aria-pressed="true"] .jt span{max-height:none;min-height:0;margin:0;padding-top:0;opacity:0;transition:opacity .25s ease}
+  .jobs-stack button[aria-pressed="true"] .jt span{opacity:1;color:var(--ink);transition:opacity .35s ease .12s}
 }
 </style>
 
@@ -1701,14 +1703,12 @@ function drawWire(){
 }
 function showJob(btn){
   document.querySelectorAll("#jobs-list button").forEach(b => b.setAttribute("aria-pressed", b === btn));
-  if (jobStill.matches) { drawWire(); return; } // ordinateur : les cartes ne bougent pas, le fil non plus
   if (btn.getAttribute("aria-pressed") === "true" && jobRaf) return;
   const t0 = performance.now(); cancelAnimationFrame(jobRaf);
-  const follow = t => { drawWire(); jobRaf = t - t0 < 650 ? requestAnimationFrame(follow) : 0; }; jobRaf = requestAnimationFrame(follow);
+  const follow = t => { drawWire(); jobRaf = t - t0 < 600 ? requestAnimationFrame(follow) : 0; }; jobRaf = requestAnimationFrame(follow);
 }
 let jobRaf = 0;
-const jobStill = matchMedia("(min-width:861px) and (hover:hover)");
-document.querySelectorAll("#jobs-list button").forEach(b => { b.addEventListener("click", () => showJob(b)); b.addEventListener("pointerenter", e => { if (e.pointerType === "mouse") showJob(b); }); b.addEventListener("focus", () => showJob(b)); });
+document.querySelectorAll("#jobs-list button").forEach(b => { b.addEventListener("click", () => showJob(b)); b.addEventListener("pointermove", e => { if (e.pointerType === "mouse" && b.getAttribute("aria-pressed") !== "true") showJob(b); }); b.addEventListener("focus", () => showJob(b)); });
 drawWire(); addEventListener("resize", drawWire); addEventListener("load", drawWire);
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawWire);
 
