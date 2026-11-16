@@ -9,5 +9,11 @@
     "api/site.js": {
       "maxDuration": 20
     }
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/us",
+      "destination": "/us.html"
+    }
+  ]
 }
