@@ -90,7 +90,7 @@ section + section{border-top:1px solid var(--line)}
   .imac .row2{grid-template-columns:1fr 1fr}
 }
 @media (min-width:1100px){
-  .hero .hero-grid{grid-template-columns:minmax(0,1fr) 656px;column-gap:36px}
+  .hero .hero-grid{grid-template-columns:minmax(0,1fr) 500px;column-gap:56px;align-items:center}
   .hero-form{--p:192px;padding:calc(var(--p)*.35) 0 12px 194px}
   .hero .hero-copy h1{font-size:clamp(2.6rem,3.9vw,3.3rem)}
 }
@@ -806,6 +806,38 @@ section.cta-end{border-top:0}
 
 @keyframes rise{from{transform:translateY(6px);opacity:.4}to{transform:none;opacity:1}}
 .rise{animation:rise .35s ease-out both}
+/* Haut de page : bouton principal et exemple de résultat */
+.hero-cta{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;margin-top:4px}
+.btn-go{background:var(--mark);color:var(--mark-ink);padding:16px 26px;font-size:1.05rem;box-shadow:0 12px 26px -14px rgba(20,110,63,.8)}
+.btn-go:hover{background:#2BC56E}
+.hero-note{font-size:.88rem;color:var(--muted)}
+.hero-res{min-width:0;max-width:520px;width:100%;animation:heroIn .7s cubic-bezier(.2,.7,.2,1) .2s both}
+.hr-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;box-shadow:0 30px 60px -34px rgba(15,28,20,.45);overflow:hidden}
+.hr-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line);font-size:.92rem}
+.hr-tag{font-size:.74rem;font-weight:600;padding:4px 10px;border-radius:999px;background:var(--soft);color:var(--muted)}
+.hr-count{padding:14px 18px 6px;font-size:.92rem;color:var(--muted)}
+.hr-count b{font:800 1.6rem/1 var(--display);color:var(--ink);margin-right:6px;letter-spacing:-.02em}
+.hr-list{list-style:none;margin:0;padding:6px 10px;display:grid;gap:6px}
+.hr-list li{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;padding:10px 10px;border-radius:12px;border:1px solid transparent;animation:hrIn .5s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(.5s + var(--i)*.12s)}
+.hr-list li.on{background:rgba(52,214,122,.12);border-color:rgba(30,154,85,.3)}
+.hr-list b{display:block;font-weight:600;font-size:.98rem}
+.hr-list small{display:block;color:var(--muted);font-size:.84rem;margin-top:2px}
+.hr-s{display:grid;place-items:center;width:46px;height:34px;border-radius:9px;background:var(--mark);color:var(--mark-ink);font:600 .95rem/1 var(--mono);font-variant-numeric:tabular-nums}
+.hr-msg{margin:8px 18px 0;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:.88rem;line-height:1.5;position:relative;max-height:116px;overflow:hidden}
+.hr-msg::after{content:"";position:absolute;inset:auto 0 0;height:34px;background:linear-gradient(transparent,#fff)}
+.hr-msg p{margin:4px 0 0}
+.hr-l{font-size:.76rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.hr-go{margin:14px 18px 18px;width:calc(100% - 36px);justify-content:center;padding:14px}
+@keyframes hrIn{from{opacity:0;transform:translateY(8px)}}
+/* Mascotte dans la FAQ */
+.faq-help{position:relative;--p:96px;padding:calc(var(--p)*.42) 0 0 var(--p);max-width:400px;margin-top:8px}
+.faq-hold{position:relative}
+.faq-card{position:relative;z-index:1;min-height:calc(var(--p)*2.17);box-sizing:border-box;display:grid;align-content:center;gap:10px;padding:20px 22px 20px calc(var(--p)*.42 + 10px);background:var(--surface);border:1px solid var(--line);border-radius:18px}
+.faq-card b{font:700 1.15rem/1.25 var(--display)}
+.faq-card p{margin:0;color:var(--muted);font-size:.93rem}
+.faq-card a{color:var(--mark-text);font-weight:600}
+.faq-hold .hold{z-index:2}
+@media (max-width:860px){ .faq-help{--p:80px;margin:0 0 20px} }
 /* Cartes métiers sur ordinateur : la description s'ouvre au survol ; une carte se ferme pendant que l'autre s'ouvre, à la même vitesse */
 @media (min-width:861px) and (hover:hover){
   .jobs-stack li:not(.wire),.jobs-stack li:has(button[aria-pressed="true"]){width:calc(100% - 150px);transition:none}
@@ -845,30 +877,23 @@ section.cta-end{border-top:0}
         <span class="eyebrow">Prospection par IA · tous les métiers · France</span>
         <h1>Décrivez votre activité. <br>Clyento trouve <span class="hl">vos clients.</span></h1>
         <p class="lede"><span class="lg">Vous êtes artisan, coach, commerçant ou freelance, et vous n'avez jamais prospecté ? </span>Clyento repère vos clients, trouve la bonne personne à contacter et rédige le message. Aucun réglage.</p>
+        <div class="hero-cta"><button type="button" class="btn btn-go" id="hero-open">Lancer ma recherche gratuite <span aria-hidden="true">→</span></button>
+          <span class="hero-note">Gratuit · 2 minutes · sans carte bancaire</span></div>
         </div>
       </div>
 
-      <div class="hero-form">
-        <div class="imac">
-          <img class="hold hold-body" src="/mascotte-tient.png" alt="" width="404" height="876" decoding="async">
-          <img class="hold hold-hand" src="/mascotte-main.png" alt="" width="198" height="86" decoding="async">
-          <div class="imac-screen">
-            <div class="wiz teaser">
-              <div class="wiz-head"><b>Votre recherche personnalisée</b><span class="wiz-stepname">Cinq étapes · 2 minutes · gratuit</span></div>
-              <ol class="teaser-list" id="teaser-list">
-                <li class="tpill on" style="--i:0"><span class="tn">1</span><i></i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"/></svg><span class="tl">Vous</span></li>
-                <li class="tpill" style="--i:1"><span class="tn">2</span><i></i><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/></svg><span class="tl">Votre activité</span></li>
-                <li class="tpill" style="--i:2"><span class="tn">3</span><i></i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5 9-5zM3 12l9 5 9-5M3 16l9 5 9-5"/></svg><span class="tl">Votre offre</span></li>
-                <li class="tpill" style="--i:3"><span class="tn">4</span><i></i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-5.5 6.5-5.5s6.5 1.9 6.5 5.5"/><circle cx="17.5" cy="9" r="2.6"/><path d="M17.2 14.6c2.6.1 4.3 1.6 4.3 4.4"/></svg><span class="tl">Vos clients</span></li>
-                <li class="tpill" style="--i:4"><span class="tn">5</span><i></i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="13" r="8"/><circle cx="11" cy="13" r="3.6"/><path d="M11 13l8.500-8.500M16 4.300l3.700-.5-.5 3.700"/></svg><span class="tl">Votre prospection</span></li>
-                <li class="twire" aria-hidden="true"><svg id="teaser-wire"></svg></li>
-              </ol>
-              <div class="wiz-foot">
-                <p class="wiz-sum">Clyento cherche vos clients dans le registre national des entreprises.</p>
-                <div class="wiz-act"><button type="button" class="btn" id="q-open">Ouvrir</button></div>
-              </div>
-            </div>
-          </div>
+      <div class="hero-res" aria-label="Exemple de résultat">
+        <div class="hr-card">
+          <div class="hr-head"><span><b>Michel</b> · électricien à Nantes</span><span class="hr-tag">Exemple</span></div>
+          <div class="hr-count"><b>214</b> prospects trouvés autour de Nantes</div>
+          <ol class="hr-list">
+            <li class="on" style="--i:0"><span class="hr-s">94</span><span><b>Le Fournil du Port</b><small>Boulangerie · Claire D., gérante</small></span></li>
+            <li style="--i:1"><span class="hr-s">91</span><span><b>Syndic des Quais</b><small>Syndic de copropriété · Marc L., gérant</small></span></li>
+            <li style="--i:2"><span class="hr-s">87</span><span><b>Atelier Lumen Architectes</b><small>Architecte · Sophie R., présidente</small></span></li>
+          </ol>
+          <div class="hr-msg"><span class="hr-l">Message prêt à envoyer</span>
+            <p><b>Objet : l'installation électrique du Fournil</b><br>Félicitations pour l'ouverture du Fournil du Port. Je suis électricien à Nantes et j'interviens souvent pour des commerces de bouche…</p></div>
+          <button type="button" class="btn btn-go hr-go" id="q-open">Trouver mes prospects</button>
         </div>
       </div>
 
@@ -1051,7 +1076,12 @@ section.cta-end{border-top:0}
 
   <section id="faq">
     <div class="wrap faq-grid">
-      <div class="sec-head"><span class="eyebrow">Questions fréquentes</span><h2>Tout ce qu'il faut savoir avant de commencer.</h2></div>
+      <div><div class="sec-head"><span class="eyebrow">Questions fréquentes</span><h2>Tout ce qu'il faut savoir avant de commencer.</h2></div>
+        <div class="faq-help"><div class="faq-hold">
+          <img class="hold hold-body" src="/mascotte-tient.png" alt="" width="404" height="876" loading="lazy" decoding="async">
+          <img class="hold hold-hand" src="/mascotte-main.png" alt="" width="198" height="86" loading="lazy" decoding="async">
+          <div class="faq-card"><b>Une autre question ?</b><p>Écrivez-nous, on répond vite : <a href="mailto:contact@clyento-ai.com">contact@clyento-ai.com</a></p></div>
+        </div></div></div>
       <div class="faq">
         <details><summary>Est-ce légal de contacter ces entreprises ?</summary><p>Oui. En France, la prospection entre professionnels (B2B) est autorisée par le RGPD, à condition que le message concerne l'activité de l'entreprise et permette de refuser d'être recontacté. Clyento ne cible que des entreprises, exclut celles qui se sont opposées à la prospection, et chaque message indique la source des données.</p></details>
         <details><summary>D'où viennent les entreprises proposées ?</summary><p>Du registre national des entreprises (données publiques de l'INSEE et de l'INPI). L'IA choisit les types d'entreprises qui ont le plus de chances d'avoir besoin de vous, puis classe chaque prospect et rédige le message.</p></details>
@@ -1329,12 +1359,6 @@ function domainOf(raw){
   try { return new URL(/^https?:\/\//i.test(raw) ? raw : "https://" + raw).hostname.replace(/^www\./, ""); } catch { return ""; }
 }
 
-// Sur téléphone, le formulaire est dessiné en 380 px de large puis réduit à la place disponible
-function fitCard(){
-  const im = document.querySelector(".imac");
-  if (innerWidth <= 640) im.style.setProperty("--z", (im.clientWidth / 380).toFixed(4)); else im.style.removeProperty("--z");
-}
-fitCard(); addEventListener("resize", fitCard);
 
 // Questionnaire en cinq étapes, ouvert au premier plan
 const LAST = 4;
@@ -1396,26 +1420,7 @@ function closeQ(){
   if (qOpener && qOpener.focus) qOpener.focus({ preventScroll: true });
 }
 $("q-open").addEventListener("click", openQ);
-// Aperçu : la ligne lumineuse relie le bas d'une étape au haut de la suivante, et les étapes s'allument tour à tour
-function drawTeaser(){
-  const pills = [...document.querySelectorAll("#teaser-list .tpill")];
-  let h = "";
-  for (let i = 0; i < pills.length - 1; i++){
-    const a = pills[i], b = pills[i + 1], even = i % 2 === 0;
-    const x1 = a.offsetLeft + a.offsetWidth * (even ? .62 : .38), y1 = a.offsetTop + a.offsetHeight;
-    const x2 = b.offsetLeft + b.offsetWidth * (even ? .32 : .68), y2 = b.offsetTop, dy = y2 - y1;
-    const d = `M${x1} ${y1} C${x1} ${y1 + dy * .9}, ${x2} ${y2 - dy * .9}, ${x2} ${y2}`;
-    h += `<path class="w" pathLength="1" style="--i:${i}" d="${d}"/><path class="pulse" pathLength="1" style="--i:${i}" d="${d}"/><circle style="--i:${i}" cx="${x1}" cy="${y1}" r="2.6"/><circle style="--i:${i}" cx="${x2}" cy="${y2}" r="2.6"/>`;
-  }
-  $("teaser-wire").innerHTML = h;
-}
-drawTeaser(); addEventListener("resize", drawTeaser); addEventListener("load", drawTeaser);
-if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawTeaser);
-$("teaser-list").addEventListener("click", openQ);
-if (!reduce){
-  let tk = 0; const tp = [...document.querySelectorAll("#teaser-list .tpill")];
-  setInterval(() => { tk = (tk + 1) % tp.length; tp.forEach((el, i) => el.classList.toggle("on", i === tk)); }, 1300);
-}
+$("hero-open").addEventListener("click", openQ);
 $("nav-open").addEventListener("click", e => { e.preventDefault(); openQ(); });
 $("cta-open").addEventListener("click", openQ);
 
