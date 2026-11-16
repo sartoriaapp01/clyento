@@ -3,6 +3,7 @@
 const { searchRegistry, NAF_RE, TRANCHE_CODES } = require("../lib/core");
 const ai = require("../lib/ai");
 const cors = require("../lib/cors");
+const limited = require("../lib/limit");
 
 module.exports = async (req, res) => {
   if (cors(req, res)) return;
@@ -11,6 +12,7 @@ module.exports = async (req, res) => {
   const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : (req.body || {});
   const desc = String(body.desc || "").slice(0, 500);
   const p = body.profile || {};
+  if (limited(req, res, "search", 3)) return;
   if (!p.summary) return res.status(400).json({ error: "Relancez la recherche depuis le formulaire." });
 
   const naf = (p.naf || []).filter(c => NAF_RE.test(c)).slice(0, 6);

@@ -3,6 +3,7 @@
 const { readSite, findPlace, guessTarget, NAF_RE, TRANCHE_CODES, GEO, getJson } = require("../lib/core");
 const ai = require("../lib/ai");
 const cors = require("../lib/cors");
+const limited = require("../lib/limit");
 
 async function placeByName(name) {
   try { const [c] = await getJson(`${GEO}?nom=${encodeURIComponent(name)}&boost=population&limit=1&fields=nom,codeDepartement,codesPostaux,population`, 4000); return c || null; }
@@ -17,6 +18,7 @@ module.exports = async (req, res) => {
   const site = q("url");
   const form = { prenom: q("prenom"), entreprise: q("entreprise"), ville: q("ville"), rayon: ["ville", "zone", "departement", "france"].includes(q("rayon")) ? q("rayon") : "zone",
     cible: q("cible"), objectif: q("objectif"), atouts: q("atouts"), infos: String(req.query.infos || "").slice(0, 700).trim() };
+  if (limited(req, res, "analyze", 4)) return;
   if (desc.length < 10) return res.status(400).json({ error: "Décrivez ce que vous proposez en une ou deux phrases." });
 
   let web = site ? await readSite(site) : null;

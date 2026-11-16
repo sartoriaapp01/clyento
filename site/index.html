@@ -1468,6 +1468,21 @@ updateSummary();
 
 // Appels API : si l'adresse principale échoue (DNS), on repasse par l'adresse Vercel du projet
 const API_ALT = "https://clyento-site.vercel.app";
+// Une seule recherche gratuite par visiteur : le résultat est gardé dans le navigateur et réaffiché ensuite (sans nouveau coût)
+const FREE = "clyento_free_result";
+const store = { get(k){ try { return localStorage.getItem(k); } catch { return null; } }, set(k, v){ try { localStorage.setItem(k, v); } catch {} } };
+(() => { const t = new URLSearchParams(location.search).get("test"); if (t) store.set("clyento_test", t); })();
+const testKey = () => store.get("clyento_test") || "";
+const testHeaders = () => testKey() ? { "X-Clyento-Test": testKey() } : {};
+function freeUsed(){ return !testKey() && !!store.get(FREE); }
+function showUsed(){
+  let saved = null; try { saved = JSON.parse(store.get(FREE) || "null"); } catch {}
+  closeQ();
+  if (saved && saved.prospects){ R = saved; sel = 0; tab = "Email"; $("demo").hidden = false; render(); $("demo").scrollIntoView({ behavior: "auto", block: "start" }); }
+  $("wl-title").textContent = "Recherche gratuite déjà utilisée";
+  $("wl-body").innerHTML = `<p class="wl-t">${saved ? "Vos résultats sont affichés ci-dessous." : ""} La recherche gratuite est limitée à une par personne ; avec un abonnement, vous lancerez toutes les recherches que vous voulez.</p>` + wlForm("");
+  $("wl").hidden = false; document.documentElement.classList.add("lock");
+}
 async function api(path, opts){
   const go = async base => { const r = await fetch(base + path, opts); return { ok: r.ok, j: await r.json() }; };
   try { return await go(""); }
@@ -1515,6 +1530,7 @@ document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("loader
 $("search").addEventListener("submit", async e => {
   e.preventDefault();
   if (!checkAll()){ if ($("qmodal").hidden){ ldClose(); openQ(); } return; }
+  if (freeUsed()) return showUsed();
   const F = formData(), site = F.site;
   const desc = [F.metier && F.metier !== "Autre" ? F.metier + " : " : "", F.activite, F.ville ? ` (${F.ville})` : ""].join("");
   const id = ++runId, live = () => id === runId;
@@ -1528,7 +1544,7 @@ $("search").addEventListener("submit", async e => {
       source: "recherche", email: F.email, prenom: F.prenom, entreprise: F.entreprise, site: F.site,
       activite: desc, zone: F.ville, cible: F.cible, objectif: F.objectif }) }).catch(() => {}); }
 
-  const an = api(`/api/analyze?${new URLSearchParams({ desc, url: site, prenom: F.prenom, entreprise: F.entreprise, ville: F.ville, rayon: F.rayon, cible: F.cible, objectif: F.objectif, atouts: F.atouts, infos: F.infos })}`);
+  const an = api(`/api/analyze?${new URLSearchParams({ desc, url: site, prenom: F.prenom, entreprise: F.entreprise, ville: F.ville, rayon: F.rayon, cible: F.cible, objectif: F.objectif, atouts: F.atouts, infos: F.infos })}`, { headers: testHeaders() });
   const activity = F.metier && F.metier !== "Autre" ? `Analyse de votre activité : ${F.metier.toLowerCase()}…` : "Analyse de votre activité…";
   if (site){
     $("ld-title").textContent = `${F.prenom.split(" ")[0]}, nous lisons votre site.`;
@@ -1547,6 +1563,7 @@ $("search").addEventListener("submit", async e => {
   const a = await an;
   if (!live()) return;
   ldClear();
+  if (a.j && a.j.used){ ldClose(); return showUsed(); }
   if (!a.ok || !a.j.profile) return ldError(a.j.error || "L'analyse n'a pas abouti. Réessayez dans un instant.");
   const prof = a.j.profile;
 
@@ -1575,11 +1592,13 @@ $("search").addEventListener("submit", async e => {
   let k = 0; ldPhrase(steps[0]);
   ldTicker = setInterval(() => { k = (k + 1) % steps.length; ldPhrase(steps[k]); }, 2600);
   ldTimers.push(setTimeout(() => live() && ldStep(3), 3500), setTimeout(() => live() && ldStep(4), 7500));
-  const res = await api("/api/search", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ desc, profile: prof }) });
+  const res = await api("/api/search", { method: "POST", headers: { "Content-Type": "application/json", ...testHeaders() }, body: JSON.stringify({ desc, profile: prof }) });
   if (!live()) return;
   ldClear();
+  if (res.j && res.j.used){ ldClose(); return showUsed(); }
   if (!res.ok || !res.j.prospects) return ldError(res.j.error || "La recherche n'a pas abouti. Réessayez dans un instant.");
   R = res.j;
+  if (!testKey()){ store.set(FREE, JSON.stringify(R)); }
 
   // Résultat : le chiffre en grand, puis la page de résultats
   ldStep(LD_STEPS.length); $("ld-fill").style.width = "100%";
