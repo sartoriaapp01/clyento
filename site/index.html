@@ -303,7 +303,7 @@ html.lock,html.lock body{overflow:hidden}
 .prospect{display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;align-items:start;padding:12px;border:1px solid var(--line);border-radius:12px;cursor:pointer;background:var(--surface);text-align:left;font:inherit;color:inherit;width:100%}
 .prospect[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
 .score{font:500 .95rem/1 var(--mono);font-variant-numeric:tabular-nums;display:grid;place-items:center;height:44px;border-radius:10px;background:var(--soft)}
-.prospect:first-child .score{background:var(--mark);color:var(--mark-ink)}
+.score.av{font:700 1.05rem/1 var(--display);background:rgba(52,214,122,.18);color:#146E3F}
 .p-name{font-weight:600;line-height:1.3}
 .p-sub{font-size:.88rem;color:var(--muted)}
 .p-why{font-size:.88rem;margin-top:4px}
@@ -676,7 +676,7 @@ section{padding-block:clamp(48px,6vw,80px)}
 .ex-tag{white-space:nowrap;font-size:.78rem;font-weight:600;color:var(--muted);background:var(--soft);border-radius:999px;padding:4px 10px}
 .ex-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}
 .ex-table{display:grid;align-content:start;border-right:1px solid var(--line)}
-.ex-head,.ex-row{display:grid;grid-template-columns:minmax(0,1fr) 56px 112px 62px;gap:12px;align-items:center;padding:12px 20px}
+.ex-head,.ex-row{display:grid;grid-template-columns:minmax(0,1fr) 112px 62px;gap:12px;align-items:center;padding:12px 20px}
 .ex-head{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);border-bottom:1px solid var(--line)}
 .ex-head i{font-style:normal;text-transform:none;letter-spacing:0;font-weight:600;color:var(--mark-text);background:rgba(52,214,122,.14);border-radius:6px;padding:1px 6px;margin-left:4px}
 .ex-row{appearance:none;border:0;border-bottom:1px solid var(--line);background:transparent;font:inherit;color:var(--ink);text-align:left;cursor:pointer;min-height:64px}
@@ -703,8 +703,8 @@ section{padding-block:clamp(48px,6vw,80px)}
 @media (max-width:820px){
   .ex-grid{grid-template-columns:1fr}
   .ex-table{border-right:0;border-bottom:1px solid var(--line)}
-  .ex-head,.ex-row{grid-template-columns:minmax(0,1fr) 48px;padding-inline:16px}
-  .ex-head span:nth-child(n+3),.ex-st,.ex-rl{display:none}
+  .ex-head,.ex-row{grid-template-columns:minmax(0,1fr);padding-inline:16px}
+  .ex-head span:nth-child(n+2),.ex-st,.ex-rl{display:none}
   .ex-card{padding:18px 16px}
 }
 .fld-note{margin:-4px 0 12px;color:var(--muted);font-size:.8rem;line-height:1.4}.fld-note a{color:var(--mark-text)}
@@ -755,9 +755,9 @@ section.cta-end{border-top:0}
 .score-help{font-size:.85rem;line-height:1.5;color:var(--muted);margin:-2px 0 10px}
 .score-help b{color:var(--ink);font-weight:600}
 .score-help span{white-space:nowrap}
-.ex-head,.ex-row{grid-template-columns:minmax(0,1fr) 56px 112px 62px}
+.ex-head,.ex-row{grid-template-columns:minmax(0,1fr) 112px 62px}
 .ex-sc{width:56px}
-@media (max-width:820px){ .ex-head,.ex-row{grid-template-columns:minmax(0,1fr) 76px} }
+@media (max-width:820px){ .ex-head,.ex-row{grid-template-columns:minmax(0,1fr)} }
 .review p{font-size:.98rem}
 .review footer{padding:0;border:0;font-size:.86rem;color:var(--muted)}
 .review footer b{color:var(--ink);display:block}
@@ -845,7 +845,7 @@ section.cta-end{border-top:0}
 .hr-list li.on{background:rgba(52,214,122,.12);border-color:rgba(30,154,85,.3)}
 .hr-list b{display:block;font-weight:600;font-size:.98rem}
 .hr-list small{display:block;color:var(--muted);font-size:.84rem;margin-top:2px}
-.hr-s{display:grid;place-items:center;width:46px;height:34px;border-radius:9px;background:var(--mark);color:var(--mark-ink);font:600 .95rem/1 var(--mono);font-variant-numeric:tabular-nums}
+.hr-s{display:grid;place-items:center;width:38px;height:38px;border-radius:10px;background:rgba(52,214,122,.18);color:#146E3F;font:700 1rem/1 var(--display)}
 .hr-msg{margin:8px 18px 0;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:.88rem;line-height:1.5;position:relative;max-height:116px;overflow:hidden}
 .hr-msg::after{content:"";position:absolute;inset:auto 0 0;height:34px;background:linear-gradient(transparent,#fff)}
 .hr-msg p{margin:4px 0 0}
@@ -910,9 +910,9 @@ section.cta-end{border-top:0}
           <div class="hr-head"><span><b>Michel</b> · électricien à Nantes</span><span class="hr-tag">Exemple</span></div>
           <div class="hr-count"><b>214</b> prospects trouvés autour de Nantes</div>
           <ol class="hr-list">
-            <li class="on" style="--i:0"><span class="hr-s">94</span><span><b>Le Fournil du Port</b><small>Boulangerie · Claire D., gérante</small></span></li>
-            <li style="--i:1"><span class="hr-s">91</span><span><b>Syndic des Quais</b><small>Syndic de copropriété · Marc L., gérant</small></span></li>
-            <li style="--i:2"><span class="hr-s">87</span><span><b>Atelier Lumen Architectes</b><small>Architecte · Sophie R., présidente</small></span></li>
+            <li class="on" style="--i:0"><span class="hr-s" aria-hidden="true">L</span><span><b>Le Fournil du Port</b><small>Boulangerie · Claire D., gérante</small></span></li>
+            <li style="--i:1"><span class="hr-s" aria-hidden="true">S</span><span><b>Syndic des Quais</b><small>Syndic de copropriété · Marc L., gérant</small></span></li>
+            <li style="--i:2"><span class="hr-s" aria-hidden="true">A</span><span><b>Atelier Lumen Architectes</b><small>Architecte · Sophie R., présidente</small></span></li>
           </ol>
           <div class="hr-msg"><span class="hr-l">Message prêt à envoyer</span>
             <p><b>Objet : L'installation électrique du Fournil</b><br>Félicitations pour l'ouverture du Fournil du Port. Les premiers mois, fours et chambre froide tournent à plein, et c'est souvent là qu'un disjoncteur saute en pleine fournée…</p></div>
@@ -931,8 +931,8 @@ section.cta-end{border-top:0}
           <div class="pane">
             <span class="eyebrow">Client idéal</span>
             <div class="icp" id="icp"></div>
-            <span class="eyebrow" id="list-label">Prospects, du plus au moins pertinent</span>
-            <p class="score-help"><b>Score de correspondance</b> : à quel point l'entreprise colle à ce que vous proposez (activité, taille, distance). Ce n'est pas une promesse de réponse : en prospection, même les meilleurs prospects ne répondent pas tous, c'est normal. Commencez par le haut de la liste, et relancez une fois.</p>
+            <span class="eyebrow" id="list-label">Vos prospects sélectionnés</span>
+            
             <ul class="plist" id="plist"></ul>
           </div>
           <div class="pane">
@@ -1024,7 +1024,7 @@ section.cta-end{border-top:0}
     <div class="wrap">
       <div class="sec-head">
         <span class="eyebrow">Exemple de résultat</span>
-        <h2>Vos prospects, classés et prêts à contacter.</h2>
+        <h2>Vos prospects, sélectionnés et prêts à contacter.</h2>
         <p class="lede">Pour chaque entreprise : pourquoi elle peut devenir cliente, qui contacter, le message déjà écrit, puis le suivi (statut, relances, notes) dans votre espace client.</p>
       </div>
       <div class="ex">
@@ -1034,11 +1034,11 @@ section.cta-end{border-top:0}
         </div>
         <div class="ex-grid">
           <div class="ex-table" role="list" aria-label="Prospects de l'exemple">
-            <div class="ex-head" aria-hidden="true"><span>Prospect</span><span>Score /100</span><span>Statut <i>bientôt</i></span><span>Relance</span></div>
-            <button type="button" class="ex-row on" data-i="0" role="listitem"><span class="ex-n"><b>Le Fournil du Port</b><small>Boulangerie · Nantes</small></span><span class="ex-sc" title="Score de pertinence sur 100">94</span><span class="ex-st s1">À contacter</span><span class="ex-rl">—</span></button>
-            <button type="button" class="ex-row" data-i="1" role="listitem"><span class="ex-n"><b>Syndic des Quais</b><small>Syndic de copropriété · Nantes</small></span><span class="ex-sc">91</span><span class="ex-st s2">Contacté</span><span class="ex-rl">19 nov.</span></button>
-            <button type="button" class="ex-row" data-i="2" role="listitem"><span class="ex-n"><b>Atelier Lumen Architectes</b><small>Architecte · Saint-Herblain</small></span><span class="ex-sc">87</span><span class="ex-st s3">A répondu</span><span class="ex-rl">18 nov.</span></button>
-            <button type="button" class="ex-row" data-i="3" role="listitem"><span class="ex-n"><b>Erdre Gestion Immobilière</b><small>Agence immobilière · Nantes</small></span><span class="ex-sc">84</span><span class="ex-st s4">Rendez-vous</span><span class="ex-rl">20 nov.</span></button>
+            <div class="ex-head" aria-hidden="true"><span>Prospect</span><span>Statut <i>bientôt</i></span><span>Relance</span></div>
+            <button type="button" class="ex-row on" data-i="0" role="listitem"><span class="ex-n"><b>Le Fournil du Port</b><small>Boulangerie · Nantes</small></span><span class="ex-st s1">À contacter</span><span class="ex-rl">—</span></button>
+            <button type="button" class="ex-row" data-i="1" role="listitem"><span class="ex-n"><b>Syndic des Quais</b><small>Syndic de copropriété · Nantes</small></span><span class="ex-st s2">Contacté</span><span class="ex-rl">19 nov.</span></button>
+            <button type="button" class="ex-row" data-i="2" role="listitem"><span class="ex-n"><b>Atelier Lumen Architectes</b><small>Architecte · Saint-Herblain</small></span><span class="ex-st s3">A répondu</span><span class="ex-rl">18 nov.</span></button>
+            <button type="button" class="ex-row" data-i="3" role="listitem"><span class="ex-n"><b>Erdre Gestion Immobilière</b><small>Agence immobilière · Nantes</small></span><span class="ex-st s4">Rendez-vous</span><span class="ex-rl">20 nov.</span></button>
           </div>
           <article class="ex-card" aria-live="polite">
             <h3 id="ex-name">Le Fournil du Port</h3>
@@ -1113,7 +1113,7 @@ section.cta-end{border-top:0}
         <details><summary>Est-ce que j'aurai l'e-mail ou le téléphone du prospect ?</summary><p>Vous obtenez le nom de l'entreprise, sa ville, son activité et le nom de son dirigeant. Les coordonnées directes ne sont pas toujours publiques : vous pouvez passer par le site de l'entreprise, LinkedIn, un appel ou une visite. Le message et le script d'appel sont prêts pour chaque canal.</p></details>
         <details><summary>Je vends surtout à des particuliers, ça marche pour moi ?</summary><p>Oui, autrement. Clyento ne fournit jamais de listes de particuliers, ce qui est interdit sans leur accord. Il trouve les entreprises qui peuvent vous en envoyer : un kiné pour un coach, une agence immobilière pour un artisan, un hôtel pour un restaurant.</p></details>
         <details><summary>Combien de temps prend une recherche ?</summary><p>Environ deux minutes pour répondre aux questions, puis moins d'une minute pour voir vos premiers prospects. La recherche est gratuite.</p></details>
-        <details><summary>Combien de recherches puis-je faire avec un abonnement ?</summary><p>Autant que vous voulez : une pour les restaurants, une autre pour les hôtels, une autre ville… Votre offre compte les prospects que vous débloquez, pas les recherches : 100, 300 ou 1 000 par mois selon l'offre. Chaque recherche vous propose une vingtaine de prospects classés du plus au moins pertinent, et vous débloquez ceux qui vous intéressent, avec le dirigeant et les messages prêts à envoyer. Le compteur repart à zéro chaque mois.</p></details>
+        <details><summary>Combien de recherches puis-je faire avec un abonnement ?</summary><p>Autant que vous voulez : une pour les restaurants, une autre pour les hôtels, une autre ville… Votre offre compte les prospects que vous débloquez, pas les recherches : 100, 300 ou 1 000 par mois selon l'offre. Chaque recherche vous propose une vingtaine de prospects sélectionnés pour vous, et vous débloquez ceux qui vous intéressent, avec le dirigeant et les messages prêts à envoyer. Le compteur repart à zéro chaque mois.</p></details>
         <details><summary>Et si je connais déjà certains prospects ?</summary><p>Avec votre abonnement, vous pourrez marquer une entreprise comme « déjà contactée » : elle disparaît de vos résultats, ne revient plus dans vos recherches suivantes et ne compte pas dans votre quota. Vous pourrez aussi nous donner la liste de vos clients actuels pour qu'ils soient écartés dès le départ.</p></details>
         <details><summary>Dans quels pays fonctionne Clyento ?</summary><p>En France pour l'instant. D'autres pays arriveront ensuite.</p></details>
         <details><summary>Puis-je résilier quand je veux ?</summary><p>Oui. Les offres sont sans engagement : vous arrêtez quand vous voulez en nous écrivant à <a href="mailto:contact@clyento-ai.com">contact@clyento-ai.com</a>.</p></details>
@@ -1373,9 +1373,9 @@ function render(){
   $("found-sub").textContent = R.profile.headline || `${R.profile.target} · ${R.profile.zone}`;
   $("found-split").innerHTML = `<span class="badge">${shown} affichés</span><span class="badge lock"><span class="lock-ico"></span>${fmt(hidden)}${R.capped ? "+" : ""} verrouillés</span>`;
   $("icp").innerHTML = [R.profile.target, R.profile.zone, b2c ? "Mode B2C, via des partenaires" : "Mode B2B", "Décideurs identifiés"].map(x => `<span>${esc(x)}</span>`).join("");
-  $("list-label").textContent = b2c ? "Partenaires, du plus au moins pertinent" : "Prospects, du plus au moins pertinent";
+  $("list-label").textContent = b2c ? "Vos partenaires sélectionnés" : "Vos prospects sélectionnés";
   $("plist").innerHTML = R.prospects.map((p, i) => `<li><button type="button" class="prospect rise" style="animation-delay:${i * 70}ms" aria-pressed="${i === sel}" data-i="${i}">
-    <span class="score">${p.score}</span>
+    <span class="score av" aria-hidden="true">${esc(initial(p.name))}</span>
     <span><span class="p-name">${esc(p.name)}</span><br><span class="p-sub">${esc([p.city, p.size].filter(Boolean).join(" · "))}</span>
       <span class="p-why" style="display:block"><b>${esc(p.boss.first)} ${esc(p.boss.last)}</b>, ${esc(p.boss.role)}</span>
       <span class="p-src">${esc(p.why)}</span></span>
@@ -1516,6 +1516,7 @@ updateSummary();
 const API_ALT = "https://clyento-site.vercel.app";
 // Une seule recherche gratuite par visiteur : le résultat est gardé dans le navigateur et réaffiché ensuite (sans nouveau coût)
 const FREE = "clyento_free_result";
+const initial = n => { const w = String(n || "?").replace(/^(SARL|SAS|SASU|EURL|SA|SCI|SELARL)\s+/i, "").trim(); return (w.match(/[A-Za-zÀ-ÿ0-9]/) || ["?"])[0].toUpperCase(); };
 const capFirst = t => { t = String(t || ""); return t.charAt(0).toUpperCase() + t.slice(1); };
 (() => { const t = new URLSearchParams(location.search).get("test"); if (t) store.set("clyento_test", t); })();
 const testKey = () => store.get("clyento_test") || "";
