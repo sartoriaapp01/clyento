@@ -74,27 +74,40 @@ const PitchSchema = z.object({
   appel: z.string(),
 });
 
-const PITCH_SYSTEM = `Tu rédiges la prospection d'un petit business français vers une entreprise trouvée dans le registre national des entreprises.
+const PITCH_SYSTEM = `Tu rédiges la prospection d'un petit business français (le client) vers une entreprise trouvée dans le registre national des entreprises (le prospect). Ton modèle : les meilleurs commerciaux terrain, qui écrivent des messages courts, personnels et faciles à accepter. Un bon message donne l'impression d'avoir été écrit pour ce prospect seul, se lit en 20 secondes et demande un petit pas, pas une décision.
 
 - score : pertinence de ce prospect pour le client, de 70 à 98.
-- raison : une phrase de 25 mots maximum qui dit pourquoi ce prospect précis a besoin de cette offre, à partir de ses données (activité, ville, effectif, ancienneté). Ne cite jamais de code NAF.
-- email_objet : 8 mots maximum, concret, sans majuscules inutiles.
-- email_corps : 60 à 90 mots. Sans formule d'appel, sans signature et sans lien de désinscription (ils sont ajoutés automatiquement). Commence par ce qui concerne le prospect, présente l'offre en une ou deux phrases avec le vocabulaire du métier du client, termine par une seule question qui propose un échange court.
-- linkedin : 300 caractères maximum, commence par « Bonjour <prénom>, ».
-- appel : une ouverture d'appel de 2 ou 3 phrases entre guillemets français, puis une réponse à l'objection « ce n'est pas le moment ».
+- raison : une phrase de 25 mots maximum qui dit pourquoi ce prospect précis a besoin de cette offre, à partir de ses données (activité, ville, ancienneté). Ne cite jamais de code NAF.
 
-Respecte le ton demandé par le client dans ses réponses, et appuie-toi sur son meilleur client ou son atout quand il en a cité un.
+- email_objet : 3 à 7 mots, commence par une majuscule, puis minuscules sauf noms propres. Il parle du prospect ou de son activité (son nom, sa rue, son métier), comme un message entre collègues : « Les vitrines du Fournil du Port », « Vos parties communes à Nantes ». Jamais de mot publicitaire (offre, promotion, gratuit, opportunité, partenariat exclusif), ni de point d'exclamation, ni de « RE: » trompeur.
 
-Dans le message, ne cite pas l'année de création, le nombre de salariés ni d'autres chiffres du registre : le prospect les connaît, et cela sonne comme une fiche. Seule exception : une entreprise créée il y a moins d'un an, que tu peux féliciter pour son ouverture. Parle plutôt de son activité et de ce que le client peut lui apporter.
+- email_corps : 50 à 90 mots, en 3 ou 4 paragraphes très courts séparés par une ligne vide. Sans formule d'appel, sans signature et sans lien de désinscription (ils sont ajoutés automatiquement). Structure :
+  1. Une première phrase sur le prospect, pas sur le client : ce que fait son entreprise, son quartier, ce qui est typique de son métier. Jamais « Je me permets de vous contacter », « Je suis X et je… », « J'espère que vous allez bien ».
+  2. Une situation concrète que vivent souvent les entreprises comme la sienne, dite avec ses mots à lui (un boulanger parle de four et de chambre froide, un syndic de parties communes et de copropriétaires).
+  3. Ce que le client fait pour ce genre d'entreprise, en une ou deux phrases, avec un détail concret ou une preuve s'il en a donné une (son meilleur client, son délai, son atout). Pas de liste de services.
+  4. Une seule demande, petite et précise, sous forme de question à laquelle on peut répondre en un mot : « Est-ce que ce serait utile que je passe 15 minutes jeudi pour regarder votre installation ? », « Voulez-vous que je vous envoie deux exemples de chantiers similaires ? ». Jamais « n'hésitez pas à me contacter ».
+  Phrases courtes. Aucun superlatif creux (meilleur, leader, de qualité, solutions sur mesure, accompagnement personnalisé).
 
-N'invente aucun fait sur le prospect (chiffres, projets, clients, problèmes) au-delà des données fournies, ni sur le client au-delà de sa description. Écris comme un professionnel qui connaît son métier, pas comme une publicité. Vouvoiement. Pas d'emoji.`;
+- linkedin : 300 caractères maximum, commence par « Bonjour <prénom>, ». C'est une demande de mise en relation, pas un argumentaire : une phrase sur ce qui vous rapproche (même ville, même secteur, activité complémentaire), une sur ce que fait le client, et une question légère.
+
+- appel : le début d'un appel à froid, entre guillemets français, en 3 ou 4 phrases : se présenter (prénom, entreprise), annoncer honnêtement que c'est un appel à froid et demander 30 secondes, donner la raison précise de l'appel liée à son activité, poser une question ouverte sur sa situation. Puis, sur une nouvelle ligne commençant par « S'il répond que ce n'est pas le moment : », une réponse courte qui propose de rappeler à une date précise ou d'envoyer un message.
+
+Respecte le ton demandé par le client dans ses réponses, et appuie-toi sur son meilleur client ou son atout quand il en a cité un. Si le client vend à des particuliers et que le prospect est un partenaire possible, propose un échange de recommandations, pas une vente.
+
+Dans le message, ne cite pas l'année de création, le nombre de salariés ni d'autres chiffres du registre : le prospect les connaît, et cela sonne comme une fiche. Seule exception : une entreprise créée il y a moins d'un an, que tu peux féliciter pour son ouverture.
+
+N'invente aucun fait sur le prospect (chiffres, projets, clients, problèmes constatés) au-delà des données fournies : parle de ce qui arrive souvent dans son métier, pas de ce qui lui arrive à lui. N'invente rien non plus sur le client au-delà de sa description. Vouvoiement. Pas d'emoji. Français naturel, comme écrit à la main par un artisan ou un indépendant qui connaît son métier.`;
+
+// Objet d'e-mail : toujours une majuscule au début
+const cap = t => { t = String(t || "").trim(); return t ? t.charAt(0).toLocaleUpperCase("fr-FR") + t.slice(1) : t; };
+function fixPitch(r){ if (r){ r.email_objet = cap(r.email_objet).replace(/[.!]+$/, ""); } return r; }
 
 // Une rédaction par prospect, lancées en parallèle pour réduire l'attente.
 async function pitch(profile, desc, prospects) {
   const client = `Le client : ${[profile.firstName, profile.siteTitle].filter(Boolean).join(", ")}${profile.domain ? ` (${profile.domain})` : ""}.\nSon objectif : ${profile.objectif || "décrocher des rendez-vous"}.\nCe qui le distingue : ${profile.atouts || "non précisé"}.\nSes autres réponses au questionnaire : ${profile.infos || "aucune"}.\nSa description : ${desc}\nCe que nous avons compris : ${profile.summary || ""}\nPourquoi ce type d'entreprise : ${profile.why || ""}`;
   return Promise.all(prospects.map(p => ask(PITCH_SYSTEM,
     `${client}\n\nProspect : ${p.name} — activité : ${p.activity || p.naf} — ville : ${p.city} — ${p.size || "effectif inconnu"} — créée en ${p.created || "?"} — dirigeant : ${p.boss.first} ${p.boss.last}, ${p.boss.role}`,
-    PitchSchema, 3000).catch(() => null)));
+    PitchSchema, 3000).then(fixPitch).catch(() => null)));
 }
 
 module.exports = { analyze, pitch, enabled: !!client };
