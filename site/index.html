@@ -1402,7 +1402,7 @@ function updateSummary(){
   $("wiz-title").textContent = f.prenom ? `${f.prenom}, votre recherche personnalisée` : "Votre recherche personnalisée";
 }
 function showStep(n, focus = true){
-  wizStep = n;
+  wizStep = n; store.set("clyento_step", String(n));
   document.querySelectorAll("#search .wiz-step").forEach(f => f.classList.toggle("off", +f.dataset.s !== n));
   const cur = document.querySelector(`#search .wiz-step[data-s="${n}"]`);
   $("wiz-stepname").textContent = `Étape ${n + 1} sur ${LAST + 1} · ${cur.dataset.name}`;
@@ -1476,7 +1476,8 @@ const formFields = () => document.querySelectorAll("#search input:not([type=chec
 function saveForm(){ const d = {}; formFields().forEach(f => { if (f.id && f.value) d[f.id] = f.value; }); store.set(FORM_KEY, JSON.stringify(d)); }
 (() => { let d = null; try { d = JSON.parse(store.get(FORM_KEY) || "null"); } catch {} if (!d) return;
   formFields().forEach(f => { if (f.id && d[f.id] != null){ f.value = d[f.id]; if (f.tagName === "SELECT" && f.value !== d[f.id]) f.value = ""; } });
-  $("f-metier").dispatchEvent(new Event("change")); updateSummary(); })();
+  $("f-metier").dispatchEvent(new Event("change")); updateSummary();
+  const st = +store.get("clyento_step"); if (st > 0 && st <= LAST) wizStep = st; })();
 formFields().forEach(f => { f.addEventListener("input", saveForm); f.addEventListener("change", saveForm); });
 document.querySelectorAll("#search input, #search textarea").forEach(i => i.addEventListener("input", updateSummary));
 $("wiz-next").addEventListener("click", () => { if (checkStep(wizStep)) showStep(wizStep + 1); });
