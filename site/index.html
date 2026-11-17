@@ -818,6 +818,16 @@ section.cta-end{border-top:0}
 @keyframes rise{from{transform:translateY(6px);opacity:.4}to{transform:none;opacity:1}}
 .rise{animation:rise .35s ease-out both}
 @media (max-width:480px){ .qmodal .wiz-step[data-s="4"] .row2{grid-template-columns:1fr} }
+/* Prix fondateur : bandeau en haut, encart et étiquettes dans les tarifs */
+.fbar{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;padding:8px 16px;background:var(--ink);color:#E9F2EC;font-size:.88rem;text-decoration:none;text-align:center}
+.fbar:hover .fb-go{text-decoration:underline}
+.fbar .sm{display:none}
+.fb-tag{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--mark);color:var(--mark-ink);white-space:nowrap}
+.fb-go{font-weight:600;color:var(--mark);white-space:nowrap}
+@media (max-width:700px){ .fbar .lg,.fbar .fb-go{display:none} .fbar .sm{display:inline} .fbar{font-size:.84rem;gap:8px} }
+.founder{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:6px 0 26px;padding:16px 20px;border:1px solid rgba(30,154,85,.35);border-radius:16px;background:rgba(52,214,122,.12)}
+.founder p{margin:0;flex:1 1 360px;color:var(--ink)}
+.plan-f{justify-self:start;align-self:start;width:max-content;font-size:.72rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:rgba(52,214,122,.2);color:#146E3F}
 /* Taille des clients : cases à cocher */
 #tc-l{display:grid;gap:6px}
 .tc-chips{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:2px}
@@ -885,6 +895,7 @@ section.cta-end{border-top:0}
 
 <div class="bg" id="bg" aria-hidden="true"><canvas id="bg-lines"></canvas></div>
 <header class="top">
+  <a class="fbar" href="#tarifs"><span class="fb-tag">Prix fondateur</span><span class="lg">Les premiers inscrits gardent leur prix à vie, même quand les tarifs augmentent.</span><span class="sm">Votre prix garanti à vie →</span><span class="fb-go" aria-hidden="true">Voir les tarifs →</span></a>
   <div class="wrap nav">
     <a class="brand" href="#top" aria-label="Clyento, accueil"><svg><use href="#logo"/></svg>clyento</a>
     <nav aria-label="Navigation"><a href="#comment">Comment ça marche</a><a href="#exemple">Exemple</a><a href="#tarifs">Tarifs</a><a href="#faq">FAQ</a></nav>
@@ -1061,10 +1072,12 @@ section.cta-end{border-top:0}
         <h2>Une offre pour chaque rythme de prospection.</h2>
         <p class="lede">La recherche est gratuite. Vous payez pour débloquer les décideurs et envoyer vos messages. Sans engagement.</p>
       </div>
+      <div class="founder"><span class="fb-tag">Prix fondateur</span><p><b>Ces prix sont nos prix de lancement.</b> Inscrivez-vous maintenant : vous les gardez à vie, tant que vous restez abonné, même quand les tarifs augmenteront pour les nouveaux clients.</p></div>
       <div class="plans">
         <article class="plan">
           <span class="eyebrow">Essentiel</span>
-          <div class="plan-price"><b>12,99 €</b><span>par mois</span></div>
+          <span class="plan-f">Prix fondateur</span>
+          <div class="plan-price"><b>12,99 €</b><span>par mois · garanti à vie</span></div>
           <ul>
             <li><svg class="tick"><use href="#tick"/></svg>100 prospects débloqués par mois</li>
             <li><svg class="tick"><use href="#tick"/></svg>Le nom et la fonction du dirigeant</li>
@@ -1074,7 +1087,8 @@ section.cta-end{border-top:0}
         </article>
         <article class="plan pro">
           <span class="eyebrow">Pro · recommandé</span>
-          <div class="plan-price"><b>24,99 €</b><span>par mois</span></div>
+          <span class="plan-f">Prix fondateur</span>
+          <div class="plan-price"><b>24,99 €</b><span>par mois · garanti à vie</span></div>
           <ul>
             <li><svg class="tick"><use href="#tick"/></svg>300 prospects débloqués par mois</li>
             <li><svg class="tick"><use href="#tick"/></svg>Tout ce que contient Essentiel</li>
@@ -1084,7 +1098,8 @@ section.cta-end{border-top:0}
         </article>
         <article class="plan">
           <span class="eyebrow">Accès complet</span>
-          <div class="plan-price"><b>49,99 €</b><span>par mois</span></div>
+          <span class="plan-f">Prix fondateur</span>
+          <div class="plan-price"><b>49,99 €</b><span>par mois · garanti à vie</span></div>
           <ul>
             <li><svg class="tick"><use href="#tick"/></svg>1 000 prospects débloqués par mois</li>
             <li><svg class="tick"><use href="#tick"/></svg>Tout ce que contient Pro</li>
@@ -1094,8 +1109,7 @@ section.cta-end{border-top:0}
         </article>
       </div>
       <p class="plans-note">Prix TTC. Sans engagement, résiliable à tout moment. Paiement sécurisé par Stripe, à l'ouverture des abonnements.</p>
-      <p class="plans-soon"><span>Fondateur</span>Ces prix sont nos prix de lancement : en vous inscrivant maintenant, vous les gardez à vie, même si les tarifs augmentent ensuite.</p>
-      <p class="plans-soon"><span>Bientôt</span>Envoi des messages depuis votre adresse, relances et tableau de suivi de vos prospects.</p>
+            <p class="plans-soon"><span>Bientôt</span>Envoi des messages depuis votre adresse, relances et tableau de suivi de vos prospects.</p>
     </div>
   </section>
 
@@ -1332,7 +1346,7 @@ function renderMsg(){
 function renderUnlock(step, plan){
   const u = $("unlock"), noun = R.profile.b2c ? "partenaires" : "prospects";
   if (step === "plans"){
-    u.innerHTML = `<div class="unlock-copy"><h3>Choisissez votre offre</h3><p>Sans engagement, résiliable à tout moment.</p></div>
+    u.innerHTML = `<div class="unlock-copy"><h3>Choisissez votre offre au prix fondateur</h3><p>Garanti à vie pour les premiers inscrits. Sans engagement, résiliable à tout moment.</p></div>
       <div class="unlock-act"><button class="linkbtn" type="button" data-a="back">Revenir</button></div>
       <div class="mini-plans">${PLANS.map((p, i) => `<button type="button" class="mini${p.rec ? " rec" : ""}" data-a="pick" data-p="${i}">
         <b>${p.name}</b><span class="pr">${p.price}<span> / mois</span></span><span>${p.line}</span></button>`).join("")}</div>`;
