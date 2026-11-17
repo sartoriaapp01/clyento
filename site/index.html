@@ -817,6 +817,17 @@ section.cta-end{border-top:0}
 
 @keyframes rise{from{transform:translateY(6px);opacity:.4}to{transform:none;opacity:1}}
 .rise{animation:rise .35s ease-out both}
+/* Taille des clients : cases à cocher */
+#tc-l{display:grid;gap:6px}
+.tc-chips{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:2px}
+@media (max-width:620px){ .tc-chips{grid-template-columns:1fr 1fr} }
+.tc{position:relative;cursor:pointer}
+.tc input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.tc span{display:grid;gap:2px;padding:11px 28px 11px 12px;border:1px solid var(--line);border-radius:12px;background:var(--soft);font-weight:600;font-size:.95rem;transition:background .2s,border-color .2s}
+.tc small{font-weight:400;font-size:.8rem;color:var(--muted)}
+.tc input:checked+span{background:rgba(52,214,122,.18);border-color:#1E9A55;box-shadow:inset 0 0 0 1px #1E9A55}
+.tc input:checked+span::after{content:"✓";position:absolute;top:8px;right:10px;color:#146E3F;font-weight:700}
+.tc input:focus-visible+span{outline:2px solid var(--mark);outline-offset:2px}
 /* Haut de page : bouton principal et exemple de résultat */
 .hero-cta{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;margin-top:4px}
 .btn-go{background:var(--mark);color:var(--mark-ink);padding:16px 26px;font-size:1.05rem;box-shadow:0 12px 26px -14px rgba(20,110,63,.8)}
@@ -1184,10 +1195,14 @@ section.cta-end{border-top:0}
 
       <fieldset class="wiz-step off" data-s="3" data-name="Vos clients">
         <legend class="sr">Vos clients</legend>
-        <div class="row2">
-          <label class="fld" for="f-cible">Vous vendez à<select id="f-cible"><option value="">Choisir…</option><option value="entreprises">Des entreprises</option><option value="particuliers">Des particuliers</option><option value="les deux">Les deux</option></select></label>
-          <label class="fld" for="f-tcible">Taille des clients visés<select id="f-tcible"><option value="">Toutes tailles</option><option value="vise des indépendants sans salarié">Indépendants (seuls)</option><option value="vise des très petites entreprises de 1 à 9 salariés">TPE (1 à 9 salariés)</option><option value="vise des PME de 10 à 249 salariés">PME (10 à 249 salariés)</option><option value="vise des grandes entreprises de 250 salariés et plus">Grandes (250 et plus)</option></select></label>
-        </div>
+        <label class="fld" for="f-cible">Vous vendez à<select id="f-cible"><option value="">Choisir…</option><option value="entreprises">Des entreprises</option><option value="particuliers">Des particuliers</option><option value="les deux">Les deux</option></select></label>
+        <div class="fld" role="group" aria-labelledby="tc-l"><span id="tc-l">Taille des clients visés <em>une ou plusieurs ; rien de coché = toutes tailles</em></span>
+          <div class="tc-chips">
+            <label class="tc"><input type="checkbox" name="tcible" value="indep"><span>Indépendants <small>seuls</small></span></label>
+            <label class="tc"><input type="checkbox" name="tcible" value="tpe"><span>TPE <small>1 à 9 salariés</small></span></label>
+            <label class="tc"><input type="checkbox" name="tcible" value="pme"><span>PME <small>10 à 249</small></span></label>
+            <label class="tc"><input type="checkbox" name="tcible" value="grande"><span>Grandes <small>250 et plus</small></span></label>
+          </div></div>
         <div class="row2">
           <label class="fld" for="f-ville">Votre ville<input id="f-ville" autocomplete="address-level2" placeholder="Ex. Lyon (facultatif)"></label>
           <label class="fld" for="f-rayon">Jusqu'où<select id="f-rayon"><option value="ville">Ma ville seulement</option><option value="zone" selected>Ma ville et alentours</option><option value="departement">Mon département</option><option value="france">Toute la France</option></select></label>
@@ -1379,10 +1394,19 @@ function domainOf(raw){
 
 // Questionnaire en cinq étapes, ouvert au premier plan
 const LAST = 4;
+// Taille des clients visés : plusieurs cases possibles ; aucune ou toutes = toutes tailles
+const SIZES = { indep: { t: "indépendants sans salarié", c: ["00"] }, tpe: { t: "très petites entreprises de 1 à 9 salariés", c: ["01", "02", "03"] },
+  pme: { t: "PME de 10 à 249 salariés", c: ["11", "12", "21", "22", "31", "32"] }, grande: { t: "grandes entreprises de 250 salariés et plus", c: ["41", "42", "51", "52", "53"] } };
+const sizesPicked = () => [...document.querySelectorAll('input[name="tcible"]:checked')].map(x => x.value);
+const sizeText = () => { const k = sizesPicked(); return k.length && k.length < 4 ? "vise uniquement : " + k.map(x => SIZES[x].t).join(", ") : ""; };
+function sizeCodes(aiCodes){ const k = sizesPicked(); if (!k.length || k.length === 4) return aiCodes;
+  const allowed = k.flatMap(x => SIZES[x].c), mine = (aiCodes || []).filter(c => allowed.includes(c));
+  return mine.length ? mine : allowed; }
 let wizStep = 0, qOpener = null;
 const val = id => $(id).value.trim();
 function formData(){
-  const extra = ["f-anciennete", "f-taille", "f-panier", "f-recurrence", "f-tcible", "f-volume", "f-experience", "f-ton"].map(val).filter(Boolean);
+  const extra = ["f-anciennete", "f-taille", "f-panier", "f-recurrence", "f-volume", "f-experience", "f-ton"].map(val).filter(Boolean);
+  if (sizeText()) extra.push(sizeText());
   if (val("f-meilleur")) extra.push("son meilleur client jusqu'ici : " + val("f-meilleur"));
   if (val("f-eviter")) extra.push("clients à éviter : " + val("f-eviter"));
   if (val("f-canal")) extra.push("canal préféré : " + $("f-canal").selectedOptions[0].textContent);
@@ -1473,12 +1497,14 @@ $("f-metier").addEventListener("change", e => { const o = e.target.selectedOptio
 // Réponses du questionnaire gardées dans le navigateur : un visiteur qui recharge ou revient plus tard retrouve tout
 const FORM_KEY = "clyento_form";
 const formFields = () => document.querySelectorAll("#search input:not([type=checkbox]), #search textarea, #search select");
-function saveForm(){ const d = {}; formFields().forEach(f => { if (f.id && f.value) d[f.id] = f.value; }); store.set(FORM_KEY, JSON.stringify(d)); }
+function saveForm(){ const d = {}; formFields().forEach(f => { if (f.id && f.value) d[f.id] = f.value; }); d.tcible = sizesPicked(); store.set(FORM_KEY, JSON.stringify(d)); }
 (() => { let d = null; try { d = JSON.parse(store.get(FORM_KEY) || "null"); } catch {} if (!d) return;
   formFields().forEach(f => { if (f.id && d[f.id] != null){ f.value = d[f.id]; if (f.tagName === "SELECT" && f.value !== d[f.id]) f.value = ""; } });
+  (d.tcible || []).forEach(v => { const x = document.querySelector(`input[name="tcible"][value="${v}"]`); if (x) x.checked = true; });
   $("f-metier").dispatchEvent(new Event("change")); updateSummary();
   const st = +store.get("clyento_step"); if (st > 0 && st <= LAST) wizStep = st; })();
 formFields().forEach(f => { f.addEventListener("input", saveForm); f.addEventListener("change", saveForm); });
+document.querySelectorAll('input[name="tcible"]').forEach(x => x.addEventListener("change", saveForm));
 document.querySelectorAll("#search input, #search textarea").forEach(i => i.addEventListener("input", updateSummary));
 $("wiz-next").addEventListener("click", () => { if (checkStep(wizStep)) showStep(wizStep + 1); });
 $("wiz-back").addEventListener("click", () => showStep(wizStep - 1));
@@ -1585,7 +1611,7 @@ $("search").addEventListener("submit", async e => {
   ldClear();
   if (a.j && a.j.used){ ldClose(); return showUsed(); }
   if (!a.ok || !a.j.profile) return ldError(a.j.error || "L'analyse n'a pas abouti. Réessayez dans un instant.");
-  const prof = a.j.profile;
+  const prof = a.j.profile; prof.tranches = sizeCodes(prof.tranches);
 
   // Ce que Claude retient de chaque page du site : remplace la liste brute des pages lues
   $("ld-title").textContent = `${F.prenom.split(" ")[0]}, nous cherchons vos clients.`;
