@@ -817,6 +817,7 @@ section.cta-end{border-top:0}
 
 @keyframes rise{from{transform:translateY(6px);opacity:.4}to{transform:none;opacity:1}}
 .rise{animation:rise .35s ease-out both}
+@media (max-width:480px){ .qmodal .wiz-step[data-s="4"] .row2{grid-template-columns:1fr} }
 /* Taille des clients : cases à cocher */
 #tc-l{display:grid;gap:6px}
 .tc-chips{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:2px}
@@ -1213,16 +1214,15 @@ section.cta-end{border-top:0}
 
       <fieldset class="wiz-step off" data-s="4" data-name="Votre prospection">
         <legend class="sr">Votre prospection</legend>
+        <label class="fld" for="f-objectif">Ce que vous cherchez<select id="f-objectif"><option value="vendre plus : trouver des clients qui achètent">Des ventes directes</option><option value="décrocher des rendez-vous rapidement">Des rendez-vous rapidement</option><option value="signer des contrats réguliers">Des clients réguliers (contrats)</option><option value="trouver des partenaires qui recommandent">Des partenaires qui recommandent</option></select></label>
         <div class="row2">
-          <label class="fld" for="f-objectif">Votre objectif<select id="f-objectif"><option value="vendre plus : trouver des clients qui achètent">Des ventes</option><option value="décrocher des rendez-vous rapidement">Des rendez-vous vite</option><option value="signer des contrats réguliers">Des contrats réguliers</option><option value="trouver des partenaires qui recommandent">Des partenaires</option></select></label>
-          <label class="fld" for="f-volume">Nouveaux clients par mois<select id="f-volume"><option value="">Choisir…</option><option value="vise 1 à 5 nouveaux clients par mois">1 à 5</option><option value="vise 5 à 20 nouveaux clients par mois">5 à 20</option><option value="vise plus de 20 nouveaux clients par mois">Plus de 20</option></select></label>
-        </div>
-        <div class="row2">
+          <label class="fld" for="f-volume">Votre objectif par mois<select id="f-volume"><option value="">Choisir…</option><option value="vise 1 à 5 nouveaux clients par mois">1 à 5 clients</option><option value="vise 5 à 20 nouveaux clients par mois">5 à 20 clients</option><option value="vise plus de 20 nouveaux clients par mois">Plus de 20 clients</option></select></label>
           <label class="fld" for="f-canal">Votre canal préféré<select id="f-canal"><option value="">Peu importe</option><option value="Email">Email</option><option value="LinkedIn">LinkedIn</option><option value="Appel">Téléphone</option></select></label>
-          <label class="fld" for="f-experience">Avez-vous déjà prospecté ?<select id="f-experience"><option value="">Choisir…</option><option value="n'a jamais prospecté">Jamais</option><option value="a déjà un peu prospecté">Un peu</option><option value="prospecte régulièrement">Régulièrement</option></select></label>
         </div>
-        <label class="fld" for="f-ton">Le ton de vos messages
-          <select id="f-ton"><option value="ton professionnel et direct">Professionnel et direct</option><option value="ton chaleureux et simple">Chaleureux et simple</option><option value="ton très court, droit au but">Très court</option></select></label>
+        <div class="row2">
+          <label class="fld" for="f-experience">Avez-vous déjà prospecté ?<select id="f-experience"><option value="">Choisir…</option><option value="n'a jamais prospecté">Jamais</option><option value="a déjà un peu prospecté">Un peu</option><option value="prospecte régulièrement">Régulièrement</option></select></label>
+          <label class="fld" for="f-ton">Le ton de vos messages<select id="f-ton"><option value="ton professionnel et direct">Professionnel et direct</option><option value="ton chaleureux et simple">Chaleureux et simple</option><option value="ton très court, droit au but">Très court</option></select></label>
+        </div>
       </fieldset>
     </div>
     <p class="search-err" id="search-err" hidden></p>
