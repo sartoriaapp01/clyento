@@ -354,7 +354,7 @@ html.lock,html.lock body{overflow:hidden}
 @keyframes rowIn{from{opacity:0;transform:translateX(18px)}}
 @keyframes dotIn{from{transform:scale(0)}}
 @keyframes railIn{from{transform:scaleY(0)}}
-.win-rows .sc{display:grid;place-items:center;width:50px;height:34px;border-radius:8px;background:var(--mark);color:var(--mark-ink);font-weight:700;font-size:.95rem;box-shadow:0 0 14px -2px rgba(52,214,122,.6)}
+.win-rows .sc{display:grid;place-items:center;width:34px;height:34px;border-radius:8px;background:var(--mark);color:var(--mark-ink);font-weight:700;font-size:.95rem;box-shadow:0 0 14px -2px rgba(52,214,122,.6)}
 .win-rows .nm{height:8px;border-radius:5px;background:linear-gradient(90deg,rgba(150,220,180,.5),rgba(150,220,180,.22));filter:blur(1.2px)}
 .win-rows .nm + .nm{width:62%;margin-top:7px;opacity:.6}
 .win-rows .tag{font-size:.82rem;color:var(--ink);border:1px solid rgba(120,240,175,.3);border-radius:8px;padding:5px 10px;white-space:nowrap}
@@ -883,6 +883,16 @@ section.cta-end{border-top:0}
   .jt span,.jobs-stack button[aria-pressed="true"] .jt span{max-height:none;min-height:0;margin:0;padding-top:0;opacity:0;transition:opacity .25s ease}
   .jobs-stack button[aria-pressed="true"] .jt span{opacity:1;color:var(--ink);transition:opacity .35s ease .12s}
 }
+/* Rythme de couleurs : sections alternées (clair, blanc, sombre) pour casser l'uniformité */
+#metiers,#exemple,#faq{background:#FCFDFC}
+#comment{background:var(--bg)}
+#tarifs{background:linear-gradient(180deg,#E4EFE7 0%,#D9E7DD 100%)}
+.proof{background:#11241A;color:#EEF5F0;--ink:#EEF5F0;--muted:#A9BDB0;--line:rgba(255,255,255,.14);border-top:0}
+.proof h2{color:#fff}
+.proof .proof-total b{color:#34D67A}
+.proof .proof-src li::before{background:#34D67A}
+.proof .win{--ink:#0F1C14;--muted:#45564C;--line:#BFCFC3;color:var(--ink);box-shadow:0 30px 70px -30px rgba(0,0,0,.6)}
+#exemple .ex,#faq details,#metiers .jobs-stack button{box-shadow:0 1px 0 rgba(15,28,20,.03)}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -1762,7 +1772,7 @@ async function playDemo(i){
   if (run !== demoRun) return;
   $("win-label").textContent = d.label;
   $("win-mix").innerHTML = `<span class="mix-l">Cibles choisies par l'IA</span>` + d.mix.map((m, k) => `<span class="mix" style="animation-delay:${k * 120}ms">${m}</span>`).join("");
-  $("win-rows").innerHTML = `<li class="rail" aria-hidden="true"></li>` + [96, 93, 90].map((sc, k) => `<li class="row" style="animation-delay:${300 + k * 220}ms"><span class="sc">${sc}</span><span><span class="nm" style="display:block;width:${78 - k * 9}%"></span><span class="nm" style="display:block"></span></span><span class="tag">${d.tag}</span></li>`).join("");
+  $("win-rows").innerHTML = `<li class="rail" aria-hidden="true"></li>` + ["A", "B", "C"].map((sc, k) => `<li class="row" style="animation-delay:${300 + k * 220}ms"><span class="sc" aria-hidden="true"><svg class="tick" style="width:16px;height:16px"><use href="#tick"/></svg></span><span><span class="nm" style="display:block;width:${78 - k * 9}%"></span><span class="nm" style="display:block"></span></span><span class="tag">${d.tag}</span></li>`).join("");
   res.classList.remove("hide");
   const t0 = performance.now(), el = $("win-n");
   const tick = t => { if (run !== demoRun) return; const k = Math.min(1, (t - t0) / 1100); el.textContent = fmt(Math.round(d.n * (1 - Math.pow(1 - k, 3)))); if (k < 1) requestAnimationFrame(tick); };
