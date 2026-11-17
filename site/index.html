@@ -1323,7 +1323,7 @@ function renderMsg(){
   $("find").innerHTML = `<span class="find-l">Trouver ses coordonnées :</span>
     <a href="https://www.google.com/maps/search/?api=1&query=${q(p.name + " " + (p.city || ""))}" target="_blank" rel="noopener">Téléphone et adresse (Google Maps)</a>
     <a href="https://www.google.com/search?q=${q(p.name + " " + (p.city || "") + " contact e-mail")}" target="_blank" rel="noopener">Site et e-mail (Google)</a>
-    <a href="https://www.linkedin.com/search/results/people/?keywords=${q(who + " " + p.name)}" target="_blank" rel="noopener">${esc(p.boss.first)} sur LinkedIn</a>
+    <a href="https://www.google.com/search?q=${q(`"${who}" ${p.city || ""} site:linkedin.com/in`)}" target="_blank" rel="noopener">Chercher ${esc(p.boss.first)} sur LinkedIn</a>
     ${p.siren ? `<a href="https://annuaire-entreprises.data.gouv.fr/entreprise/${q(p.siren)}" target="_blank" rel="noopener">Fiche officielle</a>` : ""}`;
   $("msg").textContent = (p.ai ? MSG_AI : MSG)[tab](p);
   $("msg").classList.remove("rise"); void $("msg").offsetWidth; $("msg").classList.add("rise");
