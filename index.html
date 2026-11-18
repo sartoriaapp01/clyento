@@ -821,6 +821,11 @@ section.cta-end{border-top:0}
 .founder{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:6px 0 26px;padding:16px 20px;border:1px solid rgba(30,154,85,.35);border-radius:16px;background:rgba(52,214,122,.12)}
 .founder p{margin:0;flex:1 1 360px;color:var(--ink)}
 .plan-f{justify-self:start;align-self:start;width:max-content;font-size:.72rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:rgba(52,214,122,.2);color:#146E3F}
+/* Récap d'offre + liste d'attente : une seule colonne, le formulaire sous le récapitulatif */
+.unlock.stack{grid-template-columns:1fr;align-items:start}
+.unlock.stack .recap{max-width:640px}
+.unlock.stack .unlock-act{justify-items:stretch}
+.unlock.stack .unlock-act .linkbtn{justify-self:center}
 /* Taille des clients : cases à cocher */
 #tc-l{display:grid;gap:6px}
 .tc-chips{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:2px}
@@ -1348,6 +1353,7 @@ function renderMsg(){
 
 function renderUnlock(step, plan){
   const u = $("unlock"), noun = R.profile.b2c ? "partenaires" : "prospects";
+  u.classList.toggle("stack", step === "pick" && !PAY_OPEN);
   if (step === "plans"){
     u.innerHTML = `<div class="unlock-copy"><h3>Choisissez votre offre au prix fondateur</h3><p>Garanti à vie pour les premiers inscrits. Sans engagement, résiliable à tout moment.</p></div>
       <div class="unlock-act"><button class="linkbtn" type="button" data-a="back">Revenir</button></div>
@@ -1359,8 +1365,8 @@ function renderUnlock(step, plan){
     const p = PLANS[plan];
     u.innerHTML = `<div class="unlock-copy"><h3>${p.name} · ${p.price} par mois</h3>
       <ul class="recap">
-        <li><span>Aujourd'hui</span><span>${fmt(Math.min(p.quota, R.total))} ${noun} débloqués sur ${fmt(R.total)}, avec le nom du dirigeant</span></li>
-        <li><span>Chaque mois</span><span><b>${p.price}</b>, ${fmt(p.quota)} nouveaux ${noun}. Résiliable à tout moment.</span></li>
+        <li><span>Chaque mois</span><span>${fmt(p.quota)} ${noun} à débloquer, avec le dirigeant et les messages prêts à envoyer</span></li>
+        <li><span>Prix</span><span><b>${p.price} par mois</b>, prix fondateur garanti à vie. Sans engagement, résiliable à tout moment.</span></li>
       </ul></div>
       ${PAY_OPEN ? `<div class="unlock-act"><button class="btn" type="button" data-a="pay" data-p="${plan}">S'abonner · ${p.price} / mois</button>
         <button class="linkbtn" type="button" data-a="plans">Changer d'offre</button></div>` : `<div class="unlock-act">${wlForm(p.id)}<button class="linkbtn" type="button" data-a="plans">Changer d'offre</button></div>`}`;
