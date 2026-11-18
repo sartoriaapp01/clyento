@@ -968,6 +968,16 @@ header.top,.top{background:rgba(255,255,255,.85);backdrop-filter:saturate(1.4) b
 @media (max-width:640px){ .hero .eyebrow{font-size:.74rem} .trade-chips span{font-size:.82rem;padding:7px 11px} }
 .bg{background:#fff}
 section.cta-end{background:#fff}
+/* Illustrations et recherche offerte */
+.ill{width:110px;height:82px;display:block;margin-bottom:6px}
+.steps li .ill{margin-bottom:12px}
+.try-wrap{position:relative;max-width:640px}
+.free-badge{position:absolute;top:-17px;left:14px;z-index:2;background:var(--lime);color:#0F1C14;font-weight:700;font-size:.85rem;padding:7px 13px;border-radius:999px;transform:rotate(3deg);box-shadow:0 10px 22px -12px rgba(15,28,20,.55);border:1.5px solid #0F1C14}
+.free-band{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;margin-top:30px;padding:22px 24px;border-radius:22px;background:linear-gradient(110deg,#E9FFB8 0%,#C9F6DB 60%,#B8F0D4 100%);border:1.5px solid rgba(15,28,20,.12)}
+.free-band .fb-ico{width:56px;height:56px;border-radius:16px;background:#fff;display:grid;place-items:center;font-size:1.7rem;box-shadow:0 10px 20px -14px rgba(15,28,20,.5)}
+.free-band b{font:700 1.2rem/1.3 var(--display)}
+.free-band p{margin:4px 0 0;color:#2E3D34}
+@media (max-width:720px){ .free-band{grid-template-columns:auto 1fr} .free-band .btn{grid-column:1/-1;justify-content:center} }
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -996,11 +1006,12 @@ section.cta-end{background:#fff}
         <span class="eyebrow">Pour les artisans, coachs, commerçants et indépendants</span>
         <h1>Plus de clients. <span class="grad">Moins de prospection.</span></h1>
         <p class="lede">Vous êtes bon dans votre métier, mais les clients ne viennent pas assez souvent ? Clyento trouve près de chez vous les entreprises qui ont besoin de vous, le nom de la bonne personne, et vous écrit le message. Vous n'avez plus qu'à l'envoyer.</p>
+        <div class="try-wrap"><span class="free-badge">🎁 1 recherche offerte</span>
         <form class="hero-try" id="hero-try" novalidate>
           <label class="ht-f"><span>Votre métier</span><input id="ht-metier" autocomplete="off" placeholder="Ex. plombier" maxlength="120"></label>
           <label class="ht-f"><span>Votre ville</span><input id="ht-ville" autocomplete="address-level2" placeholder="Ex. Lyon" maxlength="60"></label>
           <button type="submit" class="btn btn-go" id="hero-open">Voir mes clients <span aria-hidden="true">→</span></button>
-        </form>
+        </form></div>
         <span class="hero-note">Gratuit · 2 minutes · sans carte bancaire · de vraies entreprises</span>
         <div class="trade-chips" aria-label="Pour qui"><span class="c1">Artisans</span><span class="c2">Commerces</span><span class="c3">Coachs</span><span class="c4">Restaurants</span><span class="c5">Freelances</span></div>
         </div>
@@ -1058,11 +1069,12 @@ section.cta-end{background:#fff}
       <span class="eyebrow">Vous connaissez ça ?</span>
       <h2>Vous avez un métier à faire, pas des clients à courir.</h2>
       <div class="pain-grid">
-        <div class="pain"><span class="pain-n">01</span><b>Un mois plein, un mois vide</b><p>Les périodes creuses arrivent sans prévenir, et impossible de prévoir la suite.</p></div>
-        <div class="pain"><span class="pain-n">02</span><b>Tout repose sur le bouche-à-oreille</b><p>Quand les recommandations s'arrêtent, le téléphone ne sonne plus.</p></div>
-        <div class="pain"><span class="pain-n">03</span><b>Pas le temps de prospecter</b><p>Chercher qui contacter, trouver le bon nom, écrire le bon message… le soir, après le travail.</p></div>
+        <div class="pain"><svg class="ill" viewBox="0 0 120 90" aria-hidden="true"><circle cx="86" cy="22" r="20" fill="#FFE7D6"/><rect x="14" y="16" width="72" height="62" rx="10" fill="#fff" stroke="#0F1C14" stroke-width="3"/><path d="M14 32h72" stroke="#0F1C14" stroke-width="3"/><path d="M30 10v12M70 10v12" stroke="#0F1C14" stroke-width="3" stroke-linecap="round"/><g fill="#FF8A4C"><rect x="24" y="40" width="12" height="10" rx="3"/><rect x="44" y="40" width="12" height="10" rx="3"/><rect x="64" y="40" width="12" height="10" rx="3"/></g><g fill="none" stroke="#C9D6CE" stroke-width="2.5" stroke-dasharray="3 3"><rect x="24" y="56" width="12" height="10" rx="3"/><rect x="44" y="56" width="12" height="10" rx="3"/><rect x="64" y="56" width="12" height="10" rx="3"/></g></svg><span class="pain-n">01</span><b>Un mois plein, un mois vide</b><p>Les périodes creuses arrivent sans prévenir, et impossible de prévoir la suite.</p></div>
+        <div class="pain"><svg class="ill" viewBox="0 0 120 90" aria-hidden="true"><circle cx="30" cy="24" r="20" fill="#E3EEFF"/><rect x="40" y="10" width="40" height="72" rx="9" fill="#fff" stroke="#0F1C14" stroke-width="3"/><path d="M54 18h12" stroke="#0F1C14" stroke-width="3" stroke-linecap="round"/><circle cx="60" cy="72" r="3" fill="#0F1C14"/><text x="60" y="52" text-anchor="middle" font-family="DM Sans,sans-serif" font-weight="700" font-size="16" fill="#2F5FB3">z z</text><path d="M88 30c6 6 6 18 0 24M96 24c10 10 10 26 0 36" fill="none" stroke="#C9D6CE" stroke-width="3" stroke-linecap="round"/><path d="M86 22l16 44" stroke="#2F5FB3" stroke-width="3" stroke-linecap="round"/></svg><span class="pain-n">02</span><b>Tout repose sur le bouche-à-oreille</b><p>Quand les recommandations s'arrêtent, le téléphone ne sonne plus.</p></div>
+        <div class="pain"><svg class="ill" viewBox="0 0 120 90" aria-hidden="true"><circle cx="90" cy="20" r="18" fill="#FFE3EE"/><path d="M96 10a12 12 0 1 0 6 20 10 10 0 0 1-6-20z" fill="#B32F66"/><rect x="22" y="30" width="62" height="40" rx="6" fill="#fff" stroke="#0F1C14" stroke-width="3"/><path d="M12 76h82" stroke="#0F1C14" stroke-width="3" stroke-linecap="round"/><path d="M32 42h30M32 50h40M32 58h22" stroke="#C9D6CE" stroke-width="3" stroke-linecap="round"/><circle cx="20" cy="18" r="2" fill="#B32F66"/><circle cx="56" cy="14" r="1.6" fill="#B32F66"/></svg><span class="pain-n">03</span><b>Pas le temps de prospecter</b><p>Chercher qui contacter, trouver le bon nom, écrire le bon message… le soir, après le travail.</p></div>
       </div>
       <p class="pain-sol"><b>Clyento s'occupe de toute cette partie.</b> Vous gardez la plus simple : envoyer le message et décrocher le rendez-vous.</p>
+      <div class="free-band"><div class="fb-ico" aria-hidden="true">🎁</div><div><b>Votre première recherche est offerte.</b><p>Décrivez votre activité et voyez de vraies entreprises près de chez vous, avec le dirigeant et le message prêt. Sans carte bancaire, sans engagement.</p></div><button type="button" class="btn btn-go" onclick="document.getElementById('ht-metier').focus();scrollTo({top:0,behavior:'smooth'})">Essayer gratuitement</button></div>
     </div>
   </section>
 
@@ -1127,9 +1139,9 @@ section.cta-end{background:#fff}
         <h2>De votre description à vos premiers rendez-vous, en trois étapes.</h2>
       </div>
       <ol class="steps">
-        <li><span class="step-n">01</span><h3>Vous décrivez votre activité</h3><p>Cinq étapes rapides : qui vous êtes, ce que vous proposez, qui vous visez et où.</p></li>
-        <li><span class="step-n">02</span><h3>Clyento trouve vos prospects</h3><p>Il cherche dans le registre national des entreprises, classe les résultats et identifie le dirigeant de chacune.</p></li>
-        <li><span class="step-n">03</span><h3>Vous recevez vos messages</h3><p>Un email, un message LinkedIn et un script d'appel écrits pour chaque prospect, prêts à envoyer.</p></li>
+        <li><svg class="ill" viewBox="0 0 120 90" aria-hidden="true"><circle cx="34" cy="26" r="22" fill="#E4F8EC"/><rect x="20" y="14" width="64" height="66" rx="10" fill="#fff" stroke="#0F1C14" stroke-width="3"/><path d="M32 30h40M32 42h28" stroke="#0F1C14" stroke-width="3" stroke-linecap="round"/><rect x="32" y="52" width="40" height="14" rx="7" fill="#34D67A"/><path d="M88 58l14-14 6 6-14 14-8 2z" fill="#FFF6CC" stroke="#0F1C14" stroke-width="3" stroke-linejoin="round"/></svg><span class="step-n">01</span><h3>Vous décrivez votre activité</h3><p>Cinq étapes rapides : qui vous êtes, ce que vous proposez, qui vous visez et où.</p></li>
+        <li><svg class="ill" viewBox="0 0 120 90" aria-hidden="true"><circle cx="80" cy="24" r="22" fill="#FFF6CC"/><path d="M14 72l20-10 22 10 22-10 22 10V22l-22 10-22-10-22 10z" fill="#fff" stroke="#0F1C14" stroke-width="3" stroke-linejoin="round"/><g fill="#14A35A"><path d="M36 44a7 7 0 1 1 14 0c0 6-7 12-7 12s-7-6-7-12z"/><path d="M66 36a7 7 0 1 1 14 0c0 6-7 12-7 12s-7-6-7-12z"/></g><circle cx="88" cy="58" r="12" fill="none" stroke="#0F1C14" stroke-width="3"/><path d="M97 67l10 10" stroke="#0F1C14" stroke-width="4" stroke-linecap="round"/></svg><span class="step-n">02</span><h3>Clyento trouve vos prospects</h3><p>Il cherche dans le registre national des entreprises, classe les résultats et identifie le dirigeant de chacune.</p></li>
+        <li><svg class="ill" viewBox="0 0 120 90" aria-hidden="true"><circle cx="86" cy="24" r="22" fill="#FFE7D6"/><rect x="16" y="26" width="76" height="50" rx="8" fill="#fff" stroke="#0F1C14" stroke-width="3"/><path d="M18 30l36 26 36-26" fill="none" stroke="#0F1C14" stroke-width="3" stroke-linejoin="round"/><circle cx="96" cy="64" r="14" fill="#34D67A" stroke="#0F1C14" stroke-width="3"/><path d="M89 64l5 5 9-9" fill="none" stroke="#0F1C14" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="step-n">03</span><h3>Vous recevez vos messages</h3><p>Un email, un message LinkedIn et un script d'appel écrits pour chaque prospect, prêts à envoyer.</p></li>
       </ol>
     </div>
   </section>
