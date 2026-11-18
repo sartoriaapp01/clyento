@@ -1,6 +1,6 @@
 // Liste d'attente au prix fondateur, en attendant l'ouverture des paiements.
 // Chaque inscription est envoyée par e-mail à l'équipe via Resend (clé RESEND_API_KEY,
-// destinataire WAITLIST_TO, par défaut clyento.app@gmail.com). Rien n'est stocké ailleurs.
+// destinataire WAITLIST_TO, par défaut contact@clyento-ai.com). Rien n'est stocké ailleurs.
 
 const cors = require("../lib/cors");
 
@@ -36,8 +36,8 @@ module.exports = async (req, res) => {
   ].filter(([, v]) => clip(v));
   const html = `<h2>${us ? "Nouvelle inscription · liste d'attente États-Unis" : search ? "Nouvelle recherche sur Clyento" : "Nouvelle inscription · liste d'attente Clyento"}</h2><table cellpadding="6">${(search ? rows.filter(([k]) => k !== "Offre") : rows).map(([k, v]) => `<tr><td><b>${k}</b></td><td>${esc(v)}</td></tr>`).join("")}</table>`;
 
-  // Destination : clyento.app@gmail.com (compte Resend clyento.app). Si la clé en place est encore celle
-  // de l'ancien compte, qui n'accepte que contact@clyento-ai.com, on réessaie vers contact@.
+  // Destination : contact@clyento-ai.com (seule adresse autorisée par le compte Resend « clyento-ai »
+  // en version gratuite). WAITLIST_TO permet d'en changer ; en cas de refus, on réessaie vers contact@.
   const send = to => fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
@@ -51,8 +51,9 @@ module.exports = async (req, res) => {
     }),
   });
   try {
-    let r = await send(process.env.WAITLIST_TO || "clyento.app@gmail.com");
-    if (!r.ok && !process.env.WAITLIST_TO) r = await send("contact@clyento-ai.com");
+    const to = process.env.WAITLIST_TO || "contact@clyento-ai.com";
+    let r = await send(to);
+    if (!r.ok && to !== "contact@clyento-ai.com") r = await send("contact@clyento-ai.com");
     if (!r.ok) throw new Error(`Resend ${r.status}`);
     res.status(200).json({ ok: true });
   } catch {
