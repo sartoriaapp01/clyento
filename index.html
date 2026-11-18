@@ -981,6 +981,29 @@ section.cta-end{background:#fff}
 .free-line{margin:18px 0 0;color:var(--muted)}
 .free-line a{color:#14753F;font-weight:700;text-decoration:none;margin-left:4px}
 .free-line a:hover{text-decoration:underline}
+/* Confiance + comparatif */
+.trust-row{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.86rem;color:#2E3D34;font-weight:500}
+.trust-row span{white-space:nowrap}
+.cmp{background:#fff}
+.cmp h2{max-width:860px;margin:6px 0 28px}
+.cmp h2 .grad{display:inline}
+.vs-table{border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:0 18px 40px -34px rgba(15,28,20,.35)}
+.vs-row{display:grid;grid-template-columns:1fr 1.3fr 1.5fr;border-top:1px solid var(--line)}
+.vs-row:first-child{border-top:0}
+.vs-row>span{padding:15px 20px;color:var(--muted)}
+.vs-row>span:first-child{font-weight:700;color:var(--ink)}
+.vs-row .vs-us{background:rgba(52,214,122,.09);color:var(--ink);font-weight:600;position:relative;padding-left:44px}
+.vs-row .vs-us::before{content:"✓";position:absolute;left:18px;top:15px;width:18px;height:18px;border-radius:50%;background:#34D67A;color:#0F1C14;font-size:.7rem;display:grid;place-items:center;font-weight:700}
+.vs-head>span{font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);padding-block:12px}
+.vs-head .vs-us{background:#0F1C14;color:var(--lime)}
+.vs-head .vs-us::before{display:none}
+@media (max-width:760px){
+  .vs-row{grid-template-columns:1fr 1fr}
+  .vs-row>span:first-child{grid-column:1/-1;padding-bottom:4px;border-bottom:0}
+  .vs-head>span:first-child{display:none}
+  .vs-row>span{padding:10px 14px;font-size:.92rem}
+  .vs-row .vs-us{padding-left:36px}.vs-row .vs-us::before{left:12px;top:11px}
+}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -1015,7 +1038,7 @@ section.cta-end{background:#fff}
           <label class="ht-f"><span>Votre ville</span><input id="ht-ville" autocomplete="address-level2" placeholder="Ex. Lyon" maxlength="60"></label>
           <button type="submit" class="btn btn-go" id="hero-open">Voir mes clients <span aria-hidden="true">→</span></button>
         </form></div>
-        <span class="hero-note">Gratuit · 2 minutes · sans carte bancaire · de vraies entreprises</span>
+        <div class="trust-row"><span>✓ Première recherche gratuite</span><span>✓ Sans carte bancaire</span><span>✓ Entreprises réelles du registre officiel</span></div>
         <div class="trade-chips" aria-label="Pour qui"><span class="c1">Artisans</span><span class="c2">Commerces</span><span class="c3">Coachs</span><span class="c4">Restaurants</span><span class="c5">Freelances</span></div>
         </div>
       </div>
@@ -1179,6 +1202,22 @@ section.cta-end{background:#fff}
             <div class="ex-block"><div class="ex-mh"><span class="eyebrow">Message prêt à envoyer</span><button type="button" class="ex-copy" id="ex-copy">Copier</button></div><pre class="ex-msg" id="ex-msg"></pre></div>
           </article>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cmp" id="pourquoi-clyento">
+    <div class="wrap">
+      <span class="eyebrow">Pourquoi Clyento</span>
+      <h2>Les outils de prospection sont faits pour les commerciaux. <span class="grad">Clyento est fait pour vous.</span></h2>
+      <div class="vs-table" role="table">
+        <div class="vs-row vs-head" role="row"><span role="columnheader"></span><span role="columnheader">Outils de prospection classiques</span><span role="columnheader" class="vs-us">Clyento</span></div>
+        <div class="vs-row" role="row"><span role="rowheader">Pour qui</span><span>Équipes commerciales, startups</span><span class="vs-us">Artisans, coachs, commerçants, indépendants</span></div>
+        <div class="vs-row" role="row"><span role="rowheader">Qui cibler</span><span>À vous de régler des dizaines de filtres</span><span class="vs-us">Vous décrivez votre métier, Clyento choisit</span></div>
+        <div class="vs-row" role="row"><span role="rowheader">Les messages</span><span>Modèles génériques à adapter</span><span class="vs-us">Écrits pour chaque prospect, avec les mots de votre métier</span></div>
+        <div class="vs-row" role="row"><span role="rowheader">Vous vendez à des particuliers</span><span>Rien de prévu</span><span class="vs-us">Clyento trouve les partenaires qui vous envoient des clients</span></div>
+        <div class="vs-row" role="row"><span role="rowheader">Prix</span><span>Souvent plus de 100 € par mois</span><span class="vs-us">Dès 12,99 € par mois, sans engagement</span></div>
+        <div class="vs-row" role="row"><span role="rowheader">Prise en main</span><span>Formation, jargon, réglages</span><span class="vs-us">2 minutes, en français, sans réglage</span></div>
       </div>
     </div>
   </section>
