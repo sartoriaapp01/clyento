@@ -23,7 +23,7 @@
 <script defer src="/_vercel/insights/script.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
 /* Layout : une seule colonne éditoriale, encre noire du logo + surligneur jaune qui "coche" les bons prospects */
 :root{
@@ -921,6 +921,60 @@ section.cta-end{border-top:0}
 .proof .proof-src li::before{background:#34D67A}
 .proof .win{--ink:#0F1C14;--muted:#45564C;--line:#BFCFC3;color:var(--ink);box-shadow:0 30px 70px -30px rgba(0,0,0,.6)}
 #exemple .ex,#faq details,#metiers .jobs-stack button{box-shadow:0 1px 0 rgba(15,28,20,.03)}
+
+/* ===== Thème « Lumineux » (direction C) : blanc, verts du logo, touches de couleur ===== */
+:root{
+  --bg:#FFFFFF; --surface:#FFFFFF; --ink:#0F1C14; --muted:#56655C; --line:#E3EBE5;
+  --mark:#34D67A; --mark-ink:#0B1F14; --ok:#1E9A55; --soft:#F1F6F2; --mark-text:#14753F;
+  --display:"DM Sans","Avenir Next",system-ui,sans-serif; --body:"DM Sans","Helvetica Neue",system-ui,sans-serif;
+  --g1:#14A35A; --g2:#5BC82E; --lime:#D9FF7A;
+}
+body{background:#fff;color:var(--ink);font-family:var(--body)}
+h1,h2,h3{font-family:var(--display);letter-spacing:-.035em}
+h1,h2{font-weight:700}
+.grad{background:linear-gradient(90deg,var(--g1),var(--g2));-webkit-background-clip:text;background-clip:text;color:transparent}
+/* bandeau + nav */
+.fbar{background:#0F1C14}
+.fb-tag{background:var(--lime);color:#0F1C14}
+.fb-go{color:var(--lime)}
+header.top,.top{background:rgba(255,255,255,.85);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--line)}
+/* boutons */
+.btn-go{background:#0F1C14;color:#fff;box-shadow:0 14px 30px -16px rgba(15,28,20,.7);border-radius:14px}
+.btn-go:hover{background:#1F3327}
+/* haut de page */
+.hero{position:relative;overflow:hidden;background:#fff}
+.hero::before{content:"";position:absolute;right:-220px;top:-200px;width:1050px;height:1050px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle at 40% 40%,#D9FF7A 0%,#7EF0B0 36%,rgba(126,240,176,0) 68%);opacity:.8;filter:blur(8px)}
+.hero>*{position:relative}
+.hero h1{font-size:clamp(2.6rem,5.4vw,4.6rem);line-height:1.02;letter-spacing:-.045em}
+.hero .eyebrow{display:inline-block;max-width:100%;justify-self:start;background:#0F1C14;color:var(--lime);font-weight:700;padding:6px 13px;border-radius:999px;font-size:.8rem}
+.hero-try{border-radius:18px;box-shadow:0 24px 60px -30px rgba(15,28,20,.4);background:#fff}
+.trade-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.trade-chips span{padding:8px 13px;border-radius:12px;font-weight:700;font-size:.88rem}
+.c1{background:#FFE7D6;color:#B4521F}.c2{background:#E3EEFF;color:#2F5FB3}.c3{background:#FFE3EE;color:#B32F66}.c4{background:#FFF6CC;color:#8A6B00}.c5{background:#E4F8EC;color:#14753F}
+.hr-card{background:#fff;border-radius:26px;transform:rotate(-1.5deg);box-shadow:0 50px 90px -40px rgba(15,28,20,.55);border-color:var(--line)}
+.hr-s{border-radius:12px;width:40px;height:40px}
+.hr-s.c1{background:#FFD9BF;color:#B4521F}.hr-s.c2{background:#DCE8FF;color:#2F5FB3}.hr-s.c5{background:#E4F8EC;color:#14753F}
+.hr-list li.on{background:#FFF3EA;border-color:#FFD9BF}
+.hr-msg{background:#0F1C14;color:#E9F2EC;border:0}
+.hr-msg::after{background:linear-gradient(transparent,#0F1C14)}
+.hr-msg .hr-l{color:var(--lime)}
+.hr-go{background:linear-gradient(90deg,var(--g1),var(--g2));color:#fff}
+.hr-tag{background:#F1F6F2}
+/* sections : alternance blanc / vert très pâle */
+.pains,#exemple,#faq{background:#fff}
+#metiers,#comment,#tarifs{background:#F5FAF6}
+.pain{background:#fff;box-shadow:0 18px 40px -32px rgba(15,28,20,.35)}
+.pain:nth-child(1) .pain-n{color:#B4521F}.pain:nth-child(2) .pain-n{color:#2F5FB3}.pain:nth-child(3) .pain-n{color:#B32F66}
+.pain-sol b{background:linear-gradient(transparent 62%,rgba(217,255,122,.9) 62%)}
+.proof{background:#0F1C14}
+.proof .proof-total b{background:linear-gradient(90deg,#34D67A,var(--lime));-webkit-background-clip:text;background-clip:text;color:transparent}
+.plan,.ex,details{box-shadow:0 18px 40px -34px rgba(15,28,20,.35)}
+.founder{background:linear-gradient(90deg,rgba(217,255,122,.35),rgba(126,240,176,.25));border-color:rgba(20,163,90,.3)}
+.hero h1 .grad{display:block}
+@media (max-width:640px){ .hero .eyebrow{font-size:.74rem} .trade-chips span{font-size:.82rem;padding:7px 11px} }
+.bg{background:#fff}
+section.cta-end{background:#fff}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -947,14 +1001,15 @@ section.cta-end{border-top:0}
       <div class="hero-copy">
         <div class="hero-text">
         <span class="eyebrow">Pour les artisans, coachs, commerçants et indépendants</span>
-        <h1>Remplissez votre agenda, <span class="hl">sans y passer vos soirées.</span></h1>
-        <p class="lede">Vous êtes bon dans votre métier, mais les clients ne viennent pas assez souvent ? Clyento trouve près de chez vous les entreprises qui ont besoin de vous, le nom de la personne à contacter, et rédige le message. Vous n'avez plus qu'à l'envoyer.</p>
+        <h1>Plus de clients. <span class="grad">Moins de prospection.</span></h1>
+        <p class="lede">Vous êtes bon dans votre métier, mais les clients ne viennent pas assez souvent ? Clyento trouve près de chez vous les entreprises qui ont besoin de vous, le nom de la bonne personne, et vous écrit le message. Vous n'avez plus qu'à l'envoyer.</p>
         <form class="hero-try" id="hero-try" novalidate>
           <label class="ht-f"><span>Votre métier</span><input id="ht-metier" autocomplete="off" placeholder="Ex. plombier" maxlength="120"></label>
           <label class="ht-f"><span>Votre ville</span><input id="ht-ville" autocomplete="address-level2" placeholder="Ex. Lyon" maxlength="60"></label>
           <button type="submit" class="btn btn-go" id="hero-open">Voir mes clients <span aria-hidden="true">→</span></button>
         </form>
         <span class="hero-note">Gratuit · 2 minutes · sans carte bancaire · de vraies entreprises</span>
+        <div class="trade-chips" aria-label="Pour qui"><span class="c1">Artisans</span><span class="c2">Commerces</span><span class="c3">Coachs</span><span class="c4">Restaurants</span><span class="c5">Freelances</span></div>
         </div>
       </div>
 
@@ -963,9 +1018,9 @@ section.cta-end{border-top:0}
           <div class="hr-head"><span><b>Michel</b> · électricien à Nantes</span><span class="hr-tag">Exemple</span></div>
           <div class="hr-count"><b>214</b> prospects trouvés autour de Nantes</div>
           <ol class="hr-list">
-            <li class="on" style="--i:0"><span class="hr-s" aria-hidden="true">L</span><span><b>Le Fournil du Port</b><small>Boulangerie · Claire D., gérante</small></span></li>
-            <li style="--i:1"><span class="hr-s" aria-hidden="true">S</span><span><b>Syndic des Quais</b><small>Syndic de copropriété · Marc L., gérant</small></span></li>
-            <li style="--i:2"><span class="hr-s" aria-hidden="true">A</span><span><b>Atelier Lumen Architectes</b><small>Architecte · Sophie R., présidente</small></span></li>
+            <li class="on" style="--i:0"><span class="hr-s c1" aria-hidden="true">L</span><span><b>Le Fournil du Port</b><small>Boulangerie · Claire D., gérante</small></span></li>
+            <li style="--i:1"><span class="hr-s c2" aria-hidden="true">S</span><span><b>Syndic des Quais</b><small>Syndic de copropriété · Marc L., gérant</small></span></li>
+            <li style="--i:2"><span class="hr-s c5" aria-hidden="true">A</span><span><b>Atelier Lumen Architectes</b><small>Architecte · Sophie R., présidente</small></span></li>
           </ol>
           <div class="hr-msg"><span class="hr-l">Message prêt à envoyer</span>
             <p><b>Objet : Un électricien de quartier pour le Fournil du Port</b><br>Félicitations pour l'ouverture du Fournil du Port. Les premiers mois, fours et chambre froide tournent à plein, et c'est souvent là qu'un disjoncteur saute en pleine fournée…</p></div>
