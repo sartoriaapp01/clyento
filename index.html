@@ -826,6 +826,29 @@ section.cta-end{border-top:0}
 .unlock.stack .recap{max-width:640px}
 .unlock.stack .unlock-act{justify-items:stretch}
 .unlock.stack .unlock-act .linkbtn{justify-self:center}
+.hero h1 .hl{white-space:normal;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.hero h1{font-size:clamp(2.3rem,5vw,4.1rem);line-height:1.17}
+.hero h1 .hl{padding:.02em .14em .06em}
+.hero-copy,.hero-text{min-width:0}
+/* Haut de page : essai direct (métier + ville) */
+.hero-try{display:grid;grid-template-columns:1.3fr 1fr auto;gap:8px;align-items:end;padding:10px;background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 40px -28px rgba(15,28,20,.5);max-width:640px}
+.ht-f{display:grid;gap:4px;padding:4px 8px;font-size:.78rem;font-weight:600;color:var(--muted)}
+.ht-f input{font:500 1rem var(--body);color:var(--ink);border:0;background:transparent;padding:4px 0;outline:none;min-width:0}
+.ht-f:focus-within{background:rgba(52,214,122,.1);border-radius:12px}
+.hero-try .btn-go{white-space:nowrap}
+@media (max-width:640px){ .hero-try{grid-template-columns:1fr 1fr} .hero-try .btn-go{grid-column:1/-1} }
+/* Section « Vous connaissez ça ? » */
+.pains{background:#FCFDFC}
+.pains h2{max-width:760px;margin:6px 0 28px}
+.pain-grid{display:grid;gap:14px;grid-template-columns:repeat(3,1fr)}
+@media (max-width:860px){ .pain-grid{grid-template-columns:1fr} }
+.pain{display:grid;gap:6px;align-content:start;padding:22px;border-radius:18px;background:var(--surface);border:1px solid var(--line)}
+.pain-n{font:500 .8rem var(--mono);color:#1E9A55}
+.pain b{font:700 1.15rem/1.3 var(--display)}
+.pain p{margin:0;color:var(--muted)}
+.pain-sol{margin:26px 0 0;font-size:1.1rem;max-width:760px}
+.pain-sol b{background:linear-gradient(transparent 60%,rgba(52,214,122,.45) 60%)}
+#metiers{background:var(--bg)}
 /* Taille des clients : cases à cocher */
 #tc-l{display:grid;gap:6px}
 .tc-chips{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:2px}
@@ -916,11 +939,15 @@ section.cta-end{border-top:0}
     <div class="wrap hero-grid">
       <div class="hero-copy">
         <div class="hero-text">
-        <span class="eyebrow">Prospection par IA · tous les métiers · France</span>
-        <h1>Décrivez votre activité. <br>Clyento trouve <span class="hl">vos clients.</span></h1>
-        <p class="lede"><span class="lg">Vous êtes artisan, coach, commerçant ou freelance, et vous n'avez jamais prospecté ? </span>Clyento repère vos clients, trouve la bonne personne à contacter et rédige le message. Aucun réglage.</p>
-        <div class="hero-cta"><button type="button" class="btn btn-go" id="hero-open">Lancer ma recherche gratuite <span aria-hidden="true">→</span></button>
-          <span class="hero-note">Gratuit · 2 minutes · sans carte bancaire</span></div>
+        <span class="eyebrow">Pour les artisans, coachs, commerçants et indépendants</span>
+        <h1>Remplissez votre agenda, <span class="hl">sans y passer vos soirées.</span></h1>
+        <p class="lede">Vous êtes bon dans votre métier, mais les clients ne viennent pas assez souvent ? Clyento trouve près de chez vous les entreprises qui ont besoin de vous, le nom de la personne à contacter, et rédige le message. Vous n'avez plus qu'à l'envoyer.</p>
+        <form class="hero-try" id="hero-try" novalidate>
+          <label class="ht-f"><span>Votre métier</span><input id="ht-metier" autocomplete="off" placeholder="Ex. plombier" maxlength="120"></label>
+          <label class="ht-f"><span>Votre ville</span><input id="ht-ville" autocomplete="address-level2" placeholder="Ex. Lyon" maxlength="60"></label>
+          <button type="submit" class="btn btn-go" id="hero-open">Voir mes clients <span aria-hidden="true">→</span></button>
+        </form>
+        <span class="hero-note">Gratuit · 2 minutes · sans carte bancaire · de vraies entreprises</span>
         </div>
       </div>
 
@@ -968,6 +995,19 @@ section.cta-end{border-top:0}
         <div class="unlock" id="unlock" aria-live="polite"></div>
         <p class="sample-note">Données publiques du registre national des entreprises (INSEE, INPI). Les entreprises opposées à la prospection commerciale sont exclues.</p>
       </div>
+    </div>
+  </section>
+
+  <section class="pains" id="pourquoi">
+    <div class="wrap">
+      <span class="eyebrow">Vous connaissez ça ?</span>
+      <h2>Vous avez un métier à faire, pas des clients à courir.</h2>
+      <div class="pain-grid">
+        <div class="pain"><span class="pain-n">01</span><b>Un mois plein, un mois vide</b><p>Les périodes creuses arrivent sans prévenir, et impossible de prévoir la suite.</p></div>
+        <div class="pain"><span class="pain-n">02</span><b>Tout repose sur le bouche-à-oreille</b><p>Quand les recommandations s'arrêtent, le téléphone ne sonne plus.</p></div>
+        <div class="pain"><span class="pain-n">03</span><b>Pas le temps de prospecter</b><p>Chercher qui contacter, trouver le bon nom, écrire le bon message… le soir, après le travail.</p></div>
+      </div>
+      <p class="pain-sol"><b>Clyento s'occupe de toute cette partie.</b> Vous gardez la plus simple : envoyer le message et décrocher le rendez-vous.</p>
     </div>
   </section>
 
@@ -1483,7 +1523,25 @@ function closeQ(){
   if (qOpener && qOpener.focus) qOpener.focus({ preventScroll: true });
 }
 $("q-open").addEventListener("click", openQ);
-$("hero-open").addEventListener("click", openQ);
+$("hero-try").addEventListener("submit", e => {
+  e.preventDefault();
+  const m = $("ht-metier").value.trim(), v = $("ht-ville").value.trim();
+  if (m && !$("activity").value.trim()) $("activity").value = m;
+  if (v) $("f-ville").value = v;
+  if (m && !$("f-metier").value){
+    const t = m.toLowerCase(), pick = [
+      [/plomb|électri|electri|maçon|macon|peintr|menuis|couvr|chauff|carrel|artisan|serrur|paysag|jardin|btp|bâtiment|batiment/, "Artisan du bâtiment"],
+      [/coach|sport|yoga|kiné|kine|nutri|diét|diet|bien-être|bien etre|massage|ostéo|osteo|sophro|psy/, "Coach, santé ou bien-être"],
+      [/restau|traiteur|boulang|café|cafe|bar|boutique|commerce|fleur|coiff|esthéti|esthet|institut/, "Commerce ou restauration"],
+      [/web|site|graph|design|agence|freelance|développ|develop|marketing|photo|vidéo|video|communication/, "Agence ou freelance"],
+      [/conseil|consult|comptab|juri|avocat|assur|rh|formation|expert/, "Conseil et services aux entreprises"],
+      [/e-commerce|ecommerce|en ligne|shopify/, "Vente en ligne"]].find(([r]) => r.test(t));
+    if (pick) $("f-metier").value = pick[1];
+  }
+  ["activity", "f-ville", "f-metier"].forEach(id => $(id).dispatchEvent(new Event("change", { bubbles: true })));
+  try { saveForm(); } catch {}
+  openQ();
+});
 $("nav-open").addEventListener("click", e => { e.preventDefault(); openQ(); });
 $("cta-open").addEventListener("click", openQ);
 
