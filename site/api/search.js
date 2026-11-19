@@ -4,6 +4,7 @@ const { searchRegistry, NAF_RE, TRANCHE_CODES } = require("../lib/core");
 const ai = require("../lib/ai");
 const cors = require("../lib/cors");
 const limited = require("../lib/limit");
+const addContacts = require("../lib/places");
 
 module.exports = async (req, res) => {
   if (cors(req, res)) return;
@@ -30,6 +31,7 @@ module.exports = async (req, res) => {
 
   const top = found.usable.slice(0, 3);
   const rest = found.usable.slice(3, 6);
+  const contacts = addContacts(top).catch(() => {}); // en parallèle de la rédaction
   try {
     const outs = await ai.pitch(p, desc, top);
     outs.forEach((m, i) => {
@@ -38,6 +40,7 @@ module.exports = async (req, res) => {
     top.sort((a, b) => b.score - a.score);
     top.forEach((t, i) => { if (i && t.score >= top[i - 1].score) t.score = top[i - 1].score - 2; });
   } catch { /* Claude indisponible : on garde les raisons et modèles standards */ }
+  await contacts;
   top.forEach((t, i) => { if (!t.ai) t.score = Math.min(96 - i * 3, t.score + 4); });
   const last = top[top.length - 1].score;
 

@@ -1025,6 +1025,11 @@ section.cta-end{background:#fff}
 .msg-hint{flex:1 1 200px;font-size:.84rem;color:var(--muted)}
 .msg-copy{padding:11px 18px;border-radius:12px}
 .find-addr{flex-basis:100%;margin:0 0 4px;font-size:.9rem;color:var(--ink)}
+.contact-card{flex-basis:100%;display:flex;flex-wrap:wrap;gap:8px;margin:2px 0 8px}
+.cc-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:14px;background:rgba(52,214,122,.12);border:1px solid rgba(20,163,90,.3);color:var(--ink);text-decoration:none;font-weight:700;font-size:.95rem}
+.cc-item:hover{background:rgba(52,214,122,.2)}
+.cc-item small{display:block;font-weight:500;font-size:.74rem;color:var(--muted)}
+.cc-ico{width:30px;height:30px;border-radius:9px;background:#0F1C14;color:var(--lime);display:grid;place-items:center;font-size:.95rem}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -1527,7 +1532,11 @@ function renderMsg(){
   $("msg-meta").innerHTML = `<span>Pour : ${esc(p.boss.first)} ${esc(p.boss.last)}, ${esc(p.boss.role)}</span><span>·</span><span>Langue : français</span>`;
   const q = encodeURIComponent, who = `${p.boss.first} ${p.boss.last}`.trim();
   const label = p.brand && p.brand.toLowerCase() !== p.name.toLowerCase() ? p.brand : p.name, where = p.address || p.city || "";
-  $("find").innerHTML = `${p.address ? `<p class="find-addr"><b>Adresse :</b> ${esc(p.address)}</p>` : ""}<span class="find-l">Trouver ses coordonnées :</span>
+  const c = p.contact, host = c && c.site ? c.site.replace(/^https?:\/\/(www\.)?/, "").replace(/\/.*$/, "") : "";
+  const direct = c ? `<div class="contact-card">${c.phone ? `<a class="cc-item" href="tel:${esc(c.phone.replace(/\s/g, ""))}"><span class="cc-ico" aria-hidden="true">☎</span><span><small>Téléphone</small>${esc(c.phone)}</span></a>` : ""}
+      ${c.site ? `<a class="cc-item" href="${esc(c.site)}" target="_blank" rel="noopener"><span class="cc-ico" aria-hidden="true">↗</span><span><small>Site web</small>${esc(host)}</span></a>` : ""}
+      ${c.maps ? `<a class="cc-item" href="${esc(c.maps)}" target="_blank" rel="noopener"><span class="cc-ico" aria-hidden="true">⌖</span><span><small>Fiche Google</small>Voir sur la carte</span></a>` : ""}</div>` : "";
+  $("find").innerHTML = `${p.address ? `<p class="find-addr"><b>Adresse :</b> ${esc(p.address)}</p>` : ""}${direct}<span class="find-l">${c ? "Chercher plus :" : "Trouver ses coordonnées :"}</span>
     <a href="https://www.pagesjaunes.fr/annuaire/chercherlespros?quoiqui=${q(label)}&ou=${q(p.city || "")}" target="_blank" rel="noopener">Téléphone (PagesJaunes)</a>
     <a href="https://www.google.com/maps/search/?api=1&query=${q(label + " " + where)}" target="_blank" rel="noopener">Sur la carte (Google Maps)</a>
     <a href="https://www.google.com/search?q=${q(`"${label}" ${p.city || ""} téléphone`)}" target="_blank" rel="noopener">Site et téléphone (Google)</a>
