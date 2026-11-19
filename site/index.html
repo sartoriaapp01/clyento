@@ -1031,6 +1031,7 @@ section.cta-end{background:#fff}
 .msg-tools{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-top:10px}
 .msg-hint{flex:1 1 200px;font-size:.84rem;color:var(--muted)}
 .msg-copy{padding:11px 18px;border-radius:12px}
+.find-addr{flex-basis:100%;margin:0 0 4px;font-size:.9rem;color:var(--ink)}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -1532,9 +1533,11 @@ function renderMsg(){
   $("msg-label").textContent = "Message prêt";
   $("msg-meta").innerHTML = `<span>Pour : ${esc(p.boss.first)} ${esc(p.boss.last)}, ${esc(p.boss.role)}</span><span>·</span><span>Langue : français</span>`;
   const q = encodeURIComponent, who = `${p.boss.first} ${p.boss.last}`.trim();
-  $("find").innerHTML = `<span class="find-l">Trouver ses coordonnées :</span>
-    <a href="https://www.google.com/maps/search/?api=1&query=${q(p.name + " " + (p.city || ""))}" target="_blank" rel="noopener">Téléphone et adresse (Google Maps)</a>
-    <a href="https://www.google.com/search?q=${q(p.name + " " + (p.city || "") + " contact e-mail")}" target="_blank" rel="noopener">Site et e-mail (Google)</a>
+  const label = p.brand && p.brand.toLowerCase() !== p.name.toLowerCase() ? p.brand : p.name, where = p.address || p.city || "";
+  $("find").innerHTML = `${p.address ? `<p class="find-addr"><b>Adresse :</b> ${esc(p.address)}</p>` : ""}<span class="find-l">Trouver ses coordonnées :</span>
+    <a href="https://www.pagesjaunes.fr/annuaire/chercherlespros?quoiqui=${q(label)}&ou=${q(p.city || "")}" target="_blank" rel="noopener">Téléphone (PagesJaunes)</a>
+    <a href="https://www.google.com/maps/search/?api=1&query=${q(label + " " + where)}" target="_blank" rel="noopener">Sur la carte (Google Maps)</a>
+    <a href="https://www.google.com/search?q=${q(`"${label}" ${p.city || ""} téléphone`)}" target="_blank" rel="noopener">Site et téléphone (Google)</a>
     ${p.siren ? `<a href="https://annuaire-entreprises.data.gouv.fr/entreprise/${q(p.siren)}" target="_blank" rel="noopener">Fiche officielle</a>` : ""}`;
   const orig = (p.ai ? MSG_AI : MSG)[tab](p), k = `${sel}|${tab}`;
   $("msg").value = EDITS[k] != null ? EDITS[k] : orig; $("msg").dataset.orig = orig; $("msg").dataset.k = k;

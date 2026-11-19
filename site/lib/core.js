@@ -187,7 +187,13 @@ async function searchRegistry({ naf, tranches, place, rayon = "zone" }) {
     const ei = !!(r.complements && r.complements.est_entrepreneur_individuel);
     const boss = (r.dirigeants || []).find(d => d.type_dirigeant === "personne physique" && d.nom && (QUALITES_OK.test(d.qualite || "") || (ei && !d.qualite)));
     if (!boss) continue;
-    const etab = (r.matching_etablissements || [])[0] || r.siege || {};
+    // Établissement retenu : un établissement ouvert, de préférence dans la zone cherchée.
+    // Une entreprise dont l'établissement local est fermé (ex. cabinet parti en banlieue) est écartée.
+    const open = e => e && e.etat_administratif !== "F";
+    const inZone = e => !place || !place.codesPostaux || (rayon === "departement" ? String(e.code_postal || "").startsWith(place.codeDepartement) : place.codesPostaux.includes(e.code_postal) || String(e.code_postal || "").startsWith(place.codeDepartement));
+    const cands = [...(r.matching_etablissements || []), r.siege].filter(open);
+    const etab = cands.find(inZone) || (place ? null : cands[0]);
+    if (!etab) continue;
     const tranche = r.tranche_effectif_salarie;
     let score = 70;
     if (["01", "02", "03", "11", "12"].includes(tranche)) score += 8;
@@ -199,6 +205,8 @@ async function searchRegistry({ naf, tranches, place, rayon = "zone" }) {
       naf: r.activite_principale,
       activity: r.libelle_activite_principale || "",
       city: title(etab.libelle_commune || ""),
+      address: title(String(etab.adresse || [etab.numero_voie, etab.type_voie, etab.libelle_voie, etab.code_postal, etab.libelle_commune].filter(Boolean).join(" ")).replace(/\s+/g, " ").trim()).replace(/\b(\d{5})\b/, "$1"),
+      brand: title((etab.liste_enseignes && etab.liste_enseignes[0]) || etab.nom_commercial || ""),
       size: TRANCHES[tranche] || "",
       created: (r.date_creation || "").slice(0, 4),
       boss: { first: title((boss.prenoms || "").split(" ")[0]), last: title(boss.nom.replace(/\s*\(.*?\)/g, "")), role: boss.qualite ? boss.qualite.replace(/ de (SAS|SA|SARL|SASU|EURL)$/i, "") : "Entrepreneur individuel" },
