@@ -1570,6 +1570,23 @@ $("msg-copy").addEventListener("click", async () => {
   try { await navigator.clipboard.writeText(m.value); } catch { m.select(); try { document.execCommand("copy"); } catch {} }
   b.textContent = "Copié ✓"; setTimeout(() => { b.textContent = "Copier le message"; }, 1800);
 });
+// E-mail et LinkedIn des dirigeants : demandés après l'affichage, ajoutés dès qu'ils arrivent (Dropcontact)
+async function enrich(){
+  const list = (R && R.prospects) || []; if (!list.length || list.every(p => p.contact && p.contact.done)) return;
+  const people = list.map(p => ({ first: p.boss && p.boss.first, last: p.boss && p.boss.last, company: p.name, siren: p.siren, site: p.contact && p.contact.site }));
+  const start = await api("/api/contacts", { method: "POST", headers: { "Content-Type": "application/json", ...testHeaders() }, body: JSON.stringify({ people }) }).catch(() => null);
+  if (!start || !start.ok || !start.j.id) return;
+  const mine = R;
+  for (let k = 0; k < 15; k++){
+    await wait(k ? 4000 : 6000); if (R !== mine) return;
+    const r = await api(`/api/contacts?id=${encodeURIComponent(start.j.id)}`).catch(() => null);
+    if (!r || !r.ok) return; if (!r.j.ready) continue;
+    r.j.data.forEach((d, i) => { const p = list[i]; if (!p) return; p.contact = Object.assign({}, p.contact, { done: true }, d.email ? { email: d.email } : {}, d.linkedin ? { linkedin: d.linkedin } : {}, !(p.contact && p.contact.phone) && d.phone ? { phone: d.phone } : {}); });
+    if (!testKey()) store.set(FREE, JSON.stringify(R));
+    if (!$("demo").hidden) renderMsg();
+    return;
+  }
+}
 function renderMsg(){
   const p = R.prospects[sel];
   $("tabs").innerHTML = Object.keys(MSG).map(t => `<button role="tab" type="button" aria-selected="${t === tab}" data-t="${t}">${t}</button>`).join("");
@@ -1578,7 +1595,9 @@ function renderMsg(){
   const q = encodeURIComponent, who = `${p.boss.first} ${p.boss.last}`.trim();
   const label = p.brand && p.brand.toLowerCase() !== p.name.toLowerCase() ? p.brand : p.name, where = p.address || p.city || "";
   const c = p.contact, host = c && c.site ? c.site.replace(/^https?:\/\/(www\.)?/, "").replace(/\/.*$/, "") : "";
-  const direct = c ? `<div class="contact-card">${c.phone ? `<a class="cc-item" href="tel:${esc(c.phone.replace(/\s/g, ""))}"><span class="cc-ico" aria-hidden="true">☎</span><span><small>Téléphone</small>${esc(c.phone)}</span></a>` : ""}
+  const direct = c && (c.phone || c.site || c.maps || c.email || c.linkedin) ? `<div class="contact-card">${c.email ? `<a class="cc-item" href="mailto:${esc(c.email)}"><span class="cc-ico" aria-hidden="true">@</span><span><small>E-mail</small>${esc(c.email)}</span></a>` : ""}
+      ${c.linkedin ? `<a class="cc-item" href="${esc(c.linkedin)}" target="_blank" rel="noopener"><span class="cc-ico" aria-hidden="true">in</span><span><small>LinkedIn</small>${esc(p.boss.first)} ${esc(p.boss.last)}</span></a>` : ""}
+      ${c.phone ? `<a class="cc-item" href="tel:${esc(c.phone.replace(/\s/g, ""))}"><span class="cc-ico" aria-hidden="true">☎</span><span><small>Téléphone</small>${esc(c.phone)}</span></a>` : ""}
       ${c.site ? `<a class="cc-item" href="${esc(c.site)}" target="_blank" rel="noopener"><span class="cc-ico" aria-hidden="true">↗</span><span><small>Site web</small>${esc(host)}</span></a>` : ""}
       ${c.maps ? `<a class="cc-item" href="${esc(c.maps)}" target="_blank" rel="noopener"><span class="cc-ico" aria-hidden="true">⌖</span><span><small>Fiche Google</small>Voir sur la carte</span></a>` : ""}</div>` : "";
   $("find").innerHTML = `${p.address ? `<p class="find-addr"><b>Adresse :</b> ${esc(p.address)}</p>` : ""}${direct}<span class="find-l">${c ? "Chercher plus :" : "Trouver ses coordonnées :"}</span>
@@ -1929,6 +1948,7 @@ $("search").addEventListener("submit", async e => {
   if (!res.ok || !res.j.prospects) return ldError(res.j.error || "La recherche n'a pas abouti. Réessayez dans un instant.");
   R = res.j;
   if (!testKey()){ store.set(FREE, JSON.stringify(R)); }
+  enrich();
 
   // Résultat : le chiffre en grand, puis la page de résultats
   ldStep(LD_STEPS.length); $("ld-fill").style.width = "100%";
