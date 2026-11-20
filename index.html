@@ -936,7 +936,7 @@ header.top,.top{background:rgba(255,255,255,.85);backdrop-filter:saturate(1.4) b
 .btn-go:hover{background:#1F3327}
 /* haut de page */
 .hero{position:relative;overflow:hidden;background:#fff}
-.hero::before{content:"";position:absolute;right:-220px;top:-200px;width:1050px;height:1050px;border-radius:50%;pointer-events:none;
+.hero::before{display:none;content:"";position:absolute;right:-220px;top:-200px;width:1050px;height:1050px;border-radius:50%;pointer-events:none;
   background:radial-gradient(circle at 40% 40%,#D9FF7A 0%,#7EF0B0 36%,rgba(126,240,176,0) 68%);opacity:.8;filter:blur(8px)}
 .hero>*{position:relative}
 .hero h1{font-size:clamp(2.6rem,5.4vw,4.6rem);line-height:1.02;letter-spacing:-.045em}
@@ -1030,6 +1030,8 @@ section.cta-end{background:#fff}
 .cc-item:hover{background:rgba(52,214,122,.2)}
 .cc-item small{display:block;font-weight:500;font-size:.74rem;color:var(--muted)}
 .cc-ico{width:30px;height:30px;border-radius:9px;background:#0F1C14;color:var(--lime);display:grid;place-items:center;font-size:.95rem}
+#tarifs{background:#fff}
+.plan-f{display:none}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -1055,18 +1057,16 @@ section.cta-end{background:#fff}
     <div class="wrap hero-grid">
       <div class="hero-copy">
         <div class="hero-text">
-        <span class="eyebrow">Pour les artisans, coachs, commerçants et indépendants</span>
         <h1>Plus de clients. <span class="grad">Moins de prospection.</span></h1>
-        <p class="lede">Vous êtes bon dans votre métier, mais les clients ne viennent pas assez souvent ? Clyento trouve près de chez vous les entreprises qui ont besoin de vous, le nom de la bonne personne, et vous écrit le message. Vous n'avez plus qu'à l'envoyer.</p>
+        <p class="lede">Clyento trouve près de chez vous les entreprises qui ont besoin de vous, le bon contact, et vous écrit le message.</p>
         <div class="try-wrap">
-        <div class="try-head"><b>Votre recherche gratuite</b><span>Voyez vos clients avant de payer quoi que ce soit</span></div>
+        <div class="try-head"><b>Votre recherche gratuite</b></div>
         <form class="hero-try" id="hero-try" novalidate>
           <label class="ht-f"><span>Votre métier</span><input id="ht-metier" autocomplete="off" placeholder="Ex. plombier" maxlength="120"></label>
           <label class="ht-f"><span>Votre ville</span><input id="ht-ville" autocomplete="address-level2" placeholder="Ex. Lyon" maxlength="60"></label>
           <button type="submit" class="btn btn-go" id="hero-open">Voir mes clients gratuitement <span aria-hidden="true">→</span></button>
         </form></div>
-        <div class="trust-row"><span>✓ Sans carte bancaire</span><span>✓ Sans engagement</span><span>✓ Entreprises réelles du registre officiel</span></div>
-        <div class="trade-chips" aria-label="Pour qui"><span class="c1">Artisans</span><span class="c2">Commerces</span><span class="c3">Coachs</span><span class="c4">Restaurants</span><span class="c5">Freelances</span></div>
+        <div class="trust-row"><span>✓ Sans carte bancaire</span><span>✓ Entreprises réelles</span></div>
         </div>
       </div>
 
@@ -1257,9 +1257,8 @@ section.cta-end{background:#fff}
       <div class="sec-head">
         <span class="eyebrow">Tarifs</span>
         <h2>Une offre pour chaque rythme de prospection.</h2>
-        <p class="lede">La recherche est gratuite. Vous payez pour débloquer les décideurs et envoyer vos messages. Sans engagement.</p>
+        <p class="lede">Prix fondateur, garanti à vie. Sans engagement.</p>
       </div>
-      <div class="founder"><span class="fb-tag">Prix fondateur</span><p><b>Ces prix sont nos prix de lancement.</b> Inscrivez-vous maintenant : vous les gardez à vie, tant que vous restez abonné, même quand les tarifs augmenteront pour les nouveaux clients.</p></div>
       <div class="plans">
         <article class="plan">
           <span class="eyebrow">Essentiel</span>
