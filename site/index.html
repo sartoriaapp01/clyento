@@ -1060,6 +1060,13 @@ section.cta-end{background:#fff}
 .win-bar{background:#F6F8F7!important}
 .win-mix{display:none!important}
 .win-q{background:#F6F8F7!important}
+/* Exemple allégé */
+.ex-why{margin:8px 0 10px;color:var(--muted)}
+.ex-boss{margin:0 0 14px}
+.ex-boss .eyebrow{margin-right:6px}
+.ex-msg{max-height:9.5em;overflow:hidden;-webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent)}
+.ex-head{display:none}
+@media (max-width:820px){ .ex-row:nth-child(n+5){display:none} }
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -1253,11 +1260,9 @@ section.cta-end{background:#fff}
           <article class="ex-card" aria-live="polite">
             <h3 id="ex-name">Le Fournil du Port</h3>
             <p class="ex-sub" id="ex-sub">Boulangerie · Nantes · créée il y a 3 semaines</p>
-            <div class="ex-block"><span class="eyebrow">Pourquoi ce prospect</span><p id="ex-why"></p></div>
-            <div class="ex-block"><span class="eyebrow">Qui contacter</span><p id="ex-boss"></p></div>
-            <div class="ex-block"><span class="eyebrow">Suivi</span>
-              <dl class="ex-fu"><dt>Dernier échange</dt><dd id="ex-last"></dd><dt>Prochaine étape</dt><dd id="ex-next"></dd><dt>Notes</dt><dd id="ex-notes"></dd></dl></div>
-            <div class="ex-block"><div class="ex-mh"><span class="eyebrow">Message prêt à envoyer</span><button type="button" class="ex-copy" id="ex-copy">Copier</button></div><pre class="ex-msg" id="ex-msg"></pre></div>
+            <p class="ex-why" id="ex-why"></p>
+            <p class="ex-boss"><span class="eyebrow">Contact</span> <span id="ex-boss"></span></p>
+            <div class="ex-block"><div class="ex-mh"><span class="eyebrow">Message prêt</span><button type="button" class="ex-copy" id="ex-copy">Copier</button></div><pre class="ex-msg" id="ex-msg"></pre></div>
           </article>
         </div>
       </div>
@@ -1746,7 +1751,7 @@ function showEx(i){
   document.querySelectorAll(".ex-row").forEach(r => r.classList.toggle("on", +r.dataset.i === i));
   $("ex-name").textContent = e.name; $("ex-sub").textContent = e.sub; $("ex-why").textContent = e.why;
   $("ex-boss").textContent = e.boss; $("ex-msg").textContent = e.msg;
-  $("ex-last").textContent = e.last; $("ex-next").textContent = e.next; $("ex-notes").textContent = e.notes; $("ex-copy").textContent = "Copier";
+ $("ex-copy").textContent = "Copier";
 }
 document.querySelectorAll(".ex-row").forEach(r => r.addEventListener("click", () => showEx(+r.dataset.i)));
 $("ex-copy").addEventListener("click", () => {
