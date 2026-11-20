@@ -1039,6 +1039,27 @@ section.cta-end{background:#fff}
 .cc-ico{width:30px;height:30px;border-radius:9px;background:#0F1C14;color:var(--lime);display:grid;place-items:center;font-size:.95rem}
 #tarifs{background:#fff}
 .plan-f{display:none}
+/* Moins « effet IA » : rendu sobre, comme une vraie capture du produit */
+.hr-card{transform:none;box-shadow:0 20px 50px -30px rgba(15,28,20,.35)}
+.hr-s,.hr-s.c1,.hr-s.c2,.hr-s.c5{background:#F1F4F2;color:#0F1C14}
+.hr-list li.on{background:#F6F8F7;border-color:var(--line)}
+.hr-msg{background:#F6F8F7;color:var(--ink);border:1px solid var(--line)}
+.hr-msg::after{background:linear-gradient(transparent,#F6F8F7)}
+.hr-msg .hr-l{color:var(--muted);text-transform:none;letter-spacing:0;font-size:.8rem}
+.hr-go{background:#0F1C14;color:#fff}
+.hr-list li{animation:none}
+.win-rows{padding-left:0}
+.win-rows li.row::before,.win-rows li.row::after,.win-rows li.rail{display:none}
+.win-rows .sc{background:#F1F4F2;color:#0F1C14;box-shadow:none;font-weight:700}
+.win-rows .rw-n{display:block;font-weight:600;font-size:.95rem;color:var(--ink)}
+.win-rows .rw-s{display:block;font-size:.82rem;color:var(--muted)}
+.win-rows li.row{background:#fff;border-color:var(--line)}
+.mix{box-shadow:none!important;border-color:var(--line)!important;background:#F6F8F7!important}
+.win{box-shadow:0 20px 50px -30px rgba(0,0,0,.5)}
+.win,.win-body{background:#fff!important}
+.win-bar{background:#F6F8F7!important}
+.win-mix{display:none!important}
+.win-q{background:#F6F8F7!important}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -1086,7 +1107,7 @@ section.cta-end{background:#fff}
             <li style="--i:1"><span class="hr-s c2" aria-hidden="true">S</span><span><b>Syndic des Quais</b><small>Syndic de copropriété · Marc L., gérant</small></span></li>
             <li style="--i:2"><span class="hr-s c5" aria-hidden="true">A</span><span><b>Atelier Lumen Architectes</b><small>Architecte · Sophie R., présidente</small></span></li>
           </ol>
-          <div class="hr-msg"><span class="hr-l">Message prêt à envoyer</span>
+          <div class="hr-msg"><span class="hr-l">Message prêt</span>
             <p><b>Objet : Un électricien de quartier pour le Fournil du Port</b><br>Félicitations pour l'ouverture du Fournil du Port. Les premiers mois, fours et chambre froide tournent à plein, et c'est souvent là qu'un disjoncteur saute en pleine fournée…</p></div>
           <button type="button" class="btn btn-go hr-go" id="q-open">Trouver mes prospects</button>
         </div>
@@ -1992,8 +2013,9 @@ async function playDemo(i){
   else q.textContent = d.q;
   if (run !== demoRun) return;
   $("win-label").textContent = d.label;
-  $("win-mix").innerHTML = `<span class="mix-l">Cibles choisies par l'IA</span>` + d.mix.map((m, k) => `<span class="mix" style="animation-delay:${k * 120}ms">${m}</span>`).join("");
-  $("win-rows").innerHTML = `<li class="rail" aria-hidden="true"></li>` + ["A", "B", "C"].map((sc, k) => `<li class="row" style="animation-delay:${300 + k * 220}ms"><span class="sc" aria-hidden="true"><svg class="tick" style="width:16px;height:16px"><use href="#tick"/></svg></span><span><span class="nm" style="display:block;width:${78 - k * 9}%"></span><span class="nm" style="display:block"></span></span><span class="tag">${d.tag}</span></li>`).join("");
+  $("win-mix").innerHTML = `<span class="mix-l">Qui contacter</span>` + d.mix.map((m, k) => `<span class="mix" style="animation-delay:${k * 120}ms">${m}</span>`).join("");
+  const city = d.q.split("·").pop().trim();
+  $("win-rows").innerHTML = [0, 1, 2].map(k => { const m = d.mix[k % d.mix.length]; return `<li class="row" style="animation-delay:${300 + k * 180}ms"><span class="sc" aria-hidden="true">${m.charAt(0)}</span><span><b class="rw-n">${m}</b><small class="rw-s">${city}</small></span><span class="tag">${d.tag}</span></li>`; }).join("");
   res.classList.remove("hide");
   const t0 = performance.now(), el = $("win-n");
   const tick = t => { if (run !== demoRun) return; const k = Math.min(1, (t - t0) / 1100); el.textContent = fmt(Math.round(d.n * (1 - Math.pow(1 - k, 3)))); if (k < 1) requestAnimationFrame(tick); };
