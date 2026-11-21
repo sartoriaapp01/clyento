@@ -2,19 +2,10 @@
 // La clé est lue dans la variable d'environnement STRIPE_SECRET_KEY (jamais dans le code).
 
 const cors = require("../lib/cors");
+const stripe = require("../lib/stripe");
 
 const PRICES = { essentiel: "clyento_essentiel", pro: "clyento_pro", complet: "clyento_complet" };
 
-async function stripe(path, params) {
-  const r = await fetch(`https://api.stripe.com/v1/${path}`, {
-    method: params ? "POST" : "GET",
-    headers: { Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}`, "Content-Type": "application/x-www-form-urlencoded" },
-    body: params ? new URLSearchParams(params) : undefined,
-  });
-  const j = await r.json();
-  if (!r.ok) throw new Error(j.error && j.error.message || `Stripe ${r.status}`);
-  return j;
-}
 
 module.exports = async (req, res) => {
   if (cors(req, res)) return;
@@ -37,7 +28,7 @@ module.exports = async (req, res) => {
       mode: "subscription",
       "line_items[0][price]": price.id,
       "line_items[0][quantity]": "1",
-      success_url: `${origin}/merci.html?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${origin}/?paid={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/#tarifs`,
       locale: "fr",
       allow_promotion_codes: "true",

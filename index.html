@@ -1080,6 +1080,10 @@ section.cta-end{background:#fff}
 /* statuts de l'exemple : nuances de gris et de vert */
 .ex-st.s1{background:#EEF1EF;color:#45564C}.ex-st.s2{background:#E4F5EA;color:#1E7A46}.ex-st.s3{background:#D3F0DE;color:#14663A}.ex-st.s4{background:#0F1C14;color:#34D67A}
 .c1,.c2,.c3,.c4,.c5{background:#E4F5EA;color:#14753F}
+/* Abonnés : lien d'accès à garder */
+.sub-welcome{display:grid;gap:14px}.sub-welcome p{margin:0}
+.sub-link{display:flex;gap:8px;align-items:center}
+.sub-link input{flex:1;min-width:0;font:inherit;font-size:.85rem;padding:10px 12px;border:1px solid #E2E2DB;border-radius:10px;background:#F6F8F7;color:#111}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -1571,8 +1575,8 @@ $("msg-copy").addEventListener("click", async () => {
   b.textContent = "Copié ✓"; setTimeout(() => { b.textContent = "Copier le message"; }, 1800);
 });
 // E-mail et LinkedIn des dirigeants : demandés après l'affichage, ajoutés dès qu'ils arrivent (Dropcontact)
-async function enrich(){
-  const list = (R && R.prospects) || []; if (!list.length || list.every(p => p.contact && p.contact.done)) return;
+async function enrich(list){
+  list = list || ((R && R.prospects) || []).filter(p => !p.pending).slice(0, 3); if (!list.length || list.every(p => p.contact && p.contact.done)) return;
   const people = list.map(p => ({ first: p.boss && p.boss.first, last: p.boss && p.boss.last, company: p.name, siren: p.siren, site: p.contact && p.contact.site }));
   const start = await api("/api/contacts", { method: "POST", headers: { "Content-Type": "application/json", ...testHeaders() }, body: JSON.stringify({ people }) }).catch(() => null);
   if (!start || !start.ok || !start.j.id) return;
@@ -1582,15 +1586,27 @@ async function enrich(){
     const r = await api(`/api/contacts?id=${encodeURIComponent(start.j.id)}`).catch(() => null);
     if (!r || !r.ok) return; if (!r.j.ready) continue;
     r.j.data.forEach((d, i) => { const p = list[i]; if (!p) return; p.contact = Object.assign({}, p.contact, { done: true }, d.email ? { email: d.email } : {}, d.linkedin ? { linkedin: d.linkedin } : {}, !(p.contact && p.contact.phone) && d.phone ? { phone: d.phone } : {}); });
-    if (!testKey()) store.set(FREE, JSON.stringify(R));
+    if (!testKey() && !subId()) store.set(FREE, JSON.stringify(R));
     if (!$("demo").hidden) renderMsg();
     return;
   }
 }
+// Abonnés : message personnalisé d'un prospect rédigé au moment où on l'ouvre
+async function loadPitch(i){
+  const p = R.prospects[i], mine = R; if (!p || p.loading) return; p.loading = true;
+  const r = await api("/api/pitch", { method: "POST", headers: { "Content-Type": "application/json", ...testHeaders() },
+    body: JSON.stringify({ desc: userDesc, profile: R.profile, prospect: p }) }).catch(() => null);
+  p.loading = false; if (R !== mine) return;
+  p.pending = false;
+  if (r && r.ok){ if (r.j.ai) p.ai = r.j.ai; if (r.j.why) p.why = r.j.why; if (r.j.contact) p.contact = Object.assign({}, r.j.contact, p.contact); }
+  enrich([p]);
+  if (sel === i && !$("demo").hidden) renderMsg();
+}
 function renderMsg(){
   const p = R.prospects[sel];
+  if (p.pending) loadPitch(sel);
   $("tabs").innerHTML = Object.keys(MSG).map(t => `<button role="tab" type="button" aria-selected="${t === tab}" data-t="${t}">${t}</button>`).join("");
-  $("msg-label").textContent = "Message prêt";
+  $("msg-label").textContent = p.pending ? "Personnalisation du message…" : "Message prêt";
   $("msg-meta").innerHTML = `<span>Pour : ${esc(p.boss.first)} ${esc(p.boss.last)}, ${esc(p.boss.role)}</span><span>·</span><span>Langue : français</span>`;
   const q = encodeURIComponent, who = `${p.boss.first} ${p.boss.last}`.trim();
   const label = p.brand && p.brand.toLowerCase() !== p.name.toLowerCase() ? p.brand : p.name, where = p.address || p.city || "";
@@ -1648,6 +1664,12 @@ function renderUnlock(step, plan){
       <div class="unlock-act"><button class="linkbtn" type="button" data-a="plans">Réessayer</button></div>`;
     return;
   }
+  if (SUB){
+    u.innerHTML = `<div class="unlock-copy"><h3>Abonnement ${esc(SUB.planName)} actif</h3>
+      <p>${R.sub ? `Vos ${R.prospects.length} ${noun} sont débloqués. Ouvrez-en un : son message personnalisé est rédigé en quelques secondes.` : `Relancez la recherche pour débloquer tous vos ${noun}.`}</p></div>
+      <div class="unlock-act"><button class="btn" type="button" data-a="new">${R.sub ? "Nouvelle recherche" : `Débloquer tous mes ${noun}`}</button></div>`;
+    return;
+  }
   u.innerHTML = `<div class="unlock-copy"><h3>Débloquez les ${fmt(R.total)}${R.capped ? "+" : ""} ${noun}</h3>
       <p>Le nom du dirigeant et un message personnalisé pour chacun : e-mail, LinkedIn et script d'appel.</p></div>
     <div class="unlock-act"><button class="btn" type="button" data-a="plans">Débloquer les ${noun}</button>
@@ -1663,10 +1685,10 @@ function render(){
   countUp(R.total, R.capped ? "+" : "");
   $("found-label").textContent = b2c ? "partenaires trouvés" : "prospects trouvés";
   $("found-sub").textContent = R.profile.headline || `${R.profile.target} · ${R.profile.zone}`;
-  $("found-split").innerHTML = `<span class="badge">${shown} affichés</span><span class="badge lock"><span class="lock-ico"></span>${fmt(hidden)}${R.capped ? "+" : ""} verrouillés</span>`;
+  $("found-split").innerHTML = R.sub ? `<span class="badge">${shown} débloqués</span>` : `<span class="badge">${shown} affichés</span><span class="badge lock"><span class="lock-ico"></span>${fmt(hidden)}${R.capped ? "+" : ""} verrouillés</span>`;
   $("icp").innerHTML = [R.profile.target, R.profile.zone, b2c ? "Mode B2C, via des partenaires" : "Mode B2B", "Décideurs identifiés"].map(x => `<span>${esc(x)}</span>`).join("");
   $("list-label").textContent = b2c ? "Vos partenaires sélectionnés" : "Vos prospects sélectionnés";
-  $("plist").innerHTML = R.prospects.map((p, i) => `<li><button type="button" class="prospect rise" style="animation-delay:${i * 70}ms" aria-pressed="${i === sel}" data-i="${i}">
+  $("plist").innerHTML = R.prospects.map((p, i) => `<li><button type="button" class="prospect rise" style="animation-delay:${Math.min(i, 8) * 70}ms" aria-pressed="${i === sel}" data-i="${i}">
     <span class="score av" aria-hidden="true">${esc(initial(p.name))}</span>
     <span><span class="p-name">${esc(p.name)}</span><br><span class="p-sub">${esc([p.city, p.size].filter(Boolean).join(" · "))}</span>
       <span class="p-why" style="display:block"><b>${esc(p.boss.first)} ${esc(p.boss.last)}</b>, ${esc(p.boss.role)}</span>
@@ -1830,8 +1852,13 @@ const initial = n => { const w = String(n || "?").replace(/^(SARL|SAS|SASU|EURL|
 const capFirst = t => { t = String(t || ""); return t.charAt(0).toUpperCase() + t.slice(1); };
 (() => { const t = new URLSearchParams(location.search).get("test"); if (t) store.set("clyento_test", t); })();
 const testKey = () => store.get("clyento_test") || "";
-const testHeaders = () => testKey() ? { "X-Clyento-Test": testKey() } : {};
-function freeUsed(){ return !testKey() && !!store.get(FREE); }
+// Abonnés : après le paiement, Stripe renvoie sur /?paid=<session> ; cet identifiant ouvre l'accès complet (vérifié côté serveur)
+const SUB_KEY = "clyento_sub";
+(() => { const id = new URLSearchParams(location.search).get("paid"); if (id && /^cs_(live|test)_\w+$/.test(id)){ store.set(SUB_KEY, id); store.set("clyento_welcome", "1"); } })();
+const subId = () => store.get(SUB_KEY) || "";
+let SUB = null;
+const testHeaders = () => Object.assign({}, testKey() ? { "X-Clyento-Test": testKey() } : {}, subId() ? { "X-Clyento-Sub": subId() } : {});
+function freeUsed(){ return !testKey() && !subId() && !!store.get(FREE); }
 function showUsed(){
   let saved = null; try { saved = JSON.parse(store.get(FREE) || "null"); } catch {}
   closeQ();
@@ -1955,7 +1982,7 @@ $("search").addEventListener("submit", async e => {
   if (res.j && res.j.used){ ldClose(); return showUsed(); }
   if (!res.ok || !res.j.prospects) return ldError(res.j.error || "La recherche n'a pas abouti. Réessayez dans un instant.");
   R = res.j;
-  if (!testKey()){ store.set(FREE, JSON.stringify(R)); }
+  if (!testKey() && !subId()){ store.set(FREE, JSON.stringify(R)); }
   enrich();
 
   // Résultat : le chiffre en grand, puis la page de résultats
@@ -1993,6 +2020,7 @@ async function checkout(planId, btn){
 $("unlock").addEventListener("click", e => { const b = e.target.closest("[data-a]"); if (!b) return;
   const a = b.dataset.a;
   if (a === "pay"){ checkout(PLANS[+b.dataset.p].id, b); return; }
+  if (a === "new"){ if (!R.sub && checkAll()) $("search").requestSubmit(); else openQ(); return; }
   renderUnlock(a === "back" ? null : a, +b.dataset.p); });
 document.querySelectorAll("[data-plan]").forEach(b => b.addEventListener("click", e => { e.preventDefault(); PAY_OPEN ? checkout(b.dataset.plan, b) : openWl(b.dataset.plan); }));
 
@@ -2147,4 +2175,27 @@ if ("IntersectionObserver" in window && !reduce){
   });
 }
 
+// Abonnés : vérifie l'accès au chargement, accueille après le paiement
+function showWelcome(){
+  const link = `${location.origin}/?paid=${encodeURIComponent(subId())}`;
+  $("wl-title").textContent = `Bienvenue dans Clyento ${SUB.planName}`;
+  $("wl-body").innerHTML = `<div class="sub-welcome"><p class="wl-t"><b>Votre abonnement est actif.</b> Tous vos prospects sont débloqués, avec le dirigeant, ses coordonnées et un message prêt à envoyer pour chacun.</p>
+    <p><button class="btn" type="button" id="sub-go">Voir tous mes prospects</button></p>
+    <p class="wl-t">Pour retrouver votre accès sur un autre appareil, gardez ce lien (il est personnel, ne le partagez pas) :</p>
+    <div class="sub-link"><input readonly value="${esc(link)}" aria-label="Votre lien d'accès"><button class="linkbtn" type="button" id="sub-copy">Copier</button></div></div>`;
+  $("wl").hidden = false; document.documentElement.classList.add("lock");
+  $("sub-go").addEventListener("click", () => { closeWl(); if (checkAll()) $("search").requestSubmit(); else openQ(); });
+  $("sub-copy").addEventListener("click", async () => { try { await navigator.clipboard.writeText(link); } catch { const i = $("wl-body").querySelector("input"); i.select(); try { document.execCommand("copy"); } catch {} } $("sub-copy").textContent = "Copié ✓"; });
+}
+(async () => {
+  const u = new URL(location.href);
+  if (u.searchParams.has("paid")){ u.searchParams.delete("paid"); history.replaceState(null, "", u.pathname + u.search + u.hash); }
+  if (!subId()) return;
+  const r = await api("/api/account", { headers: testHeaders() });
+  if (!r.ok || !r.j.ok) return;
+  SUB = r.j; document.documentElement.classList.add("is-sub");
+  try { window.va("event", { name: "Abonné", data: { plan: SUB.plan } }); } catch {}
+  if (store.get("clyento_welcome")){ store.set("clyento_welcome", ""); showWelcome(); }
+  else if (R && !$("demo").hidden) renderUnlock();
+})();
 </script>

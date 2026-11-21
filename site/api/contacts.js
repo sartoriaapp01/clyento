@@ -4,6 +4,7 @@
 
 const cors = require("../lib/cors");
 const limited = require("../lib/limit");
+const subOf = require("../lib/sub");
 const clip = (s, n = 120) => String(s || "").replace(/[\r\n]+/g, " ").trim().slice(0, n);
 
 module.exports = async (req, res) => {
@@ -14,7 +15,8 @@ module.exports = async (req, res) => {
   const H = { "X-Access-Token": key, "Content-Type": "application/json" };
   try {
     if (req.method === "POST") {
-      if (limited(req, res, "contacts", 4)) return;
+      const sub = await subOf(req);
+      if (sub ? limited(req, res, "s-contacts", 300, { key: sub.id, msg: "Vous avez atteint la limite du jour pour votre abonnement. Elle se renouvelle demain." }) : limited(req, res, "contacts", 4)) return;
       const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : (req.body || {});
       const people = (body.people || []).slice(0, 3).map(p => ({
         first_name: clip(p.first, 60), last_name: clip(p.last, 80), company: clip(p.company),

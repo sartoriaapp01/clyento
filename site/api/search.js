@@ -5,6 +5,8 @@ const ai = require("../lib/ai");
 const cors = require("../lib/cors");
 const limited = require("../lib/limit");
 const addContacts = require("../lib/places");
+const subOf = require("../lib/sub");
+const ALL = 25; // prospects renvoyés aux abonnés (messages personnalisés : les 3 premiers tout de suite, les autres à la demande)
 
 module.exports = async (req, res) => {
   if (cors(req, res)) return;
@@ -13,7 +15,8 @@ module.exports = async (req, res) => {
   const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : (req.body || {});
   const desc = String(body.desc || "").slice(0, 500);
   const p = body.profile || {};
-  if (limited(req, res, "search", 3)) return;
+  const sub = await subOf(req);
+  if (sub ? limited(req, res, "s-search", 30, { key: sub.id, msg: "Vous avez atteint la limite du jour pour votre abonnement. Elle se renouvelle demain." }) : limited(req, res, "search", 3)) return;
   if (!p.summary) return res.status(400).json({ error: "Relancez la recherche depuis le formulaire." });
 
   const naf = (p.naf || []).filter(c => NAF_RE.test(c)).slice(0, 6);
@@ -30,7 +33,7 @@ module.exports = async (req, res) => {
   if (!found.usable.length) return res.status(404).json({ error: "Aucun décideur trouvé pour cette cible. Précisez votre activité ou votre ville." });
 
   const top = found.usable.slice(0, 3);
-  const rest = found.usable.slice(3, 6);
+  const rest = found.usable.slice(3, sub ? ALL : 6);
   const contacts = addContacts(top).catch(() => {}); // en parallèle de la rédaction
   try {
     const outs = await ai.pitch(p, desc, top);
@@ -48,7 +51,8 @@ module.exports = async (req, res) => {
     profile: { ...p, zone: found.zone },
     total: found.total,
     capped: found.capped,
-    prospects: top,
-    locked: rest.map((r, i) => ({ name: r.name.split(" ")[0] + " ●●●●●", city: r.city, size: r.size, score: last - 3 - i * 4 })),
+    sub: !!sub,
+    prospects: sub ? top.concat(rest.map(r => ({ ...r, pending: true }))) : top,
+    locked: sub ? [] : rest.map((r, i) => ({ name: r.name.split(" ")[0] + " ●●●●●", city: r.city, size: r.size, score: last - 3 - i * 4 })),
   });
 };
