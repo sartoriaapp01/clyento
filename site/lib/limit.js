@@ -19,7 +19,7 @@ module.exports = function limited(req, res, step, max) {
   const id = `${step}:${ipOf(req)}`, now = Date.now();
   const list = (hits.get(id) || []).filter(t => now - t < DAY);
   if (list.length >= max) {
-    res.status(429).json({ error: "Vous avez déjà utilisé vos recherches gratuites. Inscrivez-vous à la liste d'attente pour en faire d'autres à l'ouverture des abonnements.", used: true });
+    res.status(429).json({ error: "Vous avez déjà utilisé vos recherches gratuites. Abonnez-vous pour lancer toutes les recherches que vous voulez.", used: true });
     return true;
   }
   list.push(now); hits.set(id, list);
