@@ -857,7 +857,7 @@ section.cta-end{border-top:0}
 .pain-sol b{background:linear-gradient(transparent 60%,rgba(52,214,122,.45) 60%)}
 #metiers{background:var(--bg)}
 /* Taille des clients : cases à cocher */
-#tc-l{display:grid;gap:6px}
+#tc-l{display:block}
 .tc-chips{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:2px}
 @media (max-width:620px){ .tc-chips{grid-template-columns:1fr 1fr} }
 .tc{position:relative;cursor:pointer}
@@ -1406,13 +1406,13 @@ section.cta-end{background:#fff}
       <fieldset class="wiz-step" data-s="0" data-name="Vous">
         <legend class="sr">Vous</legend>
         <div class="row2">
-          <label class="fld" for="f-prenom">Prénom et nom <em>pour la signature de vos messages</em><input id="f-prenom" autocomplete="name" placeholder="Thomas Martin"></label>
-          <label class="fld" for="f-entreprise">Votre entreprise <em>facultatif</em><input id="f-entreprise" autocomplete="organization" placeholder="Ex. Plomberie Martin"></label>
+          <label class="fld" for="f-prenom">Prénom et nom<input id="f-prenom" autocomplete="name" placeholder="Thomas Martin"></label>
+          <label class="fld" for="f-entreprise"><span>Votre entreprise <em>facultatif</em></span><input id="f-entreprise" autocomplete="organization" placeholder="Ex. Plomberie Martin"></label>
         </div>
-        <label class="fld" for="f-email">Votre e-mail <em>facultatif : pour garder votre prix fondateur si vous vous abonnez plus tard</em>
+        <label class="fld" for="f-email"><span>Votre e-mail <em>facultatif</em></span>
           <input id="f-email" type="email" autocomplete="email" inputmode="email" placeholder="thomas@plomberie-martin.fr"></label>
-        <p class="fld-note">Utilisé uniquement par Clyento pour vous recontacter, jamais revendu. Désinscription sur simple demande (<a href="/confidentialite.html" target="_blank" rel="noopener">confidentialité</a>).</p>
-        <label class="fld" for="website">Votre site web <em>facultatif, mais l'analyse est plus précise</em>
+        <p class="fld-note">Jamais revendu · <a href="/confidentialite.html" target="_blank" rel="noopener">confidentialité</a></p>
+        <label class="fld" for="website"><span>Votre site web <em>facultatif</em></span>
           <input id="website" autocomplete="url" inputmode="url" placeholder="www.monentreprise.fr"></label>
         <div class="row2">
           <label class="fld" for="f-anciennete">Depuis quand<select id="f-anciennete"><option value="">Choisir…</option><option value="je démarre mon activité">Je démarre</option><option value="activité lancée depuis 1 à 3 ans">1 à 3 ans</option><option value="activité installée depuis plus de 3 ans">Plus de 3 ans</option></select></label>
@@ -1433,20 +1433,20 @@ section.cta-end{background:#fff}
             <option value="Vente en ligne" data-meilleur="Ex. un café de quartier qui commande chaque semaine" data-eviter="Ex. pas de grande distribution" data-atout="Ex. torréfié chaque semaine, livraison offerte dès 50 €" data-ex="Boutique en ligne de café de spécialité, livré aux bureaux et aux restaurants.">Vente en ligne</option>
             <option value="Autre" data-meilleur="Ex. un client fidèle qui vous recommande" data-eviter="Ex. pas de grandes chaînes" data-atout="Ex. réponse sous 24 h, 10 ans d'expérience" data-ex="Décrivez ce que vous vendez et à qui.">Autre</option>
           </select></label>
-        <label class="fld" for="activity">Ce que vous proposez, en une ou deux phrases
+        <label class="fld" for="activity">Ce que vous proposez
           <textarea id="activity" rows="4" placeholder="Plombier chauffagiste : dépannage et entretien de chaudières."></textarea></label>
       </fieldset>
 
       <fieldset class="wiz-step off" data-s="2" data-name="Votre offre">
         <legend class="sr">Votre offre</legend>
         <div class="row2">
-          <label class="fld" for="f-panier">Prix moyen d'une vente<select id="f-panier"><option value="">Choisir…</option><option value="vente moyenne de moins de 100 €">Moins de 100 €</option><option value="vente moyenne de 100 à 1 000 €">100 à 1 000 €</option><option value="vente moyenne de 1 000 à 10 000 €">1 000 à 10 000 €</option><option value="vente moyenne de plus de 10 000 €">Plus de 10 000 €</option></select></label>
+          <label class="fld" for="f-panier">Prix moyen<select id="f-panier"><option value="">Choisir…</option><option value="vente moyenne de moins de 100 €">Moins de 100 €</option><option value="vente moyenne de 100 à 1 000 €">100 à 1 000 €</option><option value="vente moyenne de 1 000 à 10 000 €">1 000 à 10 000 €</option><option value="vente moyenne de plus de 10 000 €">Plus de 10 000 €</option></select></label>
           <label class="fld" for="f-recurrence">Vos clients reviennent-ils ?
           <select id="f-recurrence"><option value="">Choisir…</option><option value="ventes ponctuelles, une seule fois par client">Non, une vente par client</option><option value="clients réguliers qui recommandent">Oui, régulièrement</option><option value="contrats ou abonnements">Oui, en contrat ou abonnement</option></select></label>
           
         </div>
-        <label class="fld" for="f-atout">Ce qui vous démarque <em>facultatif</em><input id="f-atout" maxlength="140" autocomplete="off" placeholder="Ex. intervention sous 24 h, 15 ans d'expérience"></label>
-        <label class="fld" for="f-meilleur">Votre meilleur client jusqu'ici <em>facultatif</em>
+        <label class="fld" for="f-atout"><span>Ce qui vous démarque <em>facultatif</em></span><input id="f-atout" maxlength="140" autocomplete="off" placeholder="Ex. intervention sous 24 h, 15 ans d'expérience"></label>
+        <label class="fld" for="f-meilleur"><span>Votre meilleur client <em>facultatif</em></span>
           <input id="f-meilleur" autocomplete="off" placeholder="Ex. un syndic qui gère 40 immeubles"></label>
         
       </fieldset>
@@ -1454,7 +1454,7 @@ section.cta-end{background:#fff}
       <fieldset class="wiz-step off" data-s="3" data-name="Vos clients">
         <legend class="sr">Vos clients</legend>
         <label class="fld" for="f-cible">Vous vendez à<select id="f-cible"><option value="">Choisir…</option><option value="entreprises">Des entreprises</option><option value="particuliers">Des particuliers</option><option value="les deux">Les deux</option></select></label>
-        <div class="fld" role="group" aria-labelledby="tc-l"><span id="tc-l">Taille des clients visés <em>une ou plusieurs ; rien de coché = toutes tailles</em></span>
+        <div class="fld" role="group" aria-labelledby="tc-l"><span id="tc-l">Taille des clients <em>facultatif</em></span>
           <div class="tc-chips">
             <label class="tc"><input type="checkbox" name="tcible" value="indep"><span>Indépendants <small>seuls</small></span></label>
             <label class="tc"><input type="checkbox" name="tcible" value="tpe"><span>TPE <small>1 à 9 salariés</small></span></label>
@@ -1462,10 +1462,10 @@ section.cta-end{background:#fff}
             <label class="tc"><input type="checkbox" name="tcible" value="grande"><span>Grandes <small>250 et plus</small></span></label>
           </div></div>
         <div class="row2">
-          <label class="fld" for="f-ville">Votre ville<input id="f-ville" autocomplete="address-level2" placeholder="Ex. Lyon (facultatif)"></label>
+          <label class="fld" for="f-ville">Votre ville<input id="f-ville" autocomplete="address-level2" placeholder="Ex. Lyon"></label>
           <label class="fld" for="f-rayon">Jusqu'où<select id="f-rayon"><option value="ville">Ma ville seulement</option><option value="zone" selected>Ma ville et alentours</option><option value="departement">Mon département</option><option value="france">Toute la France</option></select></label>
         </div>
-        <label class="fld" for="f-eviter">Des clients à éviter ? <em>facultatif</em>
+        <label class="fld" for="f-eviter"><span>À éviter <em>facultatif</em></span>
           <input id="f-eviter" autocomplete="off" placeholder="Ex. pas de grandes chaînes"></label>
       </fieldset>
 
@@ -1473,12 +1473,12 @@ section.cta-end{background:#fff}
         <legend class="sr">Votre prospection</legend>
         <label class="fld" for="f-objectif">Ce que vous cherchez<select id="f-objectif"><option value="vendre plus : trouver des clients qui achètent">Des ventes directes</option><option value="décrocher des rendez-vous rapidement">Des rendez-vous rapidement</option><option value="signer des contrats réguliers">Des clients réguliers (contrats)</option><option value="trouver des partenaires qui recommandent">Des partenaires qui recommandent</option></select></label>
         <div class="row2">
-          <label class="fld" for="f-volume">Votre objectif par mois<select id="f-volume"><option value="">Choisir…</option><option value="vise 1 à 5 nouveaux clients par mois">1 à 5 clients</option><option value="vise 5 à 20 nouveaux clients par mois">5 à 20 clients</option><option value="vise plus de 20 nouveaux clients par mois">Plus de 20 clients</option></select></label>
-          <label class="fld" for="f-canal">Votre canal préféré<select id="f-canal"><option value="">Peu importe</option><option value="Email">Email</option><option value="LinkedIn">LinkedIn</option><option value="Appel">Téléphone</option></select></label>
+          <label class="fld" for="f-volume">Objectif par mois<select id="f-volume"><option value="">Choisir…</option><option value="vise 1 à 5 nouveaux clients par mois">1 à 5 clients</option><option value="vise 5 à 20 nouveaux clients par mois">5 à 20 clients</option><option value="vise plus de 20 nouveaux clients par mois">Plus de 20 clients</option></select></label>
+          <label class="fld" for="f-canal">Canal préféré<select id="f-canal"><option value="">Peu importe</option><option value="Email">Email</option><option value="LinkedIn">LinkedIn</option><option value="Appel">Téléphone</option></select></label>
         </div>
         <div class="row2">
-          <label class="fld" for="f-experience">Avez-vous déjà prospecté ?<select id="f-experience"><option value="">Choisir…</option><option value="n'a jamais prospecté">Jamais</option><option value="a déjà un peu prospecté">Un peu</option><option value="prospecte régulièrement">Régulièrement</option></select></label>
-          <label class="fld" for="f-ton">Le ton de vos messages<select id="f-ton"><option value="ton professionnel et direct">Professionnel et direct</option><option value="ton chaleureux et simple">Chaleureux et simple</option><option value="ton très court, droit au but">Très court</option></select></label>
+          <label class="fld" for="f-experience">Déjà prospecté ?<select id="f-experience"><option value="">Choisir…</option><option value="n'a jamais prospecté">Jamais</option><option value="a déjà un peu prospecté">Un peu</option><option value="prospecte régulièrement">Régulièrement</option></select></label>
+          <label class="fld" for="f-ton">Ton des messages<select id="f-ton"><option value="ton professionnel et direct">Professionnel et direct</option><option value="ton chaleureux et simple">Chaleureux et simple</option><option value="ton très court, droit au but">Très court</option></select></label>
         </div>
       </fieldset>
     </div>
@@ -1743,7 +1743,7 @@ function updateSummary(){
   if (f.entreprise) bits.push(esc(f.entreprise));
   if (f.ville && f.rayon !== "france") bits.push(esc(f.ville) + RAYON[f.rayon]); else if (f.rayon === "france" || wizStep >= 3) bits.push("toute la France");
   if (f.cible) bits.push(`clients : ${esc(f.cible)}`);
-  $("wiz-sum").innerHTML = bits.length ? `Recherche pour ${bits.join(" · ")}` : "Vos réponses servent à choisir vos prospects et à écrire vos messages.";
+  $("wiz-sum").innerHTML = bits.length ? `Recherche pour ${bits.join(" · ")}` : "Plus vous en dites, plus les prospects sont justes.";
   $("wiz-title").textContent = f.prenom ? `${f.prenom}, votre recherche personnalisée` : "Votre recherche personnalisée";
 }
 function showStep(n, focus = true){
